@@ -1,0 +1,306 @@
+create database project_police2025 default character set utf8 collate utf8_general_ci;
+ຕາຕະລາງ ກົມກອງຂື້ນກັບ
+create table department (
+d_id int(11) auto_increment primary key,
+d_name varchar(250) not null,
+user_id int(11) not null
+)default charset=utf8;
+
+------------------------------------------------------------------------------------------------------------------------
+ຕາຕະລາງ ກົມ/ຫ້ອງ	
+create table office (
+o_id int(11) auto_increment primary key,
+d_id int(11) not null,
+o_name varchar(250) not null,
+user_id int(11) not null
+)default charset=utf8;
+------------------------------------------------------------------------------------------------------------------------
+ຕາຕະລາງ ພະແນກ
+create table panak (
+pk_id int(11) auto_increment primary key,
+o_id int(11) not null,
+d_id int(11) not null,
+pk_name varchar(250) not null,
+user_id int(11) not null
+)default charset=utf8;
+------------------------------------------------------------------------------------------------------------------------
+ຕາຕະລາງ ໜ່ວຍງານ
+create table units (
+u_id int(11) auto_increment primary key,
+pk_id int(11) not null,
+o_id int(11) not null,
+d_id int(11) not null,
+u_name varchar(250) not null,
+user_id int(11) not null
+)default charset=utf8;
+------------------------------------------------------------------------------------------------------------------------
+ຕາຕະລາງ ຊັ້ນ
+create table positions_level (
+l_id int(11) auto_increment primary key,
+l_name varchar(250) not null,
+user_id int(11) not null
+)default charset=utf8;
+------------------------------------------------------------------------------------------------------------------------
+ຕາຕະລາງ ໜ້າທີ່ຮັບຜິດຊອບ
+create table positions (
+pt_id int(11) auto_increment primary key,
+pt_name varchar(250) not null,
+user_id int(11) not null
+)default charset=utf8;
+------------------------------------------------------------------------------------------------------------------------
+
+0.ຕາຕະລາງ ແຂວງ province
+create table province(
+pro_id int(5)auto_increment primary key,
+pro_name varchar(50) not null,
+user_id int(5) not null
+)default charset=utf8;
+----------------------------------------
+1. ຕາຕະລາງ ເມືອງ distict
+create table distict(
+dis_id int(5)auto_increment primary key,
+dis_name varchar(50) not null,
+pro_id int(5) not null,
+user_id int(5) not null
+)default charset=utf8;
+------------------------------------------
+2.ຕາຕະລາງ ບ້ານ village
+create table village(
+v_id int(5)auto_increment primary key,
+pro_id int(5) not null,
+dis_id int(5) not null,
+v_name varchar(50) not null,
+user_id int(5) not null
+)default charset=utf8;
+------------------------------------------------------------------------------------------------------------------------
+ຕາຕະລາງປະຫວັດພະນັກງານ
+ເລກລະຫັດບັດປະຈຳຕົວຂອງນາຍແລະພົນຕໍາຫຼວດ	
+ຊື່ແລະນາມສະກຸນ
+ຊັ້ນ
+ຊື່ຫຼີ້ນ
+ເພດ
+ສະຖານະພາບ
+ວັນເດືອນປີເກີດ
+ອາຍຸ	
+ວັນເດືອນປີເລື່ອນຊັ້ນ	
+ເລກທີ	
+ບ້ານເກີດ
+ເມືອງ
+ແຂວງ
+ບ້ານ
+ເມືອງ
+ແຂວງ
+ເຮືອນເລກທີ
+ຖະໜົນ
+ຮ່ອມ	
+ເລກທີບັດປະຈຳຕົວ
+ຊົນເຜົ່າ
+ສາສະໜາ	
+ເລກທີບັດຢັ້ງຢືນຊັ້ນ	
+ວັນເດືອນປີເຂົ້າການປະຕິວັດ
+ວັນເດືອນປີເຂົ້າຕຳຫຼວດ
+ວັນເດືອນປີເຂົ້າທະຫານ
+ວັນເດືອນປີເຂົ້າພັກສຳຮອງ
+ເລກທີເຂົ້າພັກສໍາຮອງ	
+ວັນເດືອນປີເຂົ້າພັກສົມບູນ	
+ເລກທີເຂົ້າພັກສົມບູນ	
+ວັນເດືອນປີເຂົ້າຊາວໜຸ່ມ
+ວັນເດືອນປີເຂົ້າແມ່ຍິງ
+ວັນເດືອນປີເຂົ້າກຳມະບານ
+ຕຳແໜ່ງເບື້ອງພັກ
+ຕຳແໜ່ງເບື້ອງລັດ
+ລະດັບວັດທະນະທຳ	
+ພາສາຕ່າງປະເທດ	
+ລະດັບວິຊາສະເພາະ ປກສ
+ພາຍໃນຫຼືຕ່າງປະເທດ
+ຂະແໜງຮຽນ
+ລະບົບ
+ໂຮງຮຽນ	
+ປີຮຽນ	
+ປີໃດຫາປີໃດ	
+ລະດັບວິຊາສະເພາະສາຍອື່ນໆ	
+ພາຍໃນຫຼືຕ່າງປະເທດ
+ຂະແໜງຮຽນ
+ລະບົບ	
+ໂຮງຮຽນ
+ປີຮຽນ
+ປີໃດຫາປີໃດ
+ລະດັບທິດສະດີການເມືອງ	
+ຂະແໜງຮຽນ	
+ລະບົບ
+ໂຮງຮຽນ
+ປີຮຽນ
+ປີໃດຫາປີໃດ
+ເບີໂທ	
+ໝາຍເຫດ
+ສະຖານະກຳນົດໃນລະບົບ
+CREATE TABLE `officers` (
+  `officer_id` int(11) NOT NULL,
+  `d_id` int(11) NOT NULL,
+  `u_id` int(11) NOT NULL,
+  `pk_id` int(11) NOT NULL,
+  `o_id` int(11) NOT NULL,
+  `l_id` int(11) NOT NULL,
+  `pt_id` int(11) DEFAULT NULL,
+  `national_id` varchar(20) DEFAULT NULL,
+  `full_name` varchar(100) DEFAULT NULL,
+  `alias_name` varchar(50) DEFAULT NULL,
+  `gender` enum('ຊາຍ','ຍິງ') DEFAULT 'ຊາຍ',
+  `birth_date` date DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `date_level` datetime NOT NULL,
+  `serial_number` varchar(50) DEFAULT NULL,
+  `pro_id` int(5) NOT NULL,
+  `dis_id` int(5) NOT NULL,
+  `v_id` int(5) NOT NULL,
+  `current_village` varchar(50) DEFAULT NULL,
+  `current_district` varchar(50) DEFAULT NULL,
+  `current_province` varchar(50) DEFAULT NULL,
+  `house_number` varchar(20) DEFAULT NULL,
+  `road` varchar(100) DEFAULT NULL,
+  `block` varchar(50) DEFAULT NULL,
+  `id_card_number` varchar(20) DEFAULT NULL,
+  `ethnicity` varchar(50) DEFAULT NULL,
+  `religion` varchar(50) DEFAULT NULL,
+  `confirm_number` varchar(20) DEFAULT NULL,
+  `date_join_revolution` date DEFAULT NULL,
+  `date_join_police` date DEFAULT NULL,
+  `date_join_army` date DEFAULT NULL,
+  `date_join_party` date DEFAULT NULL,
+  `backup_party_id` varchar(20) DEFAULT NULL,
+  `date_join` date DEFAULT NULL,
+  `full_party_id` varchar(20) DEFAULT NULL,
+  `date_join_youth` date DEFAULT NULL,
+  `date_join_women` date DEFAULT NULL,
+  `date_join_union` date DEFAULT NULL,
+  `party_position` varchar(100) DEFAULT NULL,
+  `state_position` varchar(100) DEFAULT NULL,
+  `culture_level` varchar(100) DEFAULT NULL,
+  `foreign_language` varchar(100) DEFAULT NULL,
+  `lalup_pks` varchar(100) DEFAULT NULL,
+  `paiyin` varchar(100) DEFAULT NULL,
+  `kananghien` varchar(100) DEFAULT NULL,
+  `labup` varchar(100) DEFAULT NULL,
+  `school_one` varchar(100) DEFAULT NULL,
+  `pihien` varchar(20) DEFAULT NULL,
+  `p_p` varchar(20) DEFAULT NULL,
+  `level_as` varchar(100) DEFAULT NULL,
+  `language_as` varchar(100) DEFAULT NULL,
+  `kananghien_as` varchar(100) DEFAULT NULL,
+  `labup_as` varchar(100) DEFAULT NULL,
+  `school_as` varchar(100) DEFAULT NULL,
+  `pihien_as` varchar(20) DEFAULT NULL,
+  `p_p_as` varchar(20) DEFAULT NULL,
+  `level_m` varchar(100) DEFAULT NULL,
+  `kananghien_m` varchar(100) DEFAULT NULL,
+  `labup_m` varchar(100) DEFAULT NULL,
+  `school_m` varchar(100) DEFAULT NULL,
+  `pihien_m` varchar(20) DEFAULT NULL,
+  `p_p_m` varchar(20) DEFAULT NULL,
+  `system_status` varchar(50) DEFAULT NULL,
+  `file_document` varchar(50) DEFAULT NULL,
+  `photo_img` text NOT NULL,
+  `ffull_name` varchar(100) DEFAULT NULL,
+  `fage` int(11) DEFAULT NULL,
+  `fproname` int(5) NOT NULL,
+  `fdisname` int(5) NOT NULL,
+  `fvillagename` int(5) NOT NULL,
+  `foccupation` varchar(100) DEFAULT NULL,
+  `fworkplace` varchar(100) DEFAULT NULL,
+  `mfull_name` varchar(100) DEFAULT NULL,
+  `mage` int(11) DEFAULT NULL,
+  `mproname` int(5) NOT NULL,
+  `mdisname` int(5) NOT NULL,
+  `mvillagename` int(5) NOT NULL,
+  `moccupation` varchar(100) DEFAULT NULL,
+  `mworkplace` varchar(100) DEFAULT NULL,
+  `falyfull_name` varchar(100) DEFAULT NULL,
+  `falybirth_date` date DEFAULT NULL,
+  `falyproname` int(5) NOT NULL,
+  `falydisname` int(5) NOT NULL,
+  `falyvillagename` int(5) NOT NULL,
+  `falyoccupation` varchar(100) DEFAULT NULL,
+  `falyworkplace` varchar(100) DEFAULT NULL,
+  `falynumber_of_children` int(11) DEFAULT NULL,
+  `falyphone` varchar(20) DEFAULT NULL,
+  `falynotes` text DEFAULT NULL,
+  `falyis_pgks` tinyint(1) DEFAULT NULL,
+  `falytransfer_date` date DEFAULT NULL,
+  `falyreference_number` varchar(50) DEFAULT NULL,
+  `falydepartment_center` varchar(100) DEFAULT NULL,
+  `falygraduation_date` date DEFAULT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+ຕາຕະລາງເລື່ອນຊັ້ນ
+CREATE TABLE `level_up` (
+  `level_id` int(11) auto_increment primary key,
+  `officer_id` int(11) NOT NULL,
+ `l_id` int(11) NOT NULL,
+ `r_id` int(11) NOT NULL,
+ `level_date` date NOT NULL,
+ `date_office` date NOT NULL,
+ `user_id` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--------------------------------------------------------------------
+ຕາຕະລາງພະນັກງານຍ້າຍອອກຍ້າຍເຂົ້າ
+CREATE TABLE `transfer_records` (
+  `tran_id` int(11) auto_increment primary key,
+  `officer_id` int(11) NOT NULL,
+ `transfer_tyep` enum('IN','OUT'),
+ `radson` varchar(200) NOT NULL,
+ `number` varchar(200) NOT NULL,
+ `transfer_date` date NOT NULL,
+ `phone` varchar(30) NOT NULL,
+ `remark` varchar(30) NOT NULL,
+ `approved_by` varchar(200) NOT NULL,
+  `user_id` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+------------------------------------------------------------------------------------------------------------------------
+CREATE TABLE `educations` (
+  `ed_id` int(11) auto_increment primary key,
+  `officer_id` int(11) NOT NULL,
+ `name_level` varchar(100) NOT NULL,
+ `kanangvixah` varchar(100) NOT NULL,
+ `ladub` varchar(100) NOT NULL,
+ `live_study` varchar(100) NOT NULL,
+ `study_year` varchar(100) NOT NULL,
+ `year_to_year` varchar(100) NOT NULL,
+ `lang_english` varchar(100) NOT NULL,
+ `user_id` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+------------------------------------------------------------------------------------------------------------------------
+ຕາຕະລາງ ພໍ່
+ຊື່ ແລະ ນາມສະກຸນພໍ່
+ອາຍຸ
+ບ້ານຢູ່ປັດຈຸບັນ
+ເມືອງ
+ແຂວງ
+ອາຊີບ
+ບ່ອນປະຈຳການ	
+------------------------------------------------------------------------------------------------------------------------
+ຕາຕະລາງ ແມ່
+ຊື່ ແລະ ນາມສະກຸນແມ່
+ອາຍຸ	
+ບ້ານຢູ່ປັດຈຸບັນ	
+ເມືອງ	ແຂວງ
+ອາຊີບ
+ບ່ອນປະຈຳການ
+------------------------------------------------------------------------------------------------------------------------
+ຕາຕະລາງ ສາຍພົວພັນ
+ຊື່ ແລະ ນາມສະກຸນຜົວ ຫຼື ເມຍ
+ວັນເດືອນປີເກີດ
+ບ້ານຢູ່ປັດຈຸບັນ	
+ເມືອງ	ແຂວງ
+ອາຊີບ	
+ບ່ອນປະຈຳການ	
+ມີລູກຈັກຄົນ	
+ເບີໂທ
+ໝາຍເຫດ	
+ປກສປົກຄອງ
+ວັເດືອນກປີຍົກຍ້າຍມາຢູ່ຫ້ອງການ
+ເລກທີ
+ພະແນກ ແລະ ສູນ	
+ວດປ ຈົບນາຍສິບ
+
