@@ -1,4 +1,4 @@
-<?php include('../../controllers/head.php'); ?>
+﻿<?php include('../../controllers/head.php'); ?>
 <?php
 if(isset($_GET['officer_id'])){
 $officer_id = $_GET['officer_id'];
@@ -57,7 +57,7 @@ location='show_table.php';
 <th>ຊື່ແລະນາມສະກຸນ</th>
 <th>ເພດ</th>
 <th>ວດປເກີດ</th>
-<th>ວດປເຂົ້າຕຳຫຼວດ</th>
+<th>ວດປເຂົ້າກອງທັບ</th>
 <th>ບ້ານ</th>
 <th>ເມືອງ</th>
 <th>ແຂວງ</th>
@@ -158,3 +158,4 @@ $fileLink = "<a href='documents/{$file}' class='btn btn-success btn-sm' target='
 </div>
 </div>
 <?php include('../../controllers/footer.php'); ?>
+

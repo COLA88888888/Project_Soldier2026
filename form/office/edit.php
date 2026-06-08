@@ -10,11 +10,10 @@ exit;
 }
 
 $o_id = intval($_GET['o_id']);
-$user_id = $_SESSION['user_id'];
 
 // ดึงข้อมูลเดิมจากฐานข้อมูล
-$stmt = $conn->prepare("SELECT * FROM office WHERE o_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $o_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM office WHERE o_id = ?");
+$stmt->bind_param("i", $o_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $data = $result->fetch_assoc();
@@ -33,8 +32,8 @@ $d_id = intval($_POST['d_id']);
 $o_name = trim($_POST['o_name']);
 
 // ตรวจสอบชื่อซ้ำ (ยกเว้นตัวเอง)
-$check = $conn->prepare("SELECT o_name FROM office WHERE o_name = ? AND o_id != ? AND user_id = ?");
-$check->bind_param("sii", $o_name, $o_id, $user_id);
+$check = $conn->prepare("SELECT o_name FROM office WHERE o_name = ? AND o_id != ?");
+$check->bind_param("si", $o_name, $o_id);
 $check->execute();
 $check_result = $check->get_result();
 
@@ -50,8 +49,8 @@ showConfirmButton: true
 </script>";
 } else {
 // UPDATE ข้อมูล
-$sql = $conn->prepare("UPDATE office SET d_id = ?, o_name = ? WHERE o_id = ? AND user_id = ?");
-$sql->bind_param("isii", $d_id, $o_name, $o_id, $user_id);
+$sql = $conn->prepare("UPDATE office SET d_id = ?, o_name = ? WHERE o_id = ?");
+$sql->bind_param("isi", $d_id, $o_name, $o_id);
 
 if ($sql->execute()) {
 echo "<script>

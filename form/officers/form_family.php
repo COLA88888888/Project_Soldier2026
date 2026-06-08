@@ -1,4 +1,4 @@
-
+﻿
 <div class="row">
 <div class="col-sm-6">
 <div class="form-group">
@@ -72,7 +72,7 @@
 <input type="text" class="form-control" name="falynotes" id="falynotes" placeholder="ກະລຸນາປ້ອນ">
 </div>
 <div class="form-group">
-<label for="d_name">ປກສ / ປົກຄອງ</label>
+<label for="d_name">ທະຫານ / ປົກຄອງ</label>
 <input type="text" class="form-control" name="is_pgks" id="is_pgks" placeholder="ກະລຸນາປ້ອນ">
 </div>
 <div class="form-group">
@@ -88,4 +88,5 @@
 
 </div>
 </div>
+
 

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include('../../condb.php');
 if (!isset($_GET['officer_id'])) {
     echo "<script>window.location='show_table.php';</script>";
@@ -8,8 +8,8 @@ if (!isset($_GET['officer_id'])) {
 $officer_id = intval($_GET['officer_id']);
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT * FROM officers WHERE officer_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $officer_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM officers WHERE officer_id = ?");
+$stmt->bind_param("i", $officer_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -22,7 +22,7 @@ if (!$data) {
 <div class="row">
 <div class="col-sm-6">
     <div class="form-group">
-<label for="d_name">ລະດັບວິຊາສະເພາະ ປກສ</label>
+<label for="d_name">ລະດັບວິຊາສະເພາະ ທະຫານ</label>
 <input type="text" class="form-control" name="lalup_pks" id="lalup_pks" value="<?= htmlspecialchars($data['lalup_pks']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 <div class="form-group">
@@ -57,3 +57,4 @@ if (!$data) {
 </div>
 </div>
 </div>
+

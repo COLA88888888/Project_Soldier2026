@@ -12,8 +12,8 @@ $u_id = intval($_GET['u_id']);
 $user_id = $_SESSION['user_id'];
 
 // ดึงข้อมูลเดิม
-$stmt1 = $conn->prepare("SELECT * FROM units WHERE u_id = ? AND user_id = ?");
-$stmt1->bind_param("ii", $u_id, $user_id);
+$stmt1 = $conn->prepare("SELECT * FROM units WHERE u_id = ?");
+$stmt1->bind_param("i", $u_id);
 $stmt1->execute();
 $result = $stmt1->get_result();
 $data = $result->fetch_assoc();
@@ -37,8 +37,8 @@ $pk_id = intval($_POST['pk_id']);
 $u_name = trim($_POST['u_name']);
 $u_id_post = intval($_POST['u_id']); // รับจาก hidden input
 
-$stmt2 = $conn->prepare("UPDATE units SET d_id = ?, o_id = ?, pk_id = ?, u_name = ? WHERE u_id = ? AND user_id = ?");
-$stmt2->bind_param("iiisii", $d_id, $o_id, $pk_id, $u_name, $u_id_post, $user_id);
+$stmt2 = $conn->prepare("UPDATE units SET d_id = ?, o_id = ?, pk_id = ?, u_name = ? WHERE u_id = ?");
+$stmt2->bind_param("iiisi", $d_id, $o_id, $pk_id, $u_name, $u_id_post);
 
 if ($stmt2->execute()) {
 echo "<script>

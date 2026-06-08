@@ -10,8 +10,8 @@ if (!isset($_GET['officer_id'])) {
 $officer_id = intval($_GET['officer_id']);
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT * FROM officers WHERE officer_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $officer_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM officers WHERE officer_id = ?");
+$stmt->bind_param("i", $officer_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();

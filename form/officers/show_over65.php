@@ -1,4 +1,4 @@
-<?php include('../../controllers/head.php'); ?>
+﻿<?php include('../../controllers/head.php'); ?>
 <?php
 if(isset($_GET['officer_id'])){
 $officer_id = $_GET['officer_id'];
@@ -62,7 +62,7 @@ location='show_table.php';
 <th>ອາຍຸການ ເຂົ້າຕໍາຫຼວດ</th>
 <th>ເພດ</th>
 <th>ວດປເກີດ</th>
-<th>ວດປເຂົ້າຕຳຫຼວດ</th>
+<th>ວດປເຂົ້າກອງທັບ</th>
 <th>ບ້ານ</th>
 <th>ເມືອງ</th>
 <th>ແຂວງ</th>
@@ -185,3 +185,4 @@ echo "<button class='btn btn-danger btn-sm '>{$interval->y} ປີ {$interval->m
 </div>
 </div>
 <?php include('../../controllers/footer.php'); ?>
+

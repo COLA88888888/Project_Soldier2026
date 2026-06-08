@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include('../../controllers/head.php');
 include('../../controllers/menu_left.php');
 ?>
@@ -12,8 +12,8 @@ if (!isset($_GET['officer_id'])) {
 $officer_id = intval($_GET['officer_id']);
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT * FROM officers WHERE officer_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $officer_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM officers WHERE officer_id = ?");
+$stmt->bind_param("i", $officer_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -43,7 +43,7 @@ if (!$data) {
 <a class="nav-link" id="step2-tab" data-toggle="pill" href="#step2" role="tab">ປະຫວັດພະນັກງານ</a>
 </li>
 <li class="nav-item">
-<a class="nav-link" id="step3-tab" data-toggle="pill" href="#step3" role="tab">ລະດັບວິຊາສະເພາະ ປກສ</a>
+<a class="nav-link" id="step3-tab" data-toggle="pill" href="#step3" role="tab">ລະດັບວິຊາສະເພາະ ທະຫານ</a>
 </li>
 <li class="nav-item">
 <a class="nav-link" id="step4-tab" data-toggle="pill" href="#step4" role="tab">ສາຍອື່ນໆ</a>

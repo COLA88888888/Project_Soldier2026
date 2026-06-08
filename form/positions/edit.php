@@ -10,8 +10,8 @@ if (!isset($_GET['pt_id'])) {
 $pt_id = intval($_GET['pt_id']);
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT * FROM positions WHERE pt_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $pt_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM positions WHERE pt_id = ?");
+$stmt->bind_param("i", $pt_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -24,8 +24,8 @@ if (!$data) {
 if (isset($_POST['submit'])) {
     $pt_name = trim($_POST['pt_name']);
 
-    $sql = $conn->prepare("UPDATE positions SET pt_name = ? WHERE pt_id = ? AND user_id = ?");
-    $sql->bind_param("sii", $pt_name, $pt_id, $user_id);
+    $sql = $conn->prepare("UPDATE positions SET pt_name = ? WHERE pt_id = ?");
+    $sql->bind_param("si", $pt_name, $pt_id);
 
     if ($sql->execute()) {
         echo "<script>

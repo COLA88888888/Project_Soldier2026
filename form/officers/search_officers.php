@@ -29,14 +29,18 @@ if ($result->num_rows === 0) {
           </div>';
 } else {
     while ($row = $result->fetch_assoc()) {
+        $photo = htmlspecialchars($row['photo_img']);
+        if (empty($photo) || !file_exists("uploads/" . $photo)) {
+            $photo = 'default_avatar.png';
+        }
         ?>
         <div class="col-lg-2 col-6">
-            <a href="people_print.php?officer_id=<?= $row['officer_id'] ?>">
-                <div class="profile-card mt-2">
-                    <img src="../../form/officers/uploads/<?php echo $row['photo_img']; ?>" alt="Profile Image">
-                    <p><?php echo $row['l_name']; ?></p>
-                    <h5><?php echo $row['full_name'] . ' ' . $row['full_lastname']; ?></h5>
-                    <p><?php echo $row['pk_name']; ?></p>
+            <a href="people_print.php?officer_id=<?= $row['officer_id'] ?>" class="w-100 mt-2 mb-2 d-block">
+                <div class="profile-card w-100">
+                    <img src="uploads/<?= $photo ?>" alt="Profile Image">
+                    <span class="rank-badge"><?= htmlspecialchars($row['l_name']) ?></span>
+                    <h5><?= htmlspecialchars($row['full_name'] . ' ' . $row['full_lastname']) ?></h5>
+                    <p class="dept-name"><?= htmlspecialchars($row['pk_name']) ?></p>
                 </div>
             </a>
         </div>

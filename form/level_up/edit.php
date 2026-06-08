@@ -8,11 +8,10 @@ exit;
 }
 
 $level_id = intval($_GET['level_id']);
-$user_id = $_SESSION['user_id'];
 
 // ดึงข้อมูลจาก level_up
-$stmt = $conn->prepare("SELECT * FROM level_up WHERE level_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $level_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM level_up WHERE level_id = ?");
+$stmt->bind_param("i", $level_id);
 $stmt->execute();
 $level = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -23,15 +22,10 @@ exit;
 }
 
 // ดึงข้อมูล officer
-$stmt = $conn->prepare("SELECT a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.*
-FROM positions_level AS a
-JOIN rank_position AS b ON a.l_id = b.l_id
-JOIN level_up AS d ON a.l_id = d.l_id
-JOIN officers AS c ON c.officer_id = d.officer_id
-JOIN office AS e ON e.o_id = c.o_id
-JOIN panak AS f ON f.pk_id = c.pk_id
-JOIN positions AS g ON g.pt_id = c.pt_id
-JOIN units AS h ON h.u_id = c.u_id WHERE c.officer_id = ?");
+$stmt = $conn->prepare("SELECT c.officer_id, c.national_id, c.full_name, c.full_lastname, c.gender, a.l_name
+FROM officers AS c
+LEFT JOIN positions_level AS a ON c.l_id = a.l_id
+WHERE c.officer_id = ?");
 $stmt->bind_param("i", $level['officer_id']);
 $stmt->execute();
 $officer = $stmt->get_result()->fetch_assoc();
@@ -46,12 +40,12 @@ $pt_id = trim($_POST['pt_id']);
 $level_date = trim($_POST['level_date']);
 $date_office = trim($_POST['date_office']);
 
-$update = $conn->prepare("UPDATE level_up SET l_id=?, o_id=?, pk_id=?, u_id=?, pt_id=?, level_date=?, date_office=? WHERE level_id=? AND user_id=?");
-$update->bind_param("iiiiissii", $l_id, $o_id, $pk_id, $u_id, $pt_id, $level_date, $date_office, $level_id, $user_id);
+$update = $conn->prepare("UPDATE level_up SET l_id=?, o_id=?, pk_id=?, u_id=?, pt_id=?, level_date=?, date_office=? WHERE level_id=?");
+$update->bind_param("iiiiissi", $l_id, $o_id, $pk_id, $u_id, $pt_id, $level_date, $date_office, $level_id);
 
 if ($update->execute()) {
-$update_officer = $conn->prepare("UPDATE officers SET l_id=?, o_id=?, pk_id=?, u_id=?, pt_id=? WHERE officer_id=? AND user_id=?");
-$update_officer->bind_param("iiiiiii", $l_id, $o_id, $pk_id, $u_id, $pt_id, $level['officer_id'], $user_id);
+$update_officer = $conn->prepare("UPDATE officers SET l_id=?, o_id=?, pk_id=?, u_id=?, pt_id=? WHERE officer_id=?");
+$update_officer->bind_param("iiiiii", $l_id, $o_id, $pk_id, $u_id, $pt_id, $level['officer_id']);
 $update_officer->execute();
 
 echo "<script>

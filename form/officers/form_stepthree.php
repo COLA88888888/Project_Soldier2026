@@ -1,7 +1,7 @@
-<div class="row">
+﻿<div class="row">
 <div class="col-sm-6">
     <div class="form-group">
-<label for="d_name">ລະດັບວິຊາສະເພາະ ປກສ</label>
+<label for="d_name">ລະດັບວິຊາສະເພາະ ທະຫານ</label>
 <input type="text" class="form-control" name="lalup_pks" id="lalup_pks" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 <div class="form-group">
@@ -36,5 +36,6 @@
 </div>
 </div>
 </div>
+
 
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="lo">
 <head>
     <meta charset="utf-8">
@@ -127,7 +127,7 @@ $result = $stmt->get_result();
         <h5>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ</h5>
         <h5>ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນາຖາວອນ</h5>
         <h4 class="mt-4"><b>ບັນຊີລາຍຊື່ສັງລວມເງິນເດືອນ ແລະ ເງິນນະໂຍບາຍພົນທະຫານ ປະຈຳເດືອນ: <?= htmlspecialchars($month_lao) ?></b></h4>
-        <p>ສັງກັດຢູ່: ກອງພັນປ້ອງກັນຕົວເມືອງ ປກສ ແຂວງ</p>
+        <p>ສັງກັດຢູ່: ກອງບັນຊາການທະຫານ ແຂວງ</p>
     </div>
 
     <!-- The 23-column Table -->
@@ -329,3 +329,4 @@ $result = $stmt->get_result();
 </div>
 </body>
 </html>
+

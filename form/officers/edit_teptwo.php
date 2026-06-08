@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include('../../condb.php');
 if (!isset($_GET['officer_id'])) {
 echo "<script>window.location='show_table.php';</script>";
@@ -8,8 +8,8 @@ exit;
 $officer_id = intval($_GET['officer_id']);
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT * FROM officers WHERE officer_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $officer_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM officers WHERE officer_id = ?");
+$stmt->bind_param("i", $officer_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -152,7 +152,7 @@ $stmt->close();
 <input type="date" class="form-control" name="date_join_revolution" id="date_join_revolution" value="<?= htmlspecialchars($data['date_join_revolution']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 <div class="form-group">
-<label for="d_name">ວັນເດືອນປີເຂົ້າຕຳຫຼວດ</label>
+<label for="d_name">ວັນເດືອນປີເຂົ້າກອງທັບ</label>
 <input type="date" class="form-control" name="date_join_police" id="date_join_police" value="<?= htmlspecialchars($data['date_join_police']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 

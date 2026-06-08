@@ -10,8 +10,8 @@ if (!isset($_GET['dis_id'])) {
 $dis_id = intval($_GET['dis_id']);
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT * FROM distict WHERE dis_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $dis_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM distict WHERE dis_id = ?");
+$stmt->bind_param("i", $dis_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -24,8 +24,8 @@ if (!$data) {
 if (isset($_POST['submit'])) {
     $pro_id = trim($_POST['pro_id']);
     $dis_name = trim($_POST['dis_name']);
-    $sql = $conn->prepare("UPDATE distict SET pro_id = ?, dis_name = ? WHERE dis_id = ? AND user_id = ?");
-    $sql->bind_param("isii", $pro_id, $dis_name, $dis_id, $user_id);
+    $sql = $conn->prepare("UPDATE distict SET pro_id = ?, dis_name = ? WHERE dis_id = ?");
+    $sql->bind_param("isi", $pro_id, $dis_name, $dis_id);
 
     if ($sql->execute()) {
         echo "<script>

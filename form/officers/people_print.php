@@ -1,4 +1,4 @@
-<?php include('../../controllers/head.php'); ?>
+﻿<?php include('../../controllers/head.php'); ?>
 <?php include('../../controllers/menu_left.php'); ?>
 <style>
 *{
@@ -128,7 +128,7 @@ $row = $result->fetch_assoc();
 <p><span style="margin-right: 5rem;">ບ້ານຢູ່ປັດຈຸບັນ: <?php echo $row['current_village']; ?></span>   <span style="margin-right: 5rem;">ເມືອງ: <?php echo $row['current_district']; ?> </span>  <span>ແຂວງ: <?php echo $row['current_province']; ?></span></p>
 <p><span style="margin-right: 10rem;">ເບີໂທ: </span> <?php echo $row['numberphone']; ?></p>
 <p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົ້າການປະຕິວັດ:  <?php echo $row['date_join_revolution']; ?></span></p>
-<p><span style="margin-right: 10rem;">ວັນເດືອນປີເຂົ້າຕຳຫຼວດ: </span> <?php echo $row['date_join_police']; ?></p>
+<p><span style="margin-right: 10rem;">ວັນເດືອນປີເຂົ້າກອງທັບ: </span> <?php echo $row['date_join_police']; ?></p>
 <p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົາພັກສຳຮອງ: </span> <?php echo $row['date_join_party']; ?></p>
 <p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົາພັກສົມບູນ: </span> <?php echo $row['date_join']; ?></p>
 <p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົາຊາວໜຸ່ມ: </span> <?php echo $row['date_join_youth']; ?></p>

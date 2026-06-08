@@ -10,8 +10,8 @@ if (!isset($_GET['tran_id'])) {
 $tran_id = intval($_GET['tran_id']);
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT * FROM transfer_records WHERE tran_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $tran_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM transfer_records WHERE tran_id = ?");
+$stmt->bind_param("i", $tran_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -31,17 +31,17 @@ if (isset($_POST['submit'])) {
     $remark = trim($_POST['remark']);
     $approved_by = $_POST['approved_by'];
 
-    $sql = $conn->prepare("UPDATE transfer_records SET officer_id=?, transfer_tyep=?, radson=?, number=?, transfer_date=?, phone=?, remark=?, approved_by=? WHERE tran_id=? AND user_id=?");
-    $sql->bind_param("issssssssi", $officer_id, $transfer_tyep, $radson, $number, $transfer_date, $phone, $remark, $approved_by, $tran_id, $user_id);
+    $sql = $conn->prepare("UPDATE transfer_records SET officer_id=?, transfer_tyep=?, radson=?, number=?, transfer_date=?, phone=?, remark=?, approved_by=? WHERE tran_id=?");
+    $sql->bind_param("isssssssi", $officer_id, $transfer_tyep, $radson, $number, $transfer_date, $phone, $remark, $approved_by, $tran_id);
 
     if ($sql->execute()) {
         if ($transfer_tyep === "OUT") {
-            $updateStatus = $conn->prepare("UPDATE officers SET system_status = 'OUT' WHERE officer_id = ? and user_id = ?");
-            $updateStatus->bind_param("ii", $officer_id, $user_id);
+            $updateStatus = $conn->prepare("UPDATE officers SET system_status = 'OUT' WHERE officer_id = ?");
+            $updateStatus->bind_param("i", $officer_id);
             $updateStatus->execute();
         } elseif ($transfer_tyep === "IN") {
-            $updateStatus = $conn->prepare("UPDATE officers SET system_status = 'IN' WHERE officer_id = ? and user_id = ?");
-            $updateStatus->bind_param("ii", $officer_id, $user_id);
+            $updateStatus = $conn->prepare("UPDATE officers SET system_status = 'IN' WHERE officer_id = ?");
+            $updateStatus->bind_param("i", $officer_id);
             $updateStatus->execute();
         }
 

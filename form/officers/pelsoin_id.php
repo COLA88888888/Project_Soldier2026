@@ -7,33 +7,63 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .profile-card {
 background: #fff;
-border-radius: 15px;
-padding: 5px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-max-width: 400px;
-
+border-radius: 8px;
+overflow: hidden;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+border: 1px solid #e2e8f0;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 15px;
 text-align: center;
 }
+.profile-card:hover {
+transform: translateY(-4px);
+box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+border-color: #007bff;
+}
 .profile-card img {
-width: 150px;
-height: 150px;
+width: 120px;
+height: 120px;
 object-fit: cover;
-border-radius: 50%;
-border: 5px solid #fff;
-box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-margin-bottom: 10px;
+border-radius: 6px;
+border: 3px solid #f1f5f9;
+box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+margin-bottom: 12px;
+}
+.profile-card .rank-badge {
+background: #e0f2fe;
+color: #0369a1;
+font-size: 11px;
+font-weight: 700;
+padding: 3px 8px;
+border-radius: 4px;
+margin-bottom: 8px;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+display: inline-block;
 }
 .profile-card h5 {
-margin-bottom: 10px;
-font-weight: 600;
-}
-.profile-card p {
-color: #6c757d;
 font-size: 14px;
-margin-bottom: 10px;
+font-weight: 600;
+color: #1e293b;
+margin: 5px 0 8px 0;
+line-height: 1.4;
+}
+.profile-card .dept-name {
+color: #64748b;
+font-size: 11px;
+margin-bottom: 0;
+margin-top: 8px;
+background: #f8fafc;
+width: 100%;
+padding: 6px;
+border-radius: 4px;
+font-weight: 500;
 }
 .profile-card .btn {
-border-radius: 50px;
+border-radius: 4px;
 padding: 5px 5px;
 font-size: 14px;
 }
@@ -41,7 +71,9 @@ a{
     text-decoration: none;
     color: inherit;
 }
-
+a:hover {
+    text-decoration: none;
+}
 </style>
 
 <div class="content-wrapper">
@@ -121,17 +153,20 @@ INNER JOIN village AS v ON a.v_id = v.v_id
 ");
 $stmt->execute();
 $result = $stmt->get_result();
-while ($row = $result->fetch_assoc()) { ?>
+while ($row = $result->fetch_assoc()) { 
+    $photo = htmlspecialchars($row['photo_img']);
+    if (empty($photo) || !file_exists("uploads/" . $photo)) {
+        $photo = 'default_avatar.png';
+    }
+    ?>
 <div class="col-lg-2 col-6" >
-
-<a href="people_print.php?officer_id=<?= $row['officer_id'] ?>">
-    <div class="profile-card mt-2">
-<img src="../../form/officers/uploads/<?php echo $row['photo_img'] ?>" alt="Profile Image">
-<p><?php echo $row['l_name'] ?></p>
-<h5><?php echo $row['full_name'] ?> <?php echo $row['full_lastname'] ?></h5>
-
-<p><?php echo $row['pk_name'] ?></p>
-</div>
+<a href="people_print.php?officer_id=<?= $row['officer_id'] ?>" class="w-100 mt-2 mb-2 d-block">
+    <div class="profile-card w-100">
+        <img src="uploads/<?= $photo ?>" alt="Profile Image">
+        <span class="rank-badge"><?= htmlspecialchars($row['l_name']) ?></span>
+        <h5><?= htmlspecialchars($row['full_name'] . ' ' . $row['full_lastname']) ?></h5>
+        <p class="dept-name"><?= htmlspecialchars($row['pk_name']) ?></p>
+    </div>
 </a>
 </div>
 <?php } ?>

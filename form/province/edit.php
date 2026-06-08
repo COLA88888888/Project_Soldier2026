@@ -10,8 +10,8 @@ if (!isset($_GET['pro_id'])) {
 $pro_id = intval($_GET['pro_id']);
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT * FROM province WHERE pro_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $pro_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM province WHERE pro_id = ?");
+$stmt->bind_param("i", $pro_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -24,8 +24,8 @@ if (!$data) {
 if (isset($_POST['submit'])) {
     $pro_name = trim($_POST['pro_name']);
 
-    $sql = $conn->prepare("UPDATE province SET pro_name = ? WHERE pro_id = ? AND user_id = ?");
-    $sql->bind_param("sii", $pro_name, $pro_id, $user_id);
+    $sql = $conn->prepare("UPDATE province SET pro_name = ? WHERE pro_id = ?");
+    $sql->bind_param("si", $pro_name, $pro_id);
 
     if ($sql->execute()) {
         echo "<script>

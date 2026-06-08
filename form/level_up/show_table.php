@@ -1,10 +1,9 @@
 <?php include('../../controllers/head.php'); ?>
 <?php
-if(isset($_GET['r_id'])){
-$r_id = $_GET['r_id'];
-$user_id = $_SESSION['r_id'];
+if(isset($_GET['level_id'])){
+$level_id = intval($_GET['level_id']);
 include('../../condb.php');
-$sql = mysqli_query($conn,"DELETE FROM positions WHERE r_id ='$r_id' AND user_id='$user_id' ");
+$sql = mysqli_query($conn,"DELETE FROM level_up WHERE level_id ='$level_id'");
 if($sql){
 echo "<script>
 Swal.fire({
@@ -140,31 +139,19 @@ echo "{$interval->y} ປີີ {$interval->m} ເດືອນ {$interval->d} ວ
 <?php
 if (!empty($row['level_date'])) {
     $last_date = new DateTime($row['level_date']);
-    $l_id = (int)$row['l_id'];
+    $wait_y = (int)$row['r_years'];
+    $wait_m = (int)$row['r_month'];
 
-    $stmt_level = $conn->prepare("SELECT r_years, r_month FROM rank_position WHERE l_id = ?");
-    $stmt_level->bind_param("i", $l_id);
-    $stmt_level->execute();
-    $res_level = $stmt_level->get_result();
-    $level_data = $res_level->fetch_assoc();
+    $next_date = clone $last_date;
+    $next_date->add(new DateInterval("P{$wait_y}Y{$wait_m}M"));
 
-    if ($level_data) {
-        $wait_y = (int)$level_data['r_years'];
-        $wait_m = (int)$level_data['r_month'];
+    $today = new DateTime();
+    $diff = $today->diff($next_date);
 
-        $next_date = clone $last_date;
-        $next_date->add(new DateInterval("P{$wait_y}Y{$wait_m}M"));
-
-        $today = new DateTime();
-        $diff = $today->diff($next_date);
-
-        if ($today < $next_date) {
-            echo "<button class='btn btn-warning btn-sm'> {$diff->y} ປີ {$diff->m} ເດືອນ {$diff->d} ວັນ</button>";
-        } else {
-            echo "<button class='btn btn-danger btn-sm text-white'>ຄົບກຳນົດແລ້ວ</button>";
-        }
+    if ($today < $next_date) {
+        echo "<button class='btn btn-warning btn-sm'> {$diff->y} ປີ {$diff->m} ເດືອນ {$diff->d} ວັນ</button>";
     } else {
-        echo "<span class='text-danger'>ບໍ່ພົບຕຳແໜ່ງ</span>";
+        echo "<button class='btn btn-danger btn-sm text-white'>ຄົບກຳນົດແລ້ວ</button>";
     }
 } else {
     echo "<span class='text-danger'>ລະບູວັນທີກ່ອນ</span>";

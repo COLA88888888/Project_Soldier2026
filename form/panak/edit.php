@@ -12,8 +12,8 @@ $pk_id = intval($_GET['pk_id']);
 $user_id = $_SESSION['user_id'];
 
 // ดึงข้อมูลเดิม
-$sql = $conn->prepare("SELECT * FROM panak WHERE pk_id = ? AND user_id = ?");
-$sql->bind_param("ii", $pk_id, $user_id);
+$sql = $conn->prepare("SELECT * FROM panak WHERE pk_id = ?");
+$sql->bind_param("i", $pk_id);
 $sql->execute();
 $result = $sql->get_result();
 $data = $result->fetch_assoc();
@@ -34,8 +34,8 @@ $d_id = intval($_POST['d_id']);
 $o_id = intval($_POST['o_id']);
 $pk_name = trim($_POST['pk_name']);
 
-$stmt = $conn->prepare("UPDATE panak SET d_id = ?, o_id = ?, pk_name = ? WHERE pk_id = ? AND user_id = ?");
-$stmt->bind_param("iisii", $d_id, $o_id, $pk_name, $pk_id, $user_id);
+$stmt = $conn->prepare("UPDATE panak SET d_id = ?, o_id = ?, pk_name = ? WHERE pk_id = ?");
+$stmt->bind_param("iisi", $d_id, $o_id, $pk_name, $pk_id);
 
 if ($stmt->execute()) {
 echo "<script>

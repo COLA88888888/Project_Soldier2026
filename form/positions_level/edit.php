@@ -12,8 +12,8 @@ if (!isset($_GET['l_id'])) {
 $l_id = intval($_GET['l_id']);
 
 // ดึงข้อมูลเดิม
-$stmt = $conn->prepare("SELECT * FROM positions_level WHERE l_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $l_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM positions_level WHERE l_id = ?");
+$stmt->bind_param("i", $l_id);
 $stmt->execute();
 $result = $stmt->get_result();
 if ($result->num_rows == 0) {
@@ -48,8 +48,8 @@ if (isset($_POST['submit'])) {
             }
         }
 
-        $sql = $conn->prepare("UPDATE positions_level SET l_name = ?, l_img = ? WHERE l_id = ? AND user_id = ?");
-        $sql->bind_param("ssii", $l_name, $img_path, $l_id, $user_id);
+        $sql = $conn->prepare("UPDATE positions_level SET l_name = ?, l_img = ? WHERE l_id = ?");
+        $sql->bind_param("ssi", $l_name, $img_path, $l_id);
         
         if ($sql->execute()) {
             echo "<script>

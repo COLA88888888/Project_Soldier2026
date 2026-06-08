@@ -1,4 +1,4 @@
-<div class="row">
+﻿<div class="row">
 <div class="col-sm-3">
 
 <div class="form-group">
@@ -138,7 +138,7 @@ $stmt->close();
 <input type="date" class="form-control" name="date_join_revolution" id="date_join_revolution" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 <div class="form-group">
-<label for="d_name">ວັນເດືອນປີເຂົ້າຕຳຫຼວດ</label>
+<label for="d_name">ວັນເດືອນປີເຂົ້າກອງທັບ</label>
 <input type="date" class="form-control" name="date_join_police" id="date_join_police" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 

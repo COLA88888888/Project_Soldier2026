@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include('../../controllers/head.php');
 include('../../controllers/menu_left.php');
 ?>
@@ -23,7 +23,7 @@ include('../../controllers/menu_left.php');
 <a class="nav-link" id="step2-tab" data-toggle="pill" href="#step2" role="tab">ປະຫວັດພະນັກງານ</a>
 </li>
 <li class="nav-item">
-<a class="nav-link" id="step3-tab" data-toggle="pill" href="#step3" role="tab">ລະດັບວິຊາສະເພາະ ປກສ</a>
+<a class="nav-link" id="step3-tab" data-toggle="pill" href="#step3" role="tab">ລະດັບວິຊາສະເພາະ ທະຫານ</a>
 </li>
 <li class="nav-item">
 <a class="nav-link" id="step4-tab" data-toggle="pill" href="#step4" role="tab">ສາຍອື່ນໆ</a>
@@ -320,4 +320,5 @@ $('#v_id').html(data);
 });
 });
 </script>
+
 

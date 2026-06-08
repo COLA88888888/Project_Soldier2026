@@ -10,8 +10,8 @@ if (!isset($_GET['r_id'])) {
 $r_id = intval($_GET['r_id']);
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT * FROM rank_position WHERE r_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $r_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM rank_position WHERE r_id = ?");
+$stmt->bind_param("i", $r_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -26,8 +26,8 @@ if (isset($_POST['submit'])) {
     $r_years = trim($_POST['r_years']);
     $r_month = trim($_POST['r_month']);
 
-    $sql = $conn->prepare("UPDATE rank_position SET l_id = ?, r_years = ?, r_month = ? WHERE r_id = ? AND user_id = ?");
-    $sql->bind_param("iiiii", $l_id, $r_years, $r_month, $r_id, $user_id);
+    $sql = $conn->prepare("UPDATE rank_position SET l_id = ?, r_years = ?, r_month = ? WHERE r_id = ?");
+    $sql->bind_param("iiii", $l_id, $r_years, $r_month, $r_id);
 
     if ($sql->execute()) {
         echo "<script>

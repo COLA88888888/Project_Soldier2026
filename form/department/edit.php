@@ -8,11 +8,10 @@ exit;
 }
 
 $d_id = intval($_GET['d_id']);
-$user_id = $_SESSION['user_id'];
 
 // ดึงข้อมูลเดิม
-$sql = $conn->prepare("SELECT * FROM department WHERE d_id = ? AND user_id = ?");
-$sql->bind_param("ii", $d_id, $user_id);
+$sql = $conn->prepare("SELECT * FROM department WHERE d_id = ?");
+$sql->bind_param("i", $d_id);
 $sql->execute();
 $result = $sql->get_result();
 $data = $result->fetch_assoc();
@@ -26,8 +25,8 @@ exit;
 if (isset($_POST['submit'])) {
 $d_name = trim($_POST['d_name']);
 
-$update = $conn->prepare("UPDATE department SET d_name = ? WHERE d_id = ? AND user_id = ?");
-$update->bind_param("sii", $d_name, $d_id, $user_id);
+$update = $conn->prepare("UPDATE department SET d_name = ? WHERE d_id = ?");
+$update->bind_param("si", $d_name, $d_id);
 
 if ($update->execute()) {
 echo "<script>

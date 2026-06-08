@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include('../../condb.php');
 if (!isset($_GET['officer_id'])) {
     echo "<script>window.location='show_table.php';</script>";
@@ -8,8 +8,8 @@ if (!isset($_GET['officer_id'])) {
 $officer_id = intval($_GET['officer_id']);
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT * FROM officers WHERE officer_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $officer_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM officers WHERE officer_id = ?");
+$stmt->bind_param("i", $officer_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -95,7 +95,7 @@ if (!$data) {
 <input type="text" class="form-control" name="falynotes" id="falynotes" value="<?= htmlspecialchars($data['falynotes']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div>
 <div class="form-group">
-<label for="d_name">ປກສ / ປົກຄອງ</label>
+<label for="d_name">ທະຫານ / ປົກຄອງ</label>
 <input type="text" class="form-control" name="is_pgks" id="is_pgks" value="<?= htmlspecialchars($data['is_pgks']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div>
 <div class="form-group">
@@ -111,4 +111,5 @@ if (!$data) {
 
 </div>
 </div>
+
 
