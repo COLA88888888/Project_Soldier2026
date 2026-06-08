@@ -44,7 +44,7 @@ if (!isset($_SESSION['user_id']) && !isset($_SESSION['role'])) {
 <!-- Font Awesome -->
 <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
 <!-- Ionicons -->
-  <link rel="icon" type="image/x-icon" href="../../logo/1.png">
+  <link rel="icon" type="image/x-icon" href="../../logo/1.jfif">
 <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
@@ -80,35 +80,99 @@ if (!isset($_SESSION['user_id']) && !isset($_SESSION['role'])) {
 <!-- <link rel="stylesheet" href="../../form/officers/css_print.css"> -->
 
 <style>
-  *{
-font-family: 'saysettha ot'
-}
-
-</style>
-
-<style>
-  /* ปรับแต่ง Select2 ให้มีขนาดเท่ากับ input ทั่วไป */
+  * {
+    font-family: 'Saysettha OT', 'Phetsarath OT', 'Noto Sans Lao', sans-serif;
+  }
+  
+  /* Global Card Beautification */
+  .card {
+    border: none !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease;
+    margin-bottom: 24px;
+  }
+  .card-header {
+    background: linear-gradient(135deg, #0d9488, #0f766e) !important;
+    color: #fff !important;
+    border-bottom: none !important;
+    padding: 18px 24px !important;
+  }
+  .card-title {
+    font-weight: bold !important;
+    font-size: 16px !important;
+  }
+  
+  /* Global Form Control Beautification */
+  .form-control {
+    border-radius: 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 10px 14px !important;
+    height: auto !important;
+    transition: all 0.2s ease-in-out !important;
+  }
+  .form-control:focus {
+    border-color: #0d9488 !important;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15) !important;
+  }
+  
+  /* Global Table Beautification */
+  .table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+  .table thead th {
+    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    border: 1px solid #0056b3 !important;
+    padding: 12px 8px !important;
+    vertical-align: middle !important;
+    font-size: 13px;
+  }
+  .table tbody td {
+    padding: 10px 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    vertical-align: middle !important;
+    transition: background-color 0.15s ease;
+  }
+  .table tbody tr:hover td {
+    background-color: #f0fdfa !important; /* Soft premium teal highlight */
+  }
+  
+  /* Global Select2 Customizer */
   .select2-container .select2-selection--single {
-    height: 38px !important;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.5;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
+    height: 44px !important;
+    padding: 8px 12px !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease-in-out !important;
   }
-  
-  .select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 36px;
-  }
-  
-  .select2-container--default .select2-selection--single .select2-selection__rendered {
-    line-height: 24px;
-  }
-  
-  /* ปรับแต่งเมื่อโฟกัส */
   .select2-container--default.select2-container--focus .select2-selection--single {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: #0d9488 !important;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15) !important;
+  }
+  .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 42px !important;
+  }
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 26px !important;
+  }
+  
+  /* Global Button Beautification */
+  .btn {
+    border-radius: 8px !important;
+    padding: 8px 16px;
+    font-weight: 600 !important;
+    transition: all 0.2s !important;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   }
 </style>
 </head>

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Login</title>
-  <link rel="icon" type="image/x-icon" href="logo/1.png">
+  <link rel="icon" type="image/x-icon" href="logo/1.jfif">
 <!-- Fonts + Icons -->
 <link rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Noto+Sans+Lao|Source+Sans+Pro:300,400,400i,700&display=swap">
@@ -97,7 +97,7 @@ body{
 
 <div class="login-box">
   <div class="login-logo">
-    <img src="logo/1.png" alt="logo" width="100" height="100">
+    <img src="logo/1.jfif" alt="logo" width="100" height="100">
   </div>
 
   <div class="card">

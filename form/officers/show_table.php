@@ -49,15 +49,15 @@ location='show_table.php';
 <thead>
 <tr>
 <th>ລຳດັບ</th>
+<th>ຊື່ແລະນາມສະກຸນ</th>
+<th>ເພດ</th>
+<th>ຊັ້ນ</th>
+<th>ເລກລະຫັດບັດປະຈຳຕົວ</th>
+<th>ໜ້າທີ່ຕຳແໜ່ງ</th>
 <th>ກົມກອງ</th>
 <th>ຫ້ອງ</th>
 <th>ພະແນກ</th>
 <th>ໜ່ວຍງານ</th>
-<th>ໜ້າທີ່ຕຳແໜ່ງ</th>
-<th>ເລກລະຫັດບັດປະຈຳຕົວ</th>
-<th>ຊັ້ນ</th>
-<th>ຊື່ແລະນາມສະກຸນ</th>
-<th>ເພດ</th>
 <th>ວດປເກີດ</th>
 <th>ວດປເຂົ້າຕຳຫຼວດ</th>
 <th>ບ້ານ</th>
@@ -116,16 +116,15 @@ $fileLink = "<a href='documents/{$file}' class='btn btn-success btn-sm' target='
 ?>
 <tr>
 <td><?= $i++ ?></td>
-
+<td><?= htmlspecialchars($row['full_name']) ?> <?= htmlspecialchars($row['full_lastname']) ?></td>
+<td><?= htmlspecialchars($row['gender']) ?></td>
+<td><?= htmlspecialchars($row['l_name']) ?></td>
+<td><?= htmlspecialchars($row['national_id']) ?></td>
+<td><?= htmlspecialchars($row['pt_name']) ?></td>
 <td><?= htmlspecialchars($row['d_name']) ?></td>
 <td><?= htmlspecialchars($row['u_name']) ?></td>
 <td><?= htmlspecialchars($row['pk_name']) ?></td>
 <td><?= htmlspecialchars($row['o_name']) ?></td>
-<td><?= htmlspecialchars($row['pt_name']) ?></td>
-<td><?= htmlspecialchars($row['national_id']) ?></td>
-<td><?= htmlspecialchars($row['l_name']) ?></td>
-<td><?= htmlspecialchars($row['full_name']) ?> <?= htmlspecialchars($row['full_lastname']) ?></td>
-<td><?= htmlspecialchars($row['gender']) ?></td>
 <td><?= date('d/m/Y', strtotime($row['birth_date'])) ?></td>
 <td><?= date('d/m/Y', strtotime($row['date_join_police'])) ?></td>
 <td><?= htmlspecialchars($row['current_village']) ?></td>

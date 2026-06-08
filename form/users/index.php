@@ -150,7 +150,7 @@ $stmt->close();
 </div> 
 <div class="form-group">
 <label for="d_name">ບ້ານເກີດ</label>
-<select name="v_id" class="form-control select2" id="v_id" required></select>
+<select name="v_id" class="form-control select2" id="v_id" ></select>
 </div> 
 <div class="form-group">
 <label for="d_name">ຮູບພາບ</label>
