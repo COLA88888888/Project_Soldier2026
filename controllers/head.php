@@ -37,7 +37,7 @@ if (!isset($_SESSION['user_id']) && !isset($_SESSION['role'])) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ຫ້ອງການກົມໃຫຍ່ການເມືອງ</title>
+<title>ລະບົບບໍລິຫານ ບຸກຄະລາກອນ ແລະ ເງິນເດືອນກອງພົນທີ3</title>
 
 <!-- Google Font removed (local Lao fonts used instead for faster loading) -->
 <!-- Font Awesome -->

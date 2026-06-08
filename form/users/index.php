@@ -214,28 +214,39 @@ allowClear: true
 
 <script>
 $('#pro_id').change(function(){
-var dis_id  = $(this).val();
-$.ajax({
-type: "post",
-url: "ajax_db.php",
-data:{dis_id  :dis_id  ,function:'provinces'},
-success: function(data){
-$('#dis_id').html(data);
-}
-});
+  var pro_id = $(this).val();
+  // รีเซ็ตตัวเลือกเมืองและบ้านเป็นค่าเริ่มต้นก่อน
+  $('#dis_id').html('<option value="">-- ເລືອກເມືອງ --</option>').trigger('change');
+  $('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>').trigger('change');
+  
+  if (pro_id) {
+    $.ajax({
+      type: "post",
+      url: "ajax_db.php",
+      data: {dis_id: pro_id, function: 'provinces'},
+      success: function(data){
+        $('#dis_id').html(data).trigger('change');
+      }
+    });
+  }
 });
 </script>
 
 <script>
 $('#dis_id').change(function(){
-var vill_id   = $(this).val();
-$.ajax({
-type: "post",
-url: "ajax_db.php",
-data:{vill_id  :vill_id  ,function:'districts'},
-success: function(data){
-$('#v_id').html(data);
-}
-});
+  var dis_id = $(this).val();
+  // รีเซ็ตตัวเลือกบ้านก่อน
+  $('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>').trigger('change');
+  
+  if (dis_id) {
+    $.ajax({
+      type: "post",
+      url: "ajax_db.php",
+      data: {dis_id: dis_id, function: 'districts'},
+      success: function(data){
+        $('#v_id').html(data).trigger('change');
+      }
+    });
+  }
 });
 </script>

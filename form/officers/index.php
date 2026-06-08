@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('../../controllers/head.php');
 include('../../controllers/menu_left.php');
 ?>
@@ -296,27 +296,38 @@ $('#u_id').html(data);
 
 <script>
 $('#pro_id').change(function(){
-var pro_id  = $(this).val();
-$.ajax({
-type: "post",
-url: "ajax_db.php",
-data:{pro_id  :pro_id  ,function:'provinces'},
-success: function(data){
-$('#dis_id').html(data);
-}
-});
+  var pro_id = $(this).val();
+  // ລ້າງຕົວເລືອກເກົ່າກ່ອນ
+  $('#dis_id').html('<option value="">-- ເລືອກເມືອງ --</option>').trigger('change');
+  $('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>').trigger('change');
+  
+  if (pro_id) {
+    $.ajax({
+      type: "post",
+      url: "ajax_db.php",
+      data: {pro_id: pro_id, function: 'provinces'},
+      success: function(data){
+        $('#dis_id').html(data).trigger('change');
+      }
+    });
+  }
 });
 
 $('#dis_id').change(function(){
-var dis_id   = $(this).val();
-$.ajax({
-type: "post",
-url: "ajax_db.php",
-data:{dis_id  :dis_id  ,function:'districts'},
-success: function(data){
-$('#v_id').html(data);
-}
-});
+  var dis_id = $(this).val();
+  // ລ້າງຕົວເລືອກເກົ່າກ່ອນ
+  $('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>').trigger('change');
+  
+  if (dis_id) {
+    $.ajax({
+      type: "post",
+      url: "ajax_db.php",
+      data: {dis_id: dis_id, function: 'districts'},
+      success: function(data){
+        $('#v_id').html(data).trigger('change');
+      }
+    });
+  }
 });
 </script>
 
