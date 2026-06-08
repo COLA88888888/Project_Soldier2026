@@ -1,4 +1,4 @@
-﻿<?php include('../../controllers/head.php'); ?>
+<?php include('../../controllers/head.php'); ?>
 <?php
 if(isset($_GET['officer_id'])){
 $officer_id = $_GET['officer_id'];
@@ -45,10 +45,29 @@ location='show_table.php';
 </div>
 <!-- /.card-header -->
 <div class="card-body">
+<style>
+.officer-photo {
+    width: 50px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.officer-photo:hover {
+    transform: scale(1.8);
+    z-index: 999;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+</style>
 <table id="example1" class="table table-bordered table-hover table-sm">
 <thead>
 <tr>
 <th>ລຳດັບ</th>
+<th>ຮູບຖ່າຍ</th>
 <th>ຊື່ແລະນາມສະກຸນ</th>
 <th>ເພດ</th>
 <th>ຊັ້ນ</th>
@@ -116,6 +135,17 @@ $fileLink = "<a href='documents/{$file}' class='btn btn-success btn-sm' target='
 ?>
 <tr>
 <td><?= $i++ ?></td>
+<td class="text-center">
+<?php
+$photo = !empty($row['photo_img']) ? $row['photo_img'] : 'default_avatar.png';
+$photoPath = 'uploads/' . $photo;
+if (!empty($row['photo_img']) && file_exists($photoPath)) {
+    echo "<img src='{$photoPath}' class='officer-photo' alt='ຮູບຖ່າຍ' title='" . htmlspecialchars($row['full_name'] . ' ' . $row['full_lastname']) . "'>";
+} else {
+    echo "<img src='uploads/default_avatar.png' class='officer-photo' alt='ບໍ່ມີຮູບ' title='ບໍ່ມີຮູບຖ່າຍ'>";
+}
+?>
+</td>
 <td><?= htmlspecialchars($row['full_name']) ?> <?= htmlspecialchars($row['full_lastname']) ?></td>
 <td><?= htmlspecialchars($row['gender']) ?></td>
 <td><?= htmlspecialchars($row['l_name']) ?></td>
