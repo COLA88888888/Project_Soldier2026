@@ -44,7 +44,7 @@ if (!isset($_SESSION['user_id']) && !isset($_SESSION['role'])) {
 <!-- Font Awesome -->
 <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
 <!-- Ionicons -->
-  <link rel="icon" type="image/x-icon" href="../../logo/1.jfif">
+  <link rel="icon" type="image/png" href="../../logo/1.jfif">
 <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
@@ -181,7 +181,7 @@ if (!isset($_SESSION['user_id']) && !isset($_SESSION['role'])) {
 
 <!-- Preloader -->
 <div class="preloader flex-column justify-content-center align-items-center">
-<img class="animation__shake" src="../../logo/1.png" alt="AdminLTELogo" height="60" width="60">
+<img class="animation__shake" src="../../logo/1.jfif" alt="AdminLTELogo" height="60" width="60">
 </div>
 
 <!-- Navbar -->

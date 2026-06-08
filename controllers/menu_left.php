@@ -1,8 +1,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 <!-- Brand Logo -->
 <a href="../../form/admin/index.php" class="brand-link">
-<img src="../../logo/1.jfif" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-style="opacity: .8">
+<img src="../../logo/1.jfif" alt="AdminLTE Logo" class="brand-image elevation-3"
+ style="opacity: .9; border-radius: 4px;">
 <span class="brand-text font-weight-light">ພະນັກງານ</span>
 </a>
 
