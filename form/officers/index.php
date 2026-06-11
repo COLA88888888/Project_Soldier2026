@@ -197,6 +197,16 @@ width: '100%', // หรือ '100%'
 placeholder: '-- ເລືອກແຂວງ --',
 allowClear: true
 });
+$('#current_province_id').select2({
+width: '100%',
+placeholder: '-- ເລືອກແຂວງ --',
+allowClear: true
+});
+$('#current_district_id').select2({
+width: '100%',
+placeholder: '-- ເລືອກເມືອງ --',
+allowClear: true
+});
 });
 </script>
 
@@ -325,6 +335,23 @@ $('#dis_id').change(function(){
       data: {dis_id: dis_id, function: 'districts'},
       success: function(data){
         $('#v_id').html(data).trigger('change');
+      }
+    });
+  }
+});
+
+$('#current_province_id').change(function(){
+  var pro_id = $(this).val();
+  // ລ້າງຕົວເລືອກເກົ່າກ່ອນ
+  $('#current_district_id').html('<option value="">-- ເລືອກເມືອງ --</option>').trigger('change');
+  
+  if (pro_id) {
+    $.ajax({
+      type: "post",
+      url: "ajax_db.php",
+      data: {pro_id: pro_id, function: 'provinces'},
+      success: function(data){
+        $('#current_district_id').html(data).trigger('change');
       }
     });
   }

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('../../condb.php');
 if (!isset($_GET['officer_id'])) {
 echo "<script>window.location='show_table.php';</script>";
@@ -17,6 +17,28 @@ $stmt->close();
 if (!$data) {
 echo "<script>alert('ບໍ່ພົບຂໍ້ມູນ'); window.location='show_table.php';</script>";
 exit;
+}
+
+// Resolve current address text back to IDs
+$curr_pro_id = null;
+$curr_dis_id = null;
+
+if (!empty($data['current_province'])) {
+    $p_stmt = $conn->prepare("SELECT pro_id FROM province WHERE pro_name = ? LIMIT 1");
+    $p_stmt->bind_param("s", $data['current_province']);
+    $p_stmt->execute();
+    $p_stmt->bind_result($curr_pro_id);
+    $p_stmt->fetch();
+    $p_stmt->close();
+}
+
+if (!empty($data['current_district']) && !empty($curr_pro_id)) {
+    $d_stmt = $conn->prepare("SELECT dis_id FROM distict WHERE dis_name = ? AND pro_id = ? LIMIT 1");
+    $d_stmt->bind_param("si", $data['current_district'], $curr_pro_id);
+    $d_stmt->execute();
+    $d_stmt->bind_result($curr_dis_id);
+    $curr_dis_id = $d_stmt->fetch() ? $curr_dis_id : null;
+    $d_stmt->close();
 }
 ?>
 <div class="row">
@@ -99,18 +121,32 @@ $stmt->close();
 <input type="text" class="form-control" name="numberphone" id="numberphone" value="<?= htmlspecialchars($data['numberphone']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 <div class="form-group">
-<label for="d_name">ບ້ານຢູ່ປັດຈຸບັນ</label>
+<label>ແຂວງຢູ່ປັດຈຸບັນ</label>
+<select name="current_province_id" class="form-control select2" id="current_province_id" required>
+<option value="">-- ເລືອກແຂວງ --</option>
+<?php 
+$stmt2 = $conn->prepare("SELECT pro_id, pro_name FROM province ORDER BY pro_name ASC");
+$stmt2->execute();
+$result2 = $stmt2->get_result();
+while ($row = $result2->fetch_assoc()) {
+$selected = ($row['pro_id'] == $curr_pro_id) ? 'selected' : '';
+echo "<option value='{$row['pro_id']}' $selected>{$row['pro_name']}</option>";
+}
+$stmt2->close();
+?>
+</select>
+</div>
+
+<div class="form-group">
+<label>ເມືອງຢູ່ປັດຈຸບັນ</label>
+<select name="current_district_id" class="form-control select2" id="current_district_id" required>
+<option value="">-- ເລືອກເມືອງ --</option>
+</select>
+</div> 
+
+<div class="form-group">
+<label for="current_village">ບ້ານຢູ່ປັດຈຸບັນ</label>
 <input type="text" class="form-control" name="current_village" id="current_village" value="<?= htmlspecialchars($data['current_village']) ?>" placeholder="ກະລຸນາປ້ອນ">
-</div> 
-
-<div class="form-group">
-<label for="d_name">ເມືອງຢູ່ປັດຈຸບັນ</label>
-<input type="text" class="form-control" name="current_district" id="current_district" value="<?= htmlspecialchars($data['current_district']) ?>" placeholder="ກະລຸນາປ້ອນ">
-
-</div> 
-<div class="form-group">
-<label for="d_name">ແຂວງຢູ່ປັດຈຸບັນ</label>
-<input type="text" class="form-control" name="current_province" id="current_province" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 <div class="form-group">
 <label for="d_name">ເຮືອນເລກທີ</label>

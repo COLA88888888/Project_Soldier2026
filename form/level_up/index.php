@@ -17,8 +17,13 @@ $sql = $conn->prepare("INSERT INTO `level_up`( `officer_id`, `l_id`, `o_id`, `pk
 $sql->bind_param("iiiiiissi", $officer_id, $l_id, $o_id, $pk_id, $u_id, $pt_id, $level_date, $date_office, $user_id);
 
 if ($sql->execute()) {
-$updateStatus = $conn->prepare("UPDATE officers SET l_id = ?, o_id = ?, pk_id = ?, u_id = ?, pt_id = ? WHERE officer_id = ? and user_id = ?");
-$updateStatus->bind_param("iiiiiis", $l_id, $o_id, $pk_id, $u_id, $pt_id, $officer_id, $user_id);
+if ($_SESSION['role'] === 'admin') {
+    $updateStatus = $conn->prepare("UPDATE officers SET l_id = ?, o_id = ?, pk_id = ?, u_id = ?, pt_id = ? WHERE officer_id = ?");
+    $updateStatus->bind_param("iiiiii", $l_id, $o_id, $pk_id, $u_id, $pt_id, $officer_id);
+} else {
+    $updateStatus = $conn->prepare("UPDATE officers SET l_id = ?, o_id = ?, pk_id = ?, u_id = ?, pt_id = ? WHERE officer_id = ? AND user_id = ?");
+    $updateStatus->bind_param("iiiiiis", $l_id, $o_id, $pk_id, $u_id, $pt_id, $officer_id, $user_id);
+}
 if (!$updateStatus->execute()) {
     echo "Error UPDATE: " . $updateStatus->error;
 }
@@ -56,25 +61,9 @@ title: 'ຜິດພາດ: ".mysqli_error($conn)."'
 <div class="row">
 <div class="col-sm-6">
 <div class="form-group">
-<label for="officer_select">ຄົ້ນຫາ/ເລືອກພະນັກງານ <span class="text-danger">*</span></label>
-<select class="form-control select2" id="officer_select" name="officer_id" required>
-<option value="">-- ເລືອກພະນັກງານ --</option>
-<?php 
-$officers_query = $conn->query("SELECT o.officer_id, o.full_name, o.full_lastname, o.national_id, l.l_name 
-                                FROM officers o 
-                                LEFT JOIN positions_level l ON o.l_id = l.l_id 
-                                WHERE o.system_status = 'ON' 
-                                ORDER BY o.full_name ASC");
-while ($o_row = $officers_query->fetch_assoc()) {
-    $lbl = ($o_row['l_name'] ? $o_row['l_name'] . ' - ' : '') . $o_row['full_name'] . ' ' . $o_row['full_lastname'] . ' (' . $o_row['national_id'] . ')';
-    echo '<option value="' . htmlspecialchars($o_row['officer_id']) . '">' . htmlspecialchars($lbl) . '</option>';
-}
-?>
-</select>
-</div>
-<div class="form-group">
-<label for="national_id">ລະຫັດບັດພະນັກງານ (ປ້ອນເພື່ອຄົ້ນຫາ)</label>
-<input type="text" class="form-control" id="national_id" placeholder="ກະລຸນາປ້ອນ" autocomplete="off">
+<label for="national_id">ລະຫັດບັດພະນັກງານ <span class="text-danger">*</span></label>
+<input type="text" class="form-control" name="national_id" id="national_id" placeholder="ກະລຸນາປ້ອນລະຫັດບັດພະນັກງານ" autocomplete="off" required>
+<input type="hidden" name="officer_id" id="officer_id" required>
 </div>
 <div class="form-group">
 <label for="">ຊື່</label>
@@ -202,51 +191,31 @@ $stmt->close();
 
 <script type="text/javascript">
 $(function(){
-    // Select dropdown changes
-    $('#officer_select').on('change', function() {
-        var officer_id = $(this).val();
-        if (officer_id) {
-            $.post('get_officer_details.php', { officer_id: officer_id }, function(data) {
-                if (data.status === 'success') {
-                    $('#national_id').val(data.national_id);
-                    $('#full_name').val(data.full_name);
-                    $('#full_lastname').val(data.full_lastname);
-                    $('#gender').val(data.gender);
-                    $('#l_nameold').val(data.l_name);
-                    $('#national_id').removeClass('is-invalid').addClass('is-valid');
-                }
-            }, 'json');
-        } else {
-            clearFields();
-        }
-    });
-
     // Lookup by typing national_id
     $('#national_id').on('input', function() {
         var national_id = $(this).val().trim();
         if (national_id.length > 0) {
             $.post('get_officer_details.php', { national_id: national_id }, function(data) {
                 if (data.status === 'success') {
-                    $('#officer_select').val(data.officer_id).trigger('change.select2');
+                    $('#officer_id').val(data.officer_id);
                     $('#full_name').val(data.full_name);
                     $('#full_lastname').val(data.full_lastname);
                     $('#gender').val(data.gender);
                     $('#l_nameold').val(data.l_name);
                     $('#national_id').removeClass('is-invalid').addClass('is-valid');
                 } else {
-                    $('#officer_select').val('').trigger('change.select2');
-                    clearFields();
+                    $('#officer_id').val('');
+                    clearFieldsExceptSearch();
                     $('#national_id').removeClass('is-valid').addClass('is-invalid');
                 }
             }, 'json');
         } else {
-            $('#officer_select').val('').trigger('change.select2');
-            clearFields();
+            $('#officer_id').val('');
+            clearFieldsExceptSearch();
         }
     });
 
-    function clearFields() {
-        $('#national_id').val('').removeClass('is-valid is-invalid');
+    function clearFieldsExceptSearch() {
         $('#full_name').val('');
         $('#full_lastname').val('');
         $('#gender').val('');
@@ -259,11 +228,6 @@ $(function(){
 <script>
 $(document).ready(function() {
 
-$('#officer_select').select2({
-width: '100%',
-placeholder: "-- ເລືອກພະນັກງານ --",
-allowClear: true
-});
 
 $('#o_id').select2({
 width: '100%', // หรือ '100%'

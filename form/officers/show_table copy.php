@@ -4,7 +4,7 @@ if(isset($_GET['officer_id'])){
 $officer_id = $_GET['officer_id'];
 $user_id = $_SESSION['user_id'];
 include('../../condb.php');
-$sql = mysqli_query($conn,"DELETE FROM officers WHERE officer_id ='$officer_id' AND user_id='$user_id' ");
+$sql = mysqli_query($conn,"DELETE FROM officers WHERE officer_id ='$officer_id' ");
 if($sql){
 echo "<script>
 Swal.fire({

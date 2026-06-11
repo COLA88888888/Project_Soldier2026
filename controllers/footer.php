@@ -41,7 +41,8 @@
 <script>
   $(function () {
     $("#example1").DataTable({
-      "responsive": true,
+      "responsive": false,
+      "scrollX": true,
       "lengthChange": false,
       "autoWidth": false,
       "buttons": ["colvis"],

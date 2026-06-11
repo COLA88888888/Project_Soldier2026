@@ -135,38 +135,38 @@ $selected_month = $_GET['month'] ?? date('Y-m');
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-sm table-striped text-center mb-0" style="font-size: 13px; min-width: 1900px;">
+                        <table class="table table-bordered table-sm table-striped text-center mb-0 table-sticky" style="font-size: 13px; min-width: 1900px;">
                             <thead>
-                                <tr style="background: linear-gradient(135deg, #007bff, #0056b3) !important;">
-                                    <th rowspan="2" class="align-middle">ລ/ດ</th>
-                                    <th rowspan="2" class="align-middle">ຊັ້ນ</th>
-                                    <th rowspan="2" class="align-middle" style="min-width: 160px;">ຊື່ ແລະ ນາມສະກຸນ</th>
+                                <tr style="background: linear-gradient(135deg, #0f766e, #0d9488) !important;">
+                                    <th rowspan="2" class="align-middle sticky-col sticky-col-1">ລ/ດ</th>
+                                    <th rowspan="2" class="align-middle sticky-col sticky-col-2">ຊັ້ນ</th>
+                                    <th rowspan="2" class="align-middle sticky-col sticky-col-3" style="min-width: 160px;">ຊື່ ແລະ ນາມສະກຸນ</th>
                                     <th rowspan="2" class="align-middle">ໜ້າທີ່</th>
                                     <th rowspan="2" class="align-middle" style="min-width: 100px;">ເລກບັນຊີ</th>
                                     <th rowspan="2" class="align-middle" style="min-width: 80px;">ວດປ ເກີດ</th>
                                     <th rowspan="2" class="align-middle">ປີ</th>
-                                    <th colspan="5" style="background-color: #16a34a !important; border-color: #15803d !important;">ລາຍຮັບ (LAK)</th>
-                                    <th colspan="5" style="background-color: #dc2626 !important; border-color: #b91c1c !important;">ລາຍຫັກ (LAK)</th>
-                                    <th rowspan="2" class="align-middle" style="background-color: #d97706 !important; border-color: #b45309 !important; color: #fff !important;">ຍອດຮັບຕົວຈິງ</th>
+                                    <th colspan="5" style="background-color: #059669 !important; border-color: #047857 !important;">ລາຍຮັບ (LAK)</th>
+                                    <th colspan="5" style="background-color: #e11d48 !important; border-color: #be123c !important;">...ລາຍຫັກ (LAK)</th>
+                                    <th rowspan="2" class="align-middle" style="background-color: #f59e0b !important; border-color: #d97706 !important; color: #fff !important;">ຍອດຮັບຕົວຈິງ</th>
                                     <th colspan="5" style="background-color: #0284c7 !important; border-color: #0369a1 !important;">ເງິນນະໂຍບາຍອຸດໜູນ (LAK)</th>
-                                    <th rowspan="2" class="align-middle" style="background-color: #007bff !important; border-color: #0056b3 !important;">ລວມຮັບທັງໝົດ</th>
+                                    <th rowspan="2" class="align-middle" style="background-color: #2563eb !important; border-color: #1e40af !important;">ລວມຮັບທັງໝົດ</th>
                                     <th rowspan="2" class="align-middle no-print" style="min-width: 100px;">ຄຳສັ່ງ</th>
                                 </tr>
-                                <tr style="background: linear-gradient(135deg, #007bff, #0056b3) !important;">
+                                <tr style="background: linear-gradient(135deg, #0f766e, #0d9488) !important;">
                                     <!-- Income -->
-                                    <th style="background-color: #15803d !important; border-color: #166534 !important;">ເງິນເດືອນພື້ນຖານ</th>
-                                    <th style="background-color: #15803d !important; border-color: #166534 !important;">ປັບປຸງເພີ່ມ 15%</th>
-                                    <th style="background-color: #15803d !important; border-color: #166534 !important;">ເງິນອຸດໜູນ</th>
-                                    <th style="background-color: #15803d !important; border-color: #166534 !important;">ເງິນກິນ/ອ້າຍນ້ອງ</th>
-                                    <th style="background-color: #166534 !important; border-color: #14532d !important; font-weight: bold !important;">ລວມລາຍຮັບ</th>
+                                    <th style="background-color: #059669 !important; border-color: #047857 !important;">ເງິນເດືອນພື້ນຖານ</th>
+                                    <th style="background-color: #059669 !important; border-color: #047857 !important;">ປັບປຸງເພີ່ມ 15%</th>
+                                    <th style="background-color: #059669 !important; border-color: #047857 !important;">ເງິນອຸດໜູນ</th>
+                                    <th style="background-color: #059669 !important; border-color: #047857 !important;">ເງິນກິນ/ອ້າຍນ້ອງ</th>
+                                    <th style="background-color: #047857 !important; border-color: #14532d !important; font-weight: bold !important;">ລວມລາຍຮັບ</th>
                                     
                                     <!-- Deductions -->
-                                    <th style="background-color: #b91c1c !important; border-color: #991b1b !important;">ຫັກ 8%</th>
-                                    <th style="background-color: #b91c1c !important; border-color: #991b1b !important;">ຫັກອາກອນ</th>
-                                    <th style="background-color: #b91c1c !important; border-color: #991b1b !important;">ຫັກຄ່າ...</th>
-                                    <th style="background-color: #b91c1c !important; border-color: #991b1b !important;">ຫັກຄ່າໂທ</th>
-                                    <th style="background-color: #991b1b !important; border-color: #7f1d1d !important; font-weight: bold !important;">ລວມຫັກ</th>
-
+                                    <th style="background-color: #e11d48 !important; border-color: #be123c !important;">ຫັກ 8%</th>
+                                    <th style="background-color: #e11d48 !important; border-color: #be123c !important;">ຫັກອາກອນ</th>
+                                    <th style="background-color: #e11d48 !important; border-color: #be123c !important;">ຫັກຄ່າ...</th>
+                                    <th style="background-color: #e11d48 !important; border-color: #be123c !important;">ຫັກຄ່າໂທ</th>
+                                    <th style="background-color: #be123c !important; border-color: #7f1d1d !important; font-weight: bold !important;">...ລວມຫັກ</th>
+ 
                                     <!-- Policy -->
                                     <th style="background-color: #0369a1 !important; border-color: #075985 !important;">ປ່ວຍ</th>
                                     <th style="background-color: #0369a1 !important; border-color: #075985 !important;">ປົດ</th>
@@ -239,9 +239,9 @@ $selected_month = $_GET['month'] ?? date('Y-m');
                                         $t_grand += $row_grand;
                                 ?>
                                         <tr>
-                                            <td><?= $i++ ?></td>
-                                            <td class="font-weight-bold"><?= htmlspecialchars($row['l_name']) ?></td>
-                                            <td class="text-left font-weight-bold"><?= htmlspecialchars($row['full_name']) ?> <?= htmlspecialchars($row['full_lastname']) ?></td>
+                                            <td class="sticky-col sticky-col-1"><?= $i++ ?></td>
+                                            <td class="font-weight-bold sticky-col sticky-col-2"><?= htmlspecialchars($row['l_name']) ?></td>
+                                            <td class="text-left font-weight-bold sticky-col sticky-col-3"><?= htmlspecialchars($row['full_name']) ?> <?= htmlspecialchars($row['full_lastname']) ?></td>
                                             <td><?= htmlspecialchars($row['pt_name']) ?></td>
                                             <td><?= htmlspecialchars($row['account_number'] ?? '-') ?></td>
                                             <td><?= !empty($birth_date) && $birth_date !== '0000-00-00' ? date('d/m/y', strtotime($birth_date)) : '-' ?></td>
@@ -276,7 +276,7 @@ $selected_month = $_GET['month'] ?? date('Y-m');
                                             
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-teal btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <button type="button" class="btn btn-teal btn-xs dropdown-toggle" data-toggle="dropdown" data-boundary="window" aria-expanded="false">
                                                         <i class="fas fa-cog mr-1"></i> ຈັດການ
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-right">
@@ -298,23 +298,29 @@ $selected_month = $_GET['month'] ?? date('Y-m');
                             <?php if ($i > 1) { ?>
                             <tfoot class="tfoot-total">
                                 <tr>
-                                    <td colspan="7" class="text-right align-middle">ລວມທັງໝົດ:</td>
+                                    <td class="sticky-col sticky-col-1"></td>
+                                    <td class="sticky-col sticky-col-2"></td>
+                                    <td class="sticky-col sticky-col-3 text-right font-weight-bold align-middle">ລວມທັງໝົດ:</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <!-- Income Totals -->
                                     <td><?= number_format($t_base) ?></td>
                                     <td><?= number_format($t_increase) ?></td>
                                     <td><?= number_format($t_allowance) ?></td>
                                     <td><?= number_format($t_other_allowance) ?></td>
-                                    <td style="background-color: #15803d !important;"><?= number_format($t_income) ?></td>
+                                    <td style="background-color: #047857 !important;"><?= number_format($t_income) ?></td>
                                     
                                     <!-- Deduction Totals -->
                                     <td><?= number_format($t_deduct_8) ?></td>
                                     <td><?= number_format($t_deduct_tax) ?></td>
                                     <td><?= number_format($t_deduct_other) ?></td>
                                     <td><?= number_format($t_deduct_phone) ?></td>
-                                    <td style="background-color: #b91c1c !important;"><?= number_format($t_deducts) ?></td>
+                                    <td style="background-color: #be123c !important;"><?= number_format($t_deducts) ?></td>
                                     
                                     <!-- Net Total -->
-                                    <td style="background-color: #d97706 !important; color: #fff !important;"><?= number_format($t_net) ?></td>
+                                    <td style="background-color: #f59e0b !important; color: #fff !important;"><?= number_format($t_net) ?></td>
                                     
                                     <!-- Policy Totals -->
                                     <td><?= number_format($t_sick) ?></td>
@@ -324,7 +330,7 @@ $selected_month = $_GET['month'] ?? date('Y-m');
                                     <td style="background-color: #0369a1 !important;"><?= number_format($t_policy) ?></td>
                                     
                                     <!-- Grand Total -->
-                                    <td style="background-color: #0056b3 !important; font-size: 14px;"><?= number_format($t_grand) ?></td>
+                                    <td style="background-color: #1e40af !important; font-size: 14px;"><?= number_format($t_grand) ?></td>
                                     <td></td>
                                 </tr>
                             </tfoot>

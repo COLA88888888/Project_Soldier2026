@@ -111,22 +111,129 @@ if (!isset($_SESSION['user_id']) && !isset($_SESSION['role'])) {
     border: 1px solid #cbd5e1 !important;
   }
   .table thead th {
-    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+    background: linear-gradient(135deg, #0f766e, #0d9488) !important;
     color: #fff !important;
-    font-weight: bold !important;
-    border: 1px solid #0056b3 !important;
+    font-weight: 600 !important;
+    border: 1px solid #0d9488 !important;
     padding: 12px 8px !important;
     vertical-align: middle !important;
-    font-size: 13px;
+    font-size: 13.5px;
+    letter-spacing: 0.2px;
   }
   .table tbody td {
     padding: 10px 8px !important;
-    border: 1px solid #cbd5e1 !important;
+    border: 1px solid #e2e8f0 !important;
     vertical-align: middle !important;
+    color: #334155;
     transition: background-color 0.15s ease;
+    font-size: 13px;
   }
   .table tbody tr:hover td {
     background-color: #f0fdfa !important; /* Soft premium teal highlight */
+  }
+  
+  /* Gender Badges */
+  .badge-gender-man {
+    background-color: #e0f2fe !important;
+    color: #0369a1 !important;
+    font-weight: 600 !important;
+    padding: 4px 10px !important;
+    border-radius: 9999px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px !important;
+    border: 1px solid #bae6fd !important;
+  }
+  .badge-gender-woman {
+    background-color: #fce7f3 !important;
+    color: #be185d !important;
+    font-weight: 600 !important;
+    padding: 4px 10px !important;
+    border-radius: 9999px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px !important;
+    border: 1px solid #fbcfe8 !important;
+  }
+  
+  /* Stacking info styles to prevent eye strain */
+  .org-stack, .address-stack {
+    text-align: left;
+    line-height: 1.4;
+  }
+  .org-stack .main-org, .address-stack .main-address {
+    font-weight: 600;
+    color: #0f172a;
+    display: block;
+  }
+  .org-stack .sub-org, .address-stack .sub-address {
+    font-size: 11px;
+    color: #64748b;
+    display: block;
+    margin-top: 2px;
+  }
+  
+  /* Sticky Columns for Wide Tables (e.g. Salaries) */
+  .table-sticky {
+    position: relative;
+    border-collapse: separate !important;
+  }
+  .table-sticky th.sticky-col,
+  .table-sticky td.sticky-col {
+    position: sticky;
+    background-color: #fff;
+    z-index: 2;
+  }
+  .table-sticky th.sticky-col-1,
+  .table-sticky td.sticky-col-1 {
+    left: 0;
+    width: 48px;
+    min-width: 48px;
+    max-width: 48px;
+    text-align: center;
+  }
+  .table-sticky th.sticky-col-2,
+  .table-sticky td.sticky-col-2 {
+    left: 48px;
+    width: 70px;
+    min-width: 70px;
+    max-width: 70px;
+    text-align: center;
+  }
+  .table-sticky th.sticky-col-3,
+  .table-sticky td.sticky-col-3 {
+    left: 118px;
+    width: 170px;
+    min-width: 170px;
+    max-width: 170px;
+    box-shadow: 4px 0 8px -4px rgba(0,0,0,0.12);
+  }
+  /* Keep background white/colored on hover for sticky cells */
+  .table-sticky tr:hover td.sticky-col {
+    background-color: #f0fdfa !important;
+  }
+  /* Header styling for sticky headers */
+  .table-sticky thead th.sticky-col {
+    z-index: 3 !important;
+    background: linear-gradient(135deg, #0f766e, #0d9488) !important;
+  }
+  
+  /* Premium Custom Scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
   }
   
   /* Global Select2 Customizer */

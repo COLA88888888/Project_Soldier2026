@@ -21,9 +21,30 @@ $pro_id = $_POST['pro_id'] ?? '';
 $dis_id = $_POST['dis_id'] ?? '';
 $v_id = $_POST['v_id'] ?? '';
 $numberphone = $_POST['numberphone'] ?? '';
+$current_province = '';
+$current_district = '';
 $current_village = $_POST['current_village'] ?? '';
-$current_district = $_POST['current_district'] ?? '';
-$current_province = $_POST['current_province'] ?? '';
+
+$current_province_id = $_POST['current_province_id'] ?? '';
+$current_district_id = $_POST['current_district_id'] ?? '';
+
+if (!empty($current_province_id)) {
+    $p_stmt = $conn->prepare("SELECT pro_name FROM province WHERE pro_id = ? LIMIT 1");
+    $p_stmt->bind_param("i", $current_province_id);
+    $p_stmt->execute();
+    $p_stmt->bind_result($current_province);
+    $p_stmt->fetch();
+    $p_stmt->close();
+}
+
+if (!empty($current_district_id)) {
+    $d_stmt = $conn->prepare("SELECT dis_name FROM distict WHERE dis_id = ? LIMIT 1");
+    $d_stmt->bind_param("i", $current_district_id);
+    $d_stmt->execute();
+    $d_stmt->bind_result($current_district);
+    $d_stmt->fetch();
+    $d_stmt->close();
+}
 $house_number = $_POST['house_number'] ?? '';
 $road = $_POST['road'] ?? '';
 $block = $_POST['block'] ?? '';

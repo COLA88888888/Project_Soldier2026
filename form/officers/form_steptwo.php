@@ -1,4 +1,4 @@
-﻿<div class="row">
+<div class="row">
 <div class="col-sm-3">
 
 <div class="form-group">
@@ -84,18 +84,31 @@ $stmt->close();
 <input type="text" class="form-control" name="numberphone" id="numberphone" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 <div class="form-group">
-<label for="d_name">ບ້ານຢູ່ປັດຈຸບັນ</label>
+<label>ແຂວງຢູ່ປັດຈຸບັນ</label>
+<select name="current_province_id" class="form-control select2" id="current_province_id" required>
+<option value="">-- ເລືອກແຂວງ --</option>
+<?php 
+$stmt = $conn->prepare("SELECT pro_id, pro_name FROM province ORDER BY pro_name ASC");
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+echo '<option value="' . htmlspecialchars($row['pro_id']) . '">' . htmlspecialchars($row['pro_name']) . '</option>';
+}
+$stmt->close();
+?>
+</select>
+</div>
+
+<div class="form-group">
+<label>ເມືອງຢູ່ປັດຈຸບັນ</label>
+<select name="current_district_id" class="form-control select2" id="current_district_id" required>
+<option value="">-- ເລືອກເມືອງ --</option>
+</select>
+</div> 
+
+<div class="form-group">
+<label for="current_village">ບ້ານຢູ່ປັດຈຸບັນ</label>
 <input type="text" class="form-control" name="current_village" id="current_village" placeholder="ກະລຸນາປ້ອນ">
-</div> 
-
-<div class="form-group">
-<label for="d_name">ເມືອງຢູ່ປັດຈຸບັນ</label>
-<input type="text" class="form-control" name="current_district" id="current_district" placeholder="ກະລຸນາປ້ອນ">
-
-</div> 
-<div class="form-group">
-<label for="d_name">ແຂວງຢູ່ປັດຈຸບັນ</label>
-<input type="text" class="form-control" name="current_province" id="current_province" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 <div class="form-group">
 <label for="d_name">ເຮືອນເລກທີ</label>
