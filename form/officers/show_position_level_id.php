@@ -1,4 +1,4 @@
-﻿<?php include('../../controllers/head.php'); ?>
+<?php include('../../controllers/head.php'); ?>
 <?php
 if(isset($_GET['officer_id'])){
 $officer_id = $_GET['officer_id'];
@@ -112,7 +112,8 @@ location='show_table.php';
 
 <?php 
 $i = 1;
-$pk_id = $_GET['pk_id'];
+$l_id = isset($_GET['l_id']) ? intval($_GET['l_id']) : 0;
+$pk_id = isset($_GET['pk_id']) ? intval($_GET['pk_id']) : 0;
 include('../../condb.php');
 $stmt = $conn->prepare("SELECT 
 a.*, 
@@ -136,6 +137,7 @@ INNER JOIN province AS p ON a.pro_id = p.pro_id
 INNER JOIN distict AS di ON a.dis_id = di.dis_id
 INNER JOIN village AS v ON a.v_id = v.v_id
 WHERE a.l_id = ? and a.pk_id = ?");
+$stmt->bind_param("ii", $l_id, $pk_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
