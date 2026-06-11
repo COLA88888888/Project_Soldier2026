@@ -24,7 +24,7 @@
 
 <div class="form-group">
 <label>ແຂວງຢູ່ປັດຈຸບັນ</label>
-<select name="f_province_id" class="form-control select2" id="f_province_id" required>
+<select name="f_province_id" class="form-control select2" id="f_province_id">
 <option value="">-- ເລືອກແຂວງ --</option>
 <?php 
 include_once('../../condb.php');
@@ -41,14 +41,14 @@ $stmt_fp->close();
 
 <div class="form-group">
 <label>ເມືອງຢູ່ປັດຈຸບັນ</label>
-<select name="f_district_id" class="form-control select2" id="f_district_id" required>
+<select name="f_district_id" class="form-control select2" id="f_district_id">
 <option value="">-- ເລືອກເມືອງ --</option>
 </select>
 </div> 
 
 <div class="form-group">
 <label for="fvillagename">ບ້ານຢູ່ປັດຈຸບັນ</label>
-<input type="text" class="form-control" name="fvillagename" id="fvillagename" placeholder="ກະລຸນາປ້ອນ" required>
+<input type="text" class="form-control" name="fvillagename" id="fvillagename" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 
 <div class="form-group">

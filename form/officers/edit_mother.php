@@ -59,7 +59,7 @@ if (!empty($data['mdisname']) && !empty($m_pro_id)) {
 <div class="col-sm-6">
 <div class="form-group">
 <label>ແຂວງຢູ່ປັດຈຸບັນ</label>
-<select name="m_province_id" class="form-control select2" id="m_province_id" required>
+<select name="m_province_id" class="form-control select2" id="m_province_id">
 <option value="">-- ເລືອກແຂວງ --</option>
 <?php 
 $stmt_mp = $conn->prepare("SELECT pro_id, pro_name FROM province ORDER BY pro_name ASC");
@@ -76,14 +76,14 @@ $stmt_mp->close();
 
 <div class="form-group">
 <label>ເມືອງຢູ່ປັດຈຸບັນ</label>
-<select name="m_district_id" class="form-control select2" id="m_district_id" required>
+<select name="m_district_id" class="form-control select2" id="m_district_id">
 <option value="">-- ເລືອກເມືອງ --</option>
 </select>
 </div> 
 
 <div class="form-group">
 <label for="mvillagename">ບ້ານຢູ່ປັດຈຸບັນ</label>
-<input type="text" class="form-control" name="mvillagename" id="mvillagename" value="<?= $data['mvillagename'] === '0' ? '' : htmlspecialchars($data['mvillagename']) ?>" placeholder="ກະລຸນາປ້ອນ" required>
+<input type="text" class="form-control" name="mvillagename" id="mvillagename" value="<?= $data['mvillagename'] === '0' ? '' : htmlspecialchars($data['mvillagename']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div>
 
 <div class="form-group">

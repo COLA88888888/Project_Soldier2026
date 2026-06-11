@@ -40,7 +40,7 @@
 </div> 
 <div class="form-group">
 <label for="d_name">ອາຍຸ</label>
-<input type="date" class="form-control" name="age" id="age" placeholder="ກະລຸນາປ້ອນ">
+<input type="text" class="form-control" name="age" id="age" placeholder="ກະລຸນາປ້ອນ">
 </div>
 
 <div class="form-group">
@@ -72,11 +72,11 @@ $stmt->close();
 <div class="col-sm-3">
 <div class="form-group">
 <label for="d_name">ເມືອງເກີດ</label>
-<select name="dis_id" class="form-control select2" id="dis_id" required></select>
+<select name="dis_id" class="form-control select2" id="dis_id"></select>
 </div> 
 <div class="form-group">
 <label for="birth_village_name">ບ້ານເກີດ</label>
-<input type="text" class="form-control" name="birth_village_name" id="birth_village_name" placeholder="ກະລຸນາປ້ອນບ້ານເກີດ" required>
+<input type="text" class="form-control" name="birth_village_name" id="birth_village_name" placeholder="ກະລຸນາປ້ອນບ້ານເກີດ">
 </div>  
 
 <div class="form-group">
@@ -85,7 +85,7 @@ $stmt->close();
 </div> 
 <div class="form-group">
 <label>ແຂວງຢູ່ປັດຈຸບັນ</label>
-<select name="current_province_id" class="form-control select2" id="current_province_id" required>
+<select name="current_province_id" class="form-control select2" id="current_province_id">
 <option value="">-- ເລືອກແຂວງ --</option>
 <?php 
 $stmt = $conn->prepare("SELECT pro_id, pro_name FROM province ORDER BY pro_name ASC");
@@ -101,7 +101,7 @@ $stmt->close();
 
 <div class="form-group">
 <label>ເມືອງຢູ່ປັດຈຸບັນ</label>
-<select name="current_district_id" class="form-control select2" id="current_district_id" required>
+<select name="current_district_id" class="form-control select2" id="current_district_id">
 <option value="">-- ເລືອກເມືອງ --</option>
 </select>
 </div> 

@@ -71,7 +71,7 @@ if (!empty($data['falydisname']) && !empty($faly_pro_id)) {
 
 <div class="form-group">
 <label>ແຂວງຢູ່ປັດຈຸບັນ</label>
-<select name="faly_province_id" class="form-control select2" id="faly_province_id" required>
+<select name="faly_province_id" class="form-control select2" id="faly_province_id">
 <option value="">-- ເລືອກແຂວງ --</option>
 <?php 
 $stmt_faly_p = $conn->prepare("SELECT pro_id, pro_name FROM province ORDER BY pro_name ASC");
@@ -88,14 +88,14 @@ $stmt_faly_p->close();
 
 <div class="form-group">
 <label>ເມືອງຢູ່ປັດຈຸບັນ</label>
-<select name="faly_district_id" class="form-control select2" id="faly_district_id" required>
+<select name="faly_district_id" class="form-control select2" id="faly_district_id">
 <option value="">-- ເລືອກເມືອງ --</option>
 </select>
 </div> 
 
 <div class="form-group">
 <label for="falyvillagename">ບ້ານຢູ່ປັດຈຸບັນ</label>
-<input type="text" class="form-control" name="falyvillagename" id="falyvillagename" value="<?= $data['falyvillagename'] === '0' ? '' : htmlspecialchars($data['falyvillagename']) ?>" placeholder="ກະລຸນາປ້ອນ" required>
+<input type="text" class="form-control" name="falyvillagename" id="falyvillagename" value="<?= $data['falyvillagename'] === '0' ? '' : htmlspecialchars($data['falyvillagename']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 
 

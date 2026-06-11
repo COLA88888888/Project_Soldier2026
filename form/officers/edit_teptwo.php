@@ -88,7 +88,7 @@ if (!empty($data['v_id'])) {
 </div> 
 <div class="form-group">
 <label for="d_name">ອາຍຸ</label>
-<input type="date" class="form-control" name="age" id="age" value="<?= htmlspecialchars($data['age']) ?>" placeholder="ກະລຸນາປ້ອນ">
+<input type="text" class="form-control" name="age" id="age" value="<?= htmlspecialchars($data['age']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div>
 
 <div class="form-group">
@@ -102,7 +102,7 @@ if (!empty($data['v_id'])) {
 </div>
 <div class="form-group">
 <label>ແຂວງ</label>
-<select name="pro_id" class="form-control select2" id="pro_id" required>
+<select name="pro_id" class="form-control select2" id="pro_id">
 <option value="">-- ເລືອກແຂວງ --</option>
 <?php 
 $stmt = $conn->prepare("SELECT pro_id, pro_name FROM province ORDER BY pro_name ASC");
@@ -120,11 +120,11 @@ $stmt->close();
 <div class="col-sm-3">
 <div class="form-group">
 <label for="d_name">ເມືອງເກີດ</label>
-<select name="dis_id" class="form-control select2" id="dis_id" required></select>
+<select name="dis_id" class="form-control select2" id="dis_id"></select>
 </div> 
 <div class="form-group">
 <label for="birth_village_name">ບ້ານເກີດ</label>
-<input type="text" class="form-control" name="birth_village_name" id="birth_village_name" value="<?= htmlspecialchars($birth_village_name) ?>" placeholder="ກະລຸນາປ້ອນບ້ານເກີດ" required>
+<input type="text" class="form-control" name="birth_village_name" id="birth_village_name" value="<?= htmlspecialchars($birth_village_name) ?>" placeholder="ກະລຸນາປ້ອນບ້ານເກີດ">
 </div>  
 
 <div class="form-group">
@@ -133,7 +133,7 @@ $stmt->close();
 </div> 
 <div class="form-group">
 <label>ແຂວງຢູ່ປັດຈຸບັນ</label>
-<select name="current_province_id" class="form-control select2" id="current_province_id" required>
+<select name="current_province_id" class="form-control select2" id="current_province_id">
 <option value="">-- ເລືອກແຂວງ --</option>
 <?php 
 $stmt2 = $conn->prepare("SELECT pro_id, pro_name FROM province ORDER BY pro_name ASC");
@@ -150,7 +150,7 @@ $stmt2->close();
 
 <div class="form-group">
 <label>ເມືອງຢູ່ປັດຈຸບັນ</label>
-<select name="current_district_id" class="form-control select2" id="current_district_id" required>
+<select name="current_district_id" class="form-control select2" id="current_district_id">
 <option value="">-- ເລືອກເມືອງ --</option>
 </select>
 </div> 
@@ -275,7 +275,7 @@ $stmt2->close();
 <label for="exampleInputFile">ເລືອກ Files ເອກະສານ</label>
 <div class="input-group">
 <div class="custom-file">
-<input type="hidden" value="<?php echo $data['file_document']; ?>" required class="form-control" name="files2" >
+<input type="hidden" value="<?php echo $data['file_document']; ?>" class="form-control" name="files2" >
 
 <input type="file" id="file_document"  name="file_document"  class="form-control" accept=".pdf,.doc,.docx,.zip,.pptx,.xlsx">
 
@@ -286,7 +286,7 @@ $stmt2->close();
 <label for="exampleInputFile">ຮູບພາບ</label>
 <div class="input-group">
 <div class="custom-file">
-<input type="hidden" value="<?php echo $data['photo_img']; ?>" required class="form-control" name="img2" >
+<input type="hidden" value="<?php echo $data['photo_img']; ?>" class="form-control" name="img2" >
 <input type="file" id="photo_img" name="photo_img"  class="form-control" accept="image/*"><br>
 
 </div>

@@ -133,6 +133,53 @@ if (!$data) {
 $(document).ready(function (e) {
 $("#uploadForm").on('submit',(function(e) {
 e.preventDefault();
+
+const requiredFields = [
+  { id: '#d_id', name: 'ກົມກອງຂຶ້ນກັບ', tab: '#step1-tab' },
+  { id: '#full_name', name: 'ຊື່ພະນັກງານ', tab: '#step2-tab' },
+  { id: '#full_lastname', name: 'ນາມສະກຸນ', tab: '#step2-tab' },
+  { id: '#gender', name: 'ເພດ', tab: '#step2-tab' },
+  { id: '#birth_date', name: 'ວັນເດືອນປີເກີດ', tab: '#step2-tab' },
+  { id: '#pro_id', name: 'ແຂວງເກີດ', tab: '#step2-tab' },
+  { id: '#dis_id', name: 'ເມືອງເກີດ', tab: '#step2-tab' },
+  { id: '#birth_village_name', name: 'ບ້ານເກີດ', tab: '#step2-tab' },
+  { id: '#current_province_id', name: 'ແຂວງຢູ່ປັດຈຸບັນ', tab: '#step2-tab' },
+  { id: '#current_district_id', name: 'ເມືອງຢູ່ປັດຈຸບັນ', tab: '#step2-tab' },
+  { id: '#current_village', name: 'ບ້ານຢູ່ປັດຈຸບັນ', tab: '#step2-tab' }
+];
+
+let missing = [];
+let firstMissing = null;
+
+requiredFields.forEach(field => {
+  let val = $(field.id).val();
+  if (!val || val.toString().trim() === '') {
+    missing.push(field.name);
+    if (!firstMissing) {
+      firstMissing = field;
+    }
+  }
+});
+
+if (missing.length > 0) {
+  Swal.fire({
+    icon: 'warning',
+    title: 'ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ',
+    html: 'ຊ່ອງຂໍ້ມູນທີ່ຕ້ອງການປ້ອນ: <br><b class="text-danger">' + missing.join(', ') + '</b>',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'ຕົກລົງ'
+  }).then(() => {
+    if (firstMissing) {
+      $(firstMissing.tab).tab('show');
+      $(firstMissing.id).focus();
+      if ($(firstMissing.id).hasClass('select2-hidden-accessible')) {
+        $(firstMissing.id).select2('open');
+      }
+    }
+  });
+  return false;
+}
+
 $.ajax({
 url: "edit_data.php",
 type: "POST",
@@ -160,6 +207,22 @@ $('#photo_img').on('change', function() {
         reader.readAsDataURL(file);
     } else {
         $('#preview').hide();
+    }
+});
+
+$('#birth_date').on('change', function() {
+    const dobVal = $(this).val();
+    if (dobVal) {
+        const dob = new Date(dobVal);
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+        $('#age').val(age >= 0 ? age : 0);
+    } else {
+        $('#age').val('');
     }
 });
 });
