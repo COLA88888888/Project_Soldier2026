@@ -208,79 +208,24 @@ $(document).ready(() => {
 
 </script>
 
-
 <script>
 $(document).ready(function() {
-// กำหนดค่า Select2
-$('#pro_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: '-- ເລືອກແຂວງ --',
-allowClear: true
-});
-$('#current_province_id').select2({
-width: '100%',
-placeholder: '-- ເລືອກແຂວງ --',
-allowClear: true
-});
-$('#current_district_id').select2({
-width: '100%',
-placeholder: '-- ເລືອກເມືອງ --',
-allowClear: true
-});
+  $('#o_id').select2({ width: '100%', placeholder: "-- ເລືອກ --", allowClear: true });
+  $('#d_id').select2({ width: '100%', placeholder: "-- ເລືອກ --", allowClear: true });
+  $('#u_id').select2({ width: '100%', placeholder: "-- ເລືອກ --", allowClear: true });
+  $('#pk_id').select2({ width: '100%', placeholder: "-- ເລືອກ --", allowClear: true });
+  $('#pt_id').select2({ width: '100%', placeholder: "-- ເລືອກ --", allowClear: true });
+  $('#l_id').select2({ width: '100%', placeholder: "-- ເລືອກ --", allowClear: true });
+  $('#current_province_id').select2({ width: '100%', placeholder: "-- ເລືອກແຂວງ --", allowClear: true });
+  $('#current_district_id').select2({ width: '100%', placeholder: "-- ເລືອກເມືອງ --", allowClear: true });
+  $('#f_province_id').select2({ width: '100%', placeholder: "-- ເລືອກແຂວງ --", allowClear: true });
+  $('#f_district_id').select2({ width: '100%', placeholder: "-- ເລືອກເມືອງ --", allowClear: true });
+  $('#m_province_id').select2({ width: '100%', placeholder: "-- ເລືອກແຂວງ --", allowClear: true });
+  $('#m_district_id').select2({ width: '100%', placeholder: "-- ເລືອກເມືອງ --", allowClear: true });
+  $('#faly_province_id').select2({ width: '100%', placeholder: "-- ເລືອກແຂວງ --", allowClear: true });
+  $('#faly_district_id').select2({ width: '100%', placeholder: "-- ເລືອກເມືອງ --", allowClear: true });
 });
 </script>
-
-<script>
-$(document).ready(function() {
-
-$('#o_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-$('#d_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-$('#u_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-$('#pk_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-
-
-
-
-$('#v_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-$('#pt_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-$('#l_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-
-});
-</script>
-
 
 <script>
 $(document).ready(function () {
@@ -288,21 +233,12 @@ $(document).ready(function () {
 
   const proId = "<?= $data['pro_id'] ?>";
   const disId = "<?= $data['dis_id'] ?>";
-  const vId   = "<?= $data['v_id'] ?>";
 
   // ໂຫຼດເມືອງຕາມຈັງຫວັດທີ່ມີຢູ່ແລ້ວ
   if (proId) {
     $.post("ajax_db.php", { pro_id: proId, function: 'provinces' }, function (data) {
       $('#dis_id').html(data);
       $('#dis_id').val(disId).trigger('change');
-
-      // ໂຫຼດບ້ານຕາມເມືອງທີ່ມີຢູ່ແລ້ວ
-      if (disId) {
-        $.post("ajax_db.php", { dis_id: disId, function: 'districts' }, function (data) {
-          $('#v_id').html(data);
-          $('#v_id').val(vId).trigger('change');
-        });
-      }
     });
   }
 
@@ -310,18 +246,8 @@ $(document).ready(function () {
   $('#pro_id').change(function () {
     let pro_id = $(this).val();
     $('#dis_id').html('<option value="">-- ເລືອກເມືອງ --</option>');
-    $('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>');
     $.post("ajax_db.php", { pro_id: pro_id, function: 'provinces' }, function (data) {
       $('#dis_id').html(data).trigger('change');
-    });
-  });
-
-  // ປ່ຽນເມືອງ => ໂຫຼດບ້ານໃໝ່
-  $('#dis_id').change(function () {
-    let dis_id = $(this).val();
-    $('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>');
-    $.post("ajax_db.php", { dis_id: dis_id, function: 'districts' }, function (data) {
-      $('#v_id').html(data).trigger('change');
     });
   });
 
@@ -343,6 +269,72 @@ $(document).ready(function () {
     if (pro_id) {
       $.post("ajax_db.php", { pro_id: pro_id, function: 'provinces' }, function (data) {
         $('#current_district_id').html(data).trigger('change');
+      });
+    }
+  });
+
+  // ໂຫຼດເມືອງຕາມຈັງຫວັດຂອງພໍ່ທີ່ມີຢູ່ແລ້ວ
+  const fProId = "<?= $f_pro_id ?? '' ?>";
+  const fDisId = "<?= $f_dis_id ?? '' ?>";
+
+  if (fProId) {
+    $.post("ajax_db.php", { pro_id: fProId, function: 'provinces' }, function (data) {
+      $('#f_district_id').html(data);
+      $('#f_district_id').val(fDisId).trigger('change');
+    });
+  }
+
+  // ປ່ຽນຈັງຫວັດຂອງພໍ່ => ໂຫຼດເມືອງໃໝ່
+  $('#f_province_id').change(function () {
+    let pro_id = $(this).val();
+    $('#f_district_id').html('<option value="">-- ເລືອກເມືອງ --</option>');
+    if (pro_id) {
+      $.post("ajax_db.php", { pro_id: pro_id, function: 'provinces' }, function (data) {
+        $('#f_district_id').html(data).trigger('change');
+      });
+    }
+  });
+
+  // ໂຫຼດເມືອງຕາມຈັງຫວັດຂອງແມ່ທີ່ມີຢູ່ແລ້ວ
+  const mProId = "<?= $m_pro_id ?? '' ?>";
+  const mDisId = "<?= $m_dis_id ?? '' ?>";
+
+  if (mProId) {
+    $.post("ajax_db.php", { pro_id: mProId, function: 'provinces' }, function (data) {
+      $('#m_district_id').html(data);
+      $('#m_district_id').val(mDisId).trigger('change');
+    });
+  }
+
+  // ປ່ຽນຈັງຫວັດຂອງແມ່ => ໂຫຼດເມືອງໃໝ່
+  $('#m_province_id').change(function () {
+    let pro_id = $(this).val();
+    $('#m_district_id').html('<option value="">-- ເລືອກເມືອງ --</option>');
+    if (pro_id) {
+      $.post("ajax_db.php", { pro_id: pro_id, function: 'provinces' }, function (data) {
+        $('#m_district_id').html(data).trigger('change');
+      });
+    }
+  });
+
+  // ໂຫຼດເມືອງຕາມຈັງຫວັດຂອງຄູ່ສົມລົດທີ່ມີຢູ່ແລ້ວ
+  const falyProId = "<?= $faly_pro_id ?? '' ?>";
+  const falyDisId = "<?= $faly_dis_id ?? '' ?>";
+
+  if (falyProId) {
+    $.post("ajax_db.php", { pro_id: falyProId, function: 'provinces' }, function (data) {
+      $('#faly_district_id').html(data);
+      $('#faly_district_id').val(falyDisId).trigger('change');
+    });
+  }
+
+  // ປ່ຽນຈັງຫວັດຂອງຄູ່ສົມລົດ => ໂຫຼດເມືອງໃໝ່
+  $('#faly_province_id').change(function () {
+    let pro_id = $(this).val();
+    $('#faly_district_id').html('<option value="">-- ເລືອກເມືອງ --</option>');
+    if (pro_id) {
+      $.post("ajax_db.php", { pro_id: pro_id, function: 'provinces' }, function (data) {
+        $('#faly_district_id').html(data).trigger('change');
       });
     }
   });

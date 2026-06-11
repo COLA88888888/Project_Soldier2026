@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include('../../condb.php');
 if (!isset($_GET['officer_id'])) {
     echo "<script>window.location='show_table.php';</script>";
@@ -17,6 +17,28 @@ $stmt->close();
 if (!$data) {
     echo "<script>alert('ບໍ່ພົບຂໍ້ມູນ'); window.location='show_table.php';</script>";
     exit;
+}
+
+// Resolve Spouse/Family's stored text address back to database IDs
+$faly_pro_id = null;
+$faly_dis_id = null;
+
+if (!empty($data['falyproname'])) {
+    $p_stmt = $conn->prepare("SELECT pro_id FROM province WHERE pro_name = ? LIMIT 1");
+    $p_stmt->bind_param("s", $data['falyproname']);
+    $p_stmt->execute();
+    $p_stmt->bind_result($faly_pro_id);
+    $p_stmt->fetch();
+    $p_stmt->close();
+}
+
+if (!empty($data['falydisname']) && !empty($faly_pro_id)) {
+    $d_stmt = $conn->prepare("SELECT dis_id FROM distict WHERE dis_name = ? AND pro_id = ? LIMIT 1");
+    $d_stmt->bind_param("si", $data['falydisname'], $faly_pro_id);
+    $d_stmt->execute();
+    $d_stmt->bind_result($faly_dis_id);
+    $faly_dis_id = $d_stmt->fetch() ? $faly_dis_id : null;
+    $d_stmt->close();
 }
 ?>
 <div class="row">
@@ -48,18 +70,32 @@ if (!$data) {
 </div>
 
 <div class="form-group">
-<label for="d_name">ບ້ານຢູ່ປັດຈຸບັນ</label>
-<input type="text" class="form-control" name="falyvillagename" id="falyvillagename" value="<?= htmlspecialchars($data['falyvillagename']) ?>" placeholder="ກະລຸນາປ້ອນ">
+<label>ແຂວງຢູ່ປັດຈຸບັນ</label>
+<select name="faly_province_id" class="form-control select2" id="faly_province_id" required>
+<option value="">-- ເລືອກແຂວງ --</option>
+<?php 
+$stmt_faly_p = $conn->prepare("SELECT pro_id, pro_name FROM province ORDER BY pro_name ASC");
+$stmt_faly_p->execute();
+$result_faly_p = $stmt_faly_p->get_result();
+while ($row = $result_faly_p->fetch_assoc()) {
+    $selected = ($row['pro_id'] == $faly_pro_id) ? 'selected' : '';
+    echo "<option value='{$row['pro_id']}' $selected>{$row['pro_name']}</option>";
+}
+$stmt_faly_p->close();
+?>
+</select>
+</div>
 
-</div> 
 <div class="form-group">
-<label for="d_name">ເມືອງ</label>
-<input type="text" class="form-control" name="falydisname" id="falydisname" value="<?= htmlspecialchars($data['falydisname']) ?>" placeholder="ກະລຸນາປ້ອນ">
+<label>ເມືອງຢູ່ປັດຈຸບັນ</label>
+<select name="faly_district_id" class="form-control select2" id="faly_district_id" required>
+<option value="">-- ເລືອກເມືອງ --</option>
+</select>
 </div> 
-<div class="form-group">
-<label for="d_name">ແຂວງ</label>
-<input type="text" class="form-control" name="falyproname" id="falyproname" value="<?= htmlspecialchars($data['falyproname']) ?>" placeholder="ກະລຸນາປ້ອນ">
 
+<div class="form-group">
+<label for="falyvillagename">ບ້ານຢູ່ປັດຈຸບັນ</label>
+<input type="text" class="form-control" name="falyvillagename" id="falyvillagename" value="<?= $data['falyvillagename'] === '0' ? '' : htmlspecialchars($data['falyvillagename']) ?>" placeholder="ກະລຸນາປ້ອນ" required>
 </div> 
 
 

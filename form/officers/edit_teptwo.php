@@ -40,6 +40,17 @@ if (!empty($data['current_district']) && !empty($curr_pro_id)) {
     $curr_dis_id = $d_stmt->fetch() ? $curr_dis_id : null;
     $d_stmt->close();
 }
+
+// Resolve birth village ID back to name
+$birth_village_name = '';
+if (!empty($data['v_id'])) {
+    $bv_stmt = $conn->prepare("SELECT v_name FROM village WHERE v_id = ? LIMIT 1");
+    $bv_stmt->bind_param("i", $data['v_id']);
+    $bv_stmt->execute();
+    $bv_stmt->bind_result($birth_village_name);
+    $bv_stmt->fetch();
+    $bv_stmt->close();
+}
 ?>
 <div class="row">
 <div class="col-sm-3">
@@ -112,8 +123,8 @@ $stmt->close();
 <select name="dis_id" class="form-control select2" id="dis_id" required></select>
 </div> 
 <div class="form-group">
-<label for="d_name">ບ້ານເກີດ</label>
-<select name="v_id" class="form-control select2" id="v_id" required></select>
+<label for="birth_village_name">ບ້ານເກີດ</label>
+<input type="text" class="form-control" name="birth_village_name" id="birth_village_name" value="<?= htmlspecialchars($birth_village_name) ?>" placeholder="ກະລຸນາປ້ອນບ້ານເກີດ" required>
 </div>  
 
 <div class="form-group">
@@ -146,7 +157,7 @@ $stmt2->close();
 
 <div class="form-group">
 <label for="current_village">ບ້ານຢູ່ປັດຈຸບັນ</label>
-<input type="text" class="form-control" name="current_village" id="current_village" value="<?= htmlspecialchars($data['current_village']) ?>" placeholder="ກະລຸນາປ້ອນ">
+<input type="text" class="form-control" name="current_village" id="current_village" value="<?= $data['current_village'] === '0' ? '' : htmlspecialchars($data['current_village']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div> 
 <div class="form-group">
 <label for="d_name">ເຮືອນເລກທີ</label>

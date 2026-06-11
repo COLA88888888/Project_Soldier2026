@@ -1,4 +1,4 @@
-﻿<?php include('../../controllers/head.php'); ?>
+<?php include('../../controllers/head.php'); ?>
 <?php include('../../controllers/menu_left.php'); ?>
 <style>
 *{
@@ -123,46 +123,46 @@ $row = $result->fetch_assoc();
 <p><span style="margin-right: 10rem;">ພະແນກ: <?php echo $row['pk_name']; ?></span>   <span>ໜ່ວຍງານ: <?php echo $row['o_name']; ?></span></p>
 <p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເກີດ:  <?php echo $row['birth_date']; ?></span>  ຊັ້ນປັດຈຸບັນ: <?php echo $row['l_name']; ?></p>
 <p><span>ວັນ, ເດືອນ, ປີປະດັບຊັ້ນ: <?php echo $row['date_level']; ?></span>  <span>ວັນ, ເດືອນ, ປີເລືອ່ນຊັ້ນ: <?php echo $row['date_level']; ?></span></p>
-<p><span style="margin-right: 10rem;">ຊົນເຜົ່າ: <?php echo $row['ethnicity']; ?></span> <span style="margin-right: 10rem;"> ສາດສະໜາ: <?php echo $row['religion']; ?></span>  <span>ບ້ານເກີດ: <?php echo $row['v_name']; ?></span></p>
-<p><span style="margin-right: 10rem;">ເມືອງ: <?php echo $row['dis_name']; ?></span>  ແຂວງ: <?php echo $row['pro_name']; ?></p>
-<p><span style="margin-right: 5rem;">ບ້ານຢູ່ປັດຈຸບັນ: <?php echo $row['current_village']; ?></span>   <span style="margin-right: 5rem;">ເມືອງ: <?php echo $row['current_district']; ?> </span>  <span>ແຂວງ: <?php echo $row['current_province']; ?></span></p>
-<p><span style="margin-right: 10rem;">ເບີໂທ: </span> <?php echo $row['numberphone']; ?></p>
-<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົ້າການປະຕິວັດ:  <?php echo $row['date_join_revolution']; ?></span></p>
-<p><span style="margin-right: 10rem;">ວັນເດືອນປີເຂົ້າກອງທັບ: </span> <?php echo $row['date_join_police']; ?></p>
-<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົາພັກສຳຮອງ: </span> <?php echo $row['date_join_party']; ?></p>
-<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົາພັກສົມບູນ: </span> <?php echo $row['date_join']; ?></p>
-<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົາຊາວໜຸ່ມ: </span> <?php echo $row['date_join_youth']; ?></p>
-<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົາແມ່ຍິງ: </span> <?php echo $row['date_join_women']; ?></p>
-<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົ້າກຳມະບານ: </span>  <?php echo $row['date_join_union']; ?></p>
-<p><span style="margin-right: 10rem;">ລະດັບວັດທະນາທຳ: </span> <?php echo $row['culture_level']; ?></p>
-<p><span style="margin-right: 10rem;">ລະດັບວິຊາສະເພາະປ້ອງກັນຄວາມສະຫງົບ ສູງສຸດ:</span>  <?php echo $row['lalup_pks']; ?></p>
-<p><span  style="margin-right: 10rem;">ຂະແໜ່ງວິຊາຮຽນ:  <?php echo $row['kananghien']; ?> </span><span>ລະບົບ: <?php echo $row['labup']; ?> </span></p>
-<p> <span  style="margin-right: 10rem;">ບ່ອນຮຽນຢູ່ໃສ:  <?php echo $row['school_one']; ?></span></p>
-<p><span  style="margin-right: 10rem;"> ແຕ່ປີໃດຫາປີໃດ:  <?php echo $row['pihien']; ?></span></p>
-<p><span  style="margin-right: 10rem;">ລະດັບທິດສະດີສູງສຸດ:  <?php echo $row['level_m']; ?></span></p>
-<p><span  style="margin-right: 10rem;">ຂະແໜ່ງວິຊາຮຽນ:  <?php echo $row['kananghien_m']; ?> <span>ລະບົບ: <?php echo $row['labup_m']; ?> </span> </p>
-<p><span  style="margin-right: 10rem;">ບ່ອນຮຽນຢູ່ໃສ:  <?php echo $row['school_m']; ?></span></p>
-<p><span  style="margin-right: 10rem;">ແຕ່ປີໃດຫາປີໃດ:  <?php echo $row['pihien_m']; ?></span></p>
-<p><span  style="margin-right: 10rem;">ລະດັບວິຊາສະເພາະອື່ນຂະແໜ່ງການອື່ນ:  <?php echo $row['level_as']; ?></span></p>
-<p><span  style="margin-right: 10rem;">ຂະແໜ່ງວິຊາຮຽນ:  <?php echo $row['kananghien_as']; ?> </span><span>ລະບົບ: <?php echo $row['labup_as']; ?> </span></p>
-<p><span  style="margin-right: 10rem;">ບ່ອນຮຽນຢູ່ໃສ:  <?php echo $row['school_as']; ?></span></p>
-<p><span  style="margin-right: 10rem;">ແຕ່ປີໃດຫາປີໃດ:  <?php echo $row['pihien_as']; ?></span></p>
-<p><span  style="margin-right: 10rem;">ແຕ່ປີໃດຫາປີໃດ:  <?php echo $row['p_p_as']; ?></span></p>
-<p><span  style="margin-right: 10rem;">ລະດັບພາສາຕ່າງປະເທດ:  <?php echo $row['language_as']; ?></span></p>
+<p><span style="margin-right: 10rem;">ຊົນເຜົ່າ: <?php echo htmlspecialchars($row['ethnicity']); ?></span> <span style="margin-right: 10rem;"> ສາດສະໜາ: <?php echo htmlspecialchars($row['religion']); ?></span>  <span>ບ້ານເກີດ: <?php echo htmlspecialchars($row['v_name']); ?></span></p>
+<p><span style="margin-right: 10rem;">ເມືອງ: <?php echo htmlspecialchars($row['dis_name']); ?></span>  ແຂວງ: <?php echo htmlspecialchars($row['pro_name']); ?></p>
+<p><span style="margin-right: 5rem;">ບ້ານຢູ່ປັດຈຸບັນ: <?php echo $row['current_village'] === '0' ? '' : htmlspecialchars($row['current_village']); ?></span>   <span style="margin-right: 5rem;">ເມືອງ: <?php echo $row['current_district'] === '0' ? '' : htmlspecialchars($row['current_district']); ?> </span>  <span>ແຂວງ: <?php echo $row['current_province'] === '0' ? '' : htmlspecialchars($row['current_province']); ?></span></p>
+<p><span style="margin-right: 10rem;">ເບີໂທ: </span> <?php echo htmlspecialchars($row['numberphone']); ?></p>
+<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົ້າການປະຕິວັດ:  <?php echo htmlspecialchars($row['date_join_revolution']); ?></span></p>
+<p><span style="margin-right: 10rem;">ວັນເດືອນປີເຂົ້າກອງທັບ: </span> <?php echo htmlspecialchars($row['date_join_police']); ?></p>
+<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົາພັກສຳຮອງ: </span> <?php echo htmlspecialchars($row['date_join_party']); ?></p>
+<p><span style="margin-right: 10rem;">ວัน, ເດືອນ, ປີເຂົາພັກສົມບູນ: </span> <?php echo htmlspecialchars($row['date_join']); ?></p>
+<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົາຊາວໜຸ່ມ: </span> <?php echo htmlspecialchars($row['date_join_youth']); ?></p>
+<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົາແມ່ຍິງ: </span> <?php echo htmlspecialchars($row['date_join_women']); ?></p>
+<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີເຂົ້າກຳມະບານ: </span>  <?php echo htmlspecialchars($row['date_join_union']); ?></p>
+<p><span style="margin-right: 10rem;">ລະດັບວັດທະນາທຳ: </span> <?php echo htmlspecialchars($row['culture_level']); ?></p>
+<p><span style="margin-right: 10rem;">ລະດັບວິຊາສະເພາະປ້ອງກັນຄວາມສະຫງົບ ສູງສຸດ:</span>  <?php echo htmlspecialchars($row['lalup_pks']); ?></p>
+<p><span  style="margin-right: 10rem;">ຂະແໜ່ງວິຊາຮຽນ:  <?php echo htmlspecialchars($row['kananghien']); ?> </span><span>ລະບົບ: <?php echo htmlspecialchars($row['labup']); ?> </span></p>
+<p> <span  style="margin-right: 10rem;">ບ່ອນຮຽນຢູ່ໃສ:  <?php echo htmlspecialchars($row['school_one']); ?></span></p>
+<p><span  style="margin-right: 10rem;"> ແຕ່ປີໃດຫາປີໃດ:  <?php echo htmlspecialchars($row['pihien']); ?></span></p>
+<p><span  style="margin-right: 10rem;">ລະດັບທິດສະດີສູງສຸດ:  <?php echo htmlspecialchars($row['level_m']); ?></span></p>
+<p><span  style="margin-right: 10rem;">ຂະແໜ່ງວິຊາຮຽນ:  <?php echo htmlspecialchars($row['kananghien_m']); ?> <span>ລະບົບ: <?php echo htmlspecialchars($row['labup_m']); ?> </span> </p>
+<p><span  style="margin-right: 10rem;">ບ່ອນຮຽນຢູ່ໃສ:  <?php echo htmlspecialchars($row['school_m']); ?></span></p>
+<p><span  style="margin-right: 10rem;">ແຕ່ປີໃດຫາປີໃດ:  <?php echo htmlspecialchars($row['pihien_m']); ?></span></p>
+<p><span  style="margin-right: 10rem;">ລະດັບວິຊາສະເພາະອື່ນຂະແໜ່ງການອື່ນ:  <?php echo htmlspecialchars($row['level_as']); ?></span></p>
+<p><span  style="margin-right: 10rem;">ຂະແໜ່ງວິຊາຮຽນ:  <?php echo htmlspecialchars($row['kananghien_as']); ?> </span><span>ລະບົບ: <?php echo htmlspecialchars($row['labup_as']); ?> </span></p>
+<p><span  style="margin-right: 10rem;">ບ່ອນຮຽນຢູ່ໃສ:  <?php echo htmlspecialchars($row['school_as']); ?></span></p>
+<p><span  style="margin-right: 10rem;">ແຕ່ປີໃດຫາປີໃດ:  <?php echo htmlspecialchars($row['pihien_as']); ?></span></p>
+<p><span  style="margin-right: 10rem;">ແຕ່ປີໃດຫາປີໃດ:  <?php echo htmlspecialchars($row['p_p_as']); ?></span></p>
+<p><span  style="margin-right: 10rem;">ລະດັບພາສາຕ່າງປະເທດ:  <?php echo htmlspecialchars($row['language_as']); ?></span></p>
 <p><u><b>I. ສະພາບຄອບຄົວ:</b></u></p>
-<p><span style="margin-right: 10rem;"> ຊື່ ແລະ ນາມສະກຸນພໍ່: <?php echo $row['ffull_name']; ?></span>  <span style="margin-right: 10rem;"> ອາຍູ:  <?php echo $row['fage']; ?></span></p>
-<p><span style="margin-right: 10rem;">ອາຊີບ: <?php echo $row['foccupation']; ?></span> <span style="margin-right: 10rem;"> ຊົນເຜົ່າ: <?php echo $row['fzonpao']; ?></span>   <span>ບ້ານຢູ່ປັດຈຸບັນ: <?php echo $row['fvillagename']; ?></span></p>
-<p><span>ເມືອງ: <?php echo $row['fdisname']; ?></span>  <span>ແຂວງ: <?php echo $row['fproname']; ?></span></p>
+<p><span style="margin-right: 10rem;"> ຊື່ ແລະ ນາມສະກຸນພໍ່: <?php echo htmlspecialchars($row['ffull_name']); ?></span>  <span style="margin-right: 10rem;"> ອາຍູ:  <?php echo htmlspecialchars($row['fage']); ?></span></p>
+<p><span style="margin-right: 10rem;">ອາຊີບ: <?php echo htmlspecialchars($row['foccupation']); ?></span> <span style="margin-right: 10rem;"> ຊົນເຜົ່າ: <?php echo htmlspecialchars($row['fzonpao']); ?></span>   <span>ບ້ານຢູ່ປັດຈຸບັນ: <?php echo $row['fvillagename'] === '0' ? '' : htmlspecialchars($row['fvillagename']); ?></span></p>
+<p><span>ເມືອງ: <?php echo $row['fdisname'] === '0' ? '' : htmlspecialchars($row['fdisname']); ?></span>  <span>ແຂວງ: <?php echo $row['fproname'] === '0' ? '' : htmlspecialchars($row['fproname']); ?></span></p>
 <p><b>ອ້າຍ, ເອື້ອຍ, ນ້ອງຄີງ ຂອງພໍ່ມີຈັກຄົນ ແຕ່ລະຄົນຊື່ຫຍັງ? ອາຍູ ເຮັດຫຍັງຢູ່ໃສ ?</b></p>
-<p><span style="margin-right: 10rem;">ຊື່ ແລະ ນາມສະກຸນແມ່: <?php echo $row['mfull_name']; ?></span>  <span>ອາຍູ: <?php echo $row['mage']; ?></span></p>
-<p><span style="margin-right: 10rem;">ອາຊີບ: <?php echo $row['foccupation']; ?></span> <span style="margin-right: 10rem;"> ຊົນເຜົ່າ: <?php echo $row['mzonpao']; ?> </span>  <span > ບ້ານຢູ່ປັດຈຸບັນ:<?php echo $row['mvillagename']; ?></span></p>
-<p><span style="margin-right: 10rem;">ເມືອງ: <?php echo $row['mdisname']; ?></span>   <span>ແຂວງ: <?php echo $row['mproname']; ?></span></p>
+<p><span style="margin-right: 10rem;">ຊື່ ແລະ ນາມສະກຸນແມ່: <?php echo htmlspecialchars($row['mfull_name']); ?></span>  <span>ອາຍູ: <?php echo htmlspecialchars($row['mage']); ?></span></p>
+<p><span style="margin-right: 10rem;">ອາຊີບ: <?php echo htmlspecialchars($row['moccupation']); ?></span> <span style="margin-right: 10rem;"> ຊົນເຜົ່າ: <?php echo htmlspecialchars($row['mzonpao']); ?> </span>  <span > ບ້ານຢູ່ປັດຈຸບັນ:<?php echo $row['mvillagename'] === '0' ? '' : htmlspecialchars($row['mvillagename']); ?></span></p>
+<p><span style="margin-right: 10rem;">ເມືອງ: <?php echo $row['mdisname'] === '0' ? '' : htmlspecialchars($row['mdisname']); ?></span>   <span>ແຂວງ: <?php echo $row['mproname'] === '0' ? '' : htmlspecialchars($row['mproname']); ?></span></p>
 <p><b>ອ້າຍ, ເອື້ອຍ, ນ້ອງຄີງ ຂອງພໍ່ມີຈັກຄົນ ແຕ່ລະຄົນຊື່ຫຍັງ? ອາຍູ ເຮັດຫຍັງຢູ່ໃສ ?</b></p>
-<p><span style="margin-right: 10rem;">ຊື່ຜົວ ຫຼື ເມຍ: <?php echo $row['falyfull_name']; ?></span>  <span>ອາຍູ: <?php echo $row['falyages']; ?></span></p>
-<p><span style="margin-right: 10rem;">ອາຊີບ: <?php echo $row['falyoccupation']; ?></span> <span style="margin-right: 10rem;">  <span > ບ້ານຢູ່ປັດຈຸບັນ: <?php echo $row['falyvillagename']; ?></span></p>
-<p><span style="margin-right: 10rem;">ເມືອງ: <?php echo $row['falydisname']; ?></span>  <span>ແຂວງ: <?php echo $row['falyproname']; ?></span></p>
-<p><span style="margin-right: 10rem;">ຊົນຊັ້ນ: <?php echo $row['falyzozun']; ?></span>  <span style="margin-right: 10rem;"> ຊົນເຜົ່າ: <?php echo $row['falyzonpao']; ?></span> <span>ສາດສະໜາ: <?php echo $row['falyzadsana']; ?></span></p>
-<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີແຕ່ງງານ: <?php echo $row['family_date']; ?></span>  <span>ໄດ້ລຸກນຳກັນຈັກຄົນຊື່ຫຍັງ: <?php echo $row['falynumber_of_children']; ?></span></p>
+<p><span style="margin-right: 10rem;">ຊື່ຜົວ ຫຼື ເມຍ: <?php echo htmlspecialchars($row['falyfull_name']); ?></span>  <span>ອາຍູ: <?php echo htmlspecialchars($row['falyages']); ?></span></p>
+<p><span style="margin-right: 10rem;">ອາຊີບ: <?php echo htmlspecialchars($row['falyoccupation']); ?></span> <span style="margin-right: 10rem;">  <span > ບ້ານຢູ່ປັດຈຸບັນ: <?php echo $row['falyvillagename'] === '0' ? '' : htmlspecialchars($row['falyvillagename']); ?></span></p>
+<p><span style="margin-right: 10rem;">ເມືອງ: <?php echo $row['falydisname'] === '0' ? '' : htmlspecialchars($row['falydisname']); ?></span>  <span>ແຂວງ: <?php echo $row['falyproname'] === '0' ? '' : htmlspecialchars($row['falyproname']); ?></span></p>
+<p><span style="margin-right: 10rem;">ຊົນຊັ້ນ: <?php echo $row['falyzozun'] === '0' ? '' : htmlspecialchars($row['falyzozun']); ?></span>  <span style="margin-right: 10rem;"> ຊົນເຜົ່າ: <?php echo htmlspecialchars($row['falyzonpao']); ?></span> <span>ສາດສະໜາ: <?php echo $row['falyzadsana'] === '0' ? '' : htmlspecialchars($row['falyzadsana']); ?></span></p>
+<p><span style="margin-right: 10rem;">ວັນ, ເດືອນ, ປີແຕ່ງງານ: <?php echo htmlspecialchars($row['family_date']); ?></span>  <span>ໄດ້ລຸກນຳກັນຈັກຄົນຊື່ຫຍັງ: <?php echo htmlspecialchars($row['falynumber_of_children']); ?></span></p>
 <!-- <p><u><b>II. ສະພາບຄົນເອງ: </b></u></p>
 <p>ການເຄື່ອນໄຫວຂອງຕົນເອງນັບຕັ້ງແຕ່ອາຍູ 08 ປີເຖີງປັດຈຸບັນ:</p>
 <p>1, ຈຸດດີ:</p>

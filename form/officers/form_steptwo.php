@@ -75,8 +75,8 @@ $stmt->close();
 <select name="dis_id" class="form-control select2" id="dis_id" required></select>
 </div> 
 <div class="form-group">
-<label for="v_id">ບ້ານເກີດ</label>
-<select name="v_id" class="form-control select2" id="v_id" required></select>
+<label for="birth_village_name">ບ້ານເກີດ</label>
+<input type="text" class="form-control" name="birth_village_name" id="birth_village_name" placeholder="ກະລຸນາປ້ອນບ້ານເກີດ" required>
 </div>  
 
 <div class="form-group">

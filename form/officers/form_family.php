@@ -1,4 +1,4 @@
-﻿
+
 <div class="row">
 <div class="col-sm-6">
 <div class="form-group">
@@ -23,17 +23,32 @@
 </div> 
  
 <div class="form-group">
-<label for="d_name">ບ້ານຢູ່ປັດຈຸບັນ</label>
-<input type="text" class="form-control" name="falyvillagename" id="falyvillagename" placeholder="ກະລຸນາປ້ອນ">
-</div> 
-<div class="form-group">
-<label for="d_name">ເມືອງ</label>
-<input type="text" class="form-control" name="falydisname" id="falydisname" placeholder="ກະລຸນາປ້ອນ">
-</div> 
-    <div class="form-group">
-<label for="d_name">ແຂວງ</label>
-<input type="text" class="form-control" name="falyproname" id="falyproname" placeholder="ກະລຸນາປ້ອນ">
+<label>ແຂວງຢູ່ປັດຈຸບັນ</label>
+<select name="faly_province_id" class="form-control select2" id="faly_province_id" required>
+<option value="">-- ເລືອກແຂວງ --</option>
+<?php 
+include_once('../../condb.php');
+$stmt_faly_p = $conn->prepare("SELECT pro_id, pro_name FROM province ORDER BY pro_name ASC");
+$stmt_faly_p->execute();
+$result_faly_p = $stmt_faly_p->get_result();
+while ($row = $result_faly_p->fetch_assoc()) {
+    echo '<option value="' . htmlspecialchars($row['pro_id']) . '">' . htmlspecialchars($row['pro_name']) . '</option>';
+}
+$stmt_faly_p->close();
+?>
+</select>
+</div>
 
+<div class="form-group">
+<label>ເມືອງຢູ່ປັດຈຸບັນ</label>
+<select name="faly_district_id" class="form-control select2" id="faly_district_id" required>
+<option value="">-- ເລືອກເມືອງ --</option>
+</select>
+</div> 
+
+<div class="form-group">
+<label for="falyvillagename">ບ້ານຢູ່ປັດຈຸບັນ</label>
+<input type="text" class="form-control" name="falyvillagename" id="falyvillagename" placeholder="ກະລຸນາປ້ອນ" required>
 </div> 
 <div class="form-group">
 <label for="d_name">ຊົນຊັນ</label>

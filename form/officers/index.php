@@ -207,6 +207,36 @@ width: '100%',
 placeholder: '-- ເລືອກເມືອງ --',
 allowClear: true
 });
+$('#f_province_id').select2({
+width: '100%',
+placeholder: '-- ເລືອກແຂວງ --',
+allowClear: true
+});
+$('#f_district_id').select2({
+width: '100%',
+placeholder: '-- ເລືອກເມືອງ --',
+allowClear: true
+});
+$('#m_province_id').select2({
+width: '100%',
+placeholder: '-- ເລືອກແຂວງ --',
+allowClear: true
+});
+$('#m_district_id').select2({
+width: '100%',
+placeholder: '-- ເລືອກເມືອງ --',
+allowClear: true
+});
+$('#faly_province_id').select2({
+width: '100%',
+placeholder: '-- ເລືອກແຂວງ --',
+allowClear: true
+});
+$('#faly_district_id').select2({
+width: '100%',
+placeholder: '-- ເລືອກເມືອງ --',
+allowClear: true
+});
 });
 </script>
 
@@ -239,12 +269,6 @@ allowClear: true
 
 
 $('#dis_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-$('#v_id').select2({
 width: '100%', // หรือ '100%'
 placeholder: "-- ເລືອກ --",
 allowClear: true
@@ -309,7 +333,6 @@ $('#pro_id').change(function(){
   var pro_id = $(this).val();
   // ລ້າງຕົວເລືອກເກົ່າກ່ອນ
   $('#dis_id').html('<option value="">-- ເລືອກເມືອງ --</option>').trigger('change');
-  $('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>').trigger('change');
   
   if (pro_id) {
     $.ajax({
@@ -318,23 +341,6 @@ $('#pro_id').change(function(){
       data: {pro_id: pro_id, function: 'provinces'},
       success: function(data){
         $('#dis_id').html(data).trigger('change');
-      }
-    });
-  }
-});
-
-$('#dis_id').change(function(){
-  var dis_id = $(this).val();
-  // ລ້າງຕົວເລືອກເກົ່າກ່ອນ
-  $('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>').trigger('change');
-  
-  if (dis_id) {
-    $.ajax({
-      type: "post",
-      url: "ajax_db.php",
-      data: {dis_id: dis_id, function: 'districts'},
-      success: function(data){
-        $('#v_id').html(data).trigger('change');
       }
     });
   }
@@ -352,6 +358,51 @@ $('#current_province_id').change(function(){
       data: {pro_id: pro_id, function: 'provinces'},
       success: function(data){
         $('#current_district_id').html(data).trigger('change');
+      }
+    });
+  }
+});
+
+$('#f_province_id').change(function(){
+  var pro_id = $(this).val();
+  $('#f_district_id').html('<option value="">-- ເລືອກເມືອງ --</option>').trigger('change');
+  if (pro_id) {
+    $.ajax({
+      type: "post",
+      url: "ajax_db.php",
+      data: {pro_id: pro_id, function: 'provinces'},
+      success: function(data){
+        $('#f_district_id').html(data).trigger('change');
+      }
+    });
+  }
+});
+
+$('#m_province_id').change(function(){
+  var pro_id = $(this).val();
+  $('#m_district_id').html('<option value="">-- ເລືອກເມືອງ --</option>').trigger('change');
+  if (pro_id) {
+    $.ajax({
+      type: "post",
+      url: "ajax_db.php",
+      data: {pro_id: pro_id, function: 'provinces'},
+      success: function(data){
+        $('#m_district_id').html(data).trigger('change');
+      }
+    });
+  }
+});
+
+$('#faly_province_id').change(function(){
+  var pro_id = $(this).val();
+  $('#faly_district_id').html('<option value="">-- ເລືອກເມືອງ --</option>').trigger('change');
+  if (pro_id) {
+    $.ajax({
+      type: "post",
+      url: "ajax_db.php",
+      data: {pro_id: pro_id, function: 'provinces'},
+      success: function(data){
+        $('#faly_district_id').html(data).trigger('change');
       }
     });
   }

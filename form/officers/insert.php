@@ -19,7 +19,8 @@ $date_level = $_POST['date_level'] ?? '';
 $serial_number = $_POST['serial_number'] ?? '';
 $pro_id = $_POST['pro_id'] ?? '';
 $dis_id = $_POST['dis_id'] ?? '';
-$v_id = $_POST['v_id'] ?? '';
+$v_id = '';
+$birth_village_name = trim($_POST['birth_village_name'] ?? '');
 $numberphone = $_POST['numberphone'] ?? '';
 $current_province = '';
 $current_district = '';
@@ -88,16 +89,59 @@ $pihien_m = $_POST['pihien_m'] ?? '';
 $p_p_m = $_POST['p_p_m'] ?? '';
 $ffull_name = $_POST['ffull_name'] ?? '';
 $fage = $_POST['fage'] ?? '';
-$fproname = $_POST['fproname'] ?? '';
-$fdisname = $_POST['fdisname'] ?? '';
+$f_province_id = $_POST['f_province_id'] ?? '';
+$f_district_id = $_POST['f_district_id'] ?? '';
+$fproname = '';
+$fdisname = '';
+
+if (!empty($f_province_id)) {
+    $fp_stmt = $conn->prepare("SELECT pro_name FROM province WHERE pro_id = ? LIMIT 1");
+    $fp_stmt->bind_param("i", $f_province_id);
+    $fp_stmt->execute();
+    $fp_stmt->bind_result($fproname);
+    $fp_stmt->fetch();
+    $fp_stmt->close();
+}
+
+if (!empty($f_district_id)) {
+    $fd_stmt = $conn->prepare("SELECT dis_name FROM distict WHERE dis_id = ? LIMIT 1");
+    $fd_stmt->bind_param("i", $f_district_id);
+    $fd_stmt->execute();
+    $fd_stmt->bind_result($fdisname);
+    $fd_stmt->fetch();
+    $fd_stmt->close();
+}
+
 $fvillagename = $_POST['fvillagename'] ?? '';
 $foccupation = $_POST['foccupation'] ?? '';
 $fworkplace = $_POST['fworkplace'] ?? '';
 $fzonpao = $_POST['fzonpao'] ?? '';
 $mfull_name = $_POST['mfull_name'] ?? '';
 $mage = $_POST['mage'] ?? '';
-$mproname = $_POST['mproname'] ?? '';
-$mdisname = $_POST['mdisname'] ?? '';
+
+$m_province_id = $_POST['m_province_id'] ?? '';
+$m_district_id = $_POST['m_district_id'] ?? '';
+$mproname = '';
+$mdisname = '';
+
+if (!empty($m_province_id)) {
+    $mp_stmt = $conn->prepare("SELECT pro_name FROM province WHERE pro_id = ? LIMIT 1");
+    $mp_stmt->bind_param("i", $m_province_id);
+    $mp_stmt->execute();
+    $mp_stmt->bind_result($mproname);
+    $mp_stmt->fetch();
+    $mp_stmt->close();
+}
+
+if (!empty($m_district_id)) {
+    $md_stmt = $conn->prepare("SELECT dis_name FROM distict WHERE dis_id = ? LIMIT 1");
+    $md_stmt->bind_param("i", $m_district_id);
+    $md_stmt->execute();
+    $md_stmt->bind_result($mdisname);
+    $md_stmt->fetch();
+    $md_stmt->close();
+}
+
 $mvillagename = $_POST['mvillagename'] ?? '';
 $moccupation = $_POST['moccupation'] ?? '';
 $mworkplace = $_POST['mworkplace'] ?? '';
@@ -108,8 +152,28 @@ $falyages = $_POST['falyages'] ?? '';
 $falyzonpao = $_POST['falyzonpao'] ?? '';
 $falyzozun = $_POST['falyzozun'] ?? '';
 $falyzadsana = $_POST['falyzadsana'] ?? '';
-$falyproname = $_POST['falyproname'] ?? '';
-$falydisname = $_POST['falydisname'] ?? '';
+$faly_province_id = $_POST['faly_province_id'] ?? '';
+$faly_district_id = $_POST['faly_district_id'] ?? '';
+$falyproname = '';
+$falydisname = '';
+
+if (!empty($faly_province_id)) {
+    $faly_p_stmt = $conn->prepare("SELECT pro_name FROM province WHERE pro_id = ? LIMIT 1");
+    $faly_p_stmt->bind_param("i", $faly_province_id);
+    $faly_p_stmt->execute();
+    $faly_p_stmt->bind_result($falyproname);
+    $faly_p_stmt->fetch();
+    $faly_p_stmt->close();
+}
+
+if (!empty($faly_district_id)) {
+    $faly_d_stmt = $conn->prepare("SELECT dis_name FROM distict WHERE dis_id = ? LIMIT 1");
+    $faly_d_stmt->bind_param("i", $faly_district_id);
+    $faly_d_stmt->execute();
+    $faly_d_stmt->bind_result($falydisname);
+    $faly_d_stmt->fetch();
+    $faly_d_stmt->close();
+}
 $falyvillagename = $_POST['falyvillagename'] ?? '';
 $falyoccupation = $_POST['falyoccupation'] ?? '';
 $falylive = $_POST['falylive'];
@@ -124,6 +188,26 @@ $reference_number = $_POST['reference_number'] ?? '';
 $department_center = $_POST['department_center'] ?? '';
 $graduation_date = $_POST['graduation_date'] ?? '';
 $user_id = $_SESSION['user_id'] ?? 1;
+
+if ($birth_village_name !== '') {
+    $check_stmt = $conn->prepare("SELECT v_id FROM village WHERE v_name = ? AND dis_id = ? LIMIT 1");
+    $check_stmt->bind_param("si", $birth_village_name, $dis_id);
+    $check_stmt->execute();
+    $check_stmt->bind_result($existing_v_id);
+    if ($check_stmt->fetch()) {
+        $v_id = $existing_v_id;
+    }
+    $check_stmt->close();
+
+    if (empty($v_id)) {
+        $insert_v_stmt = $conn->prepare("INSERT INTO village (pro_id, dis_id, v_name, user_id) VALUES (?, ?, ?, ?)");
+        $insert_v_stmt->bind_param("iisi", $pro_id, $dis_id, $birth_village_name, $user_id);
+        $insert_v_stmt->execute();
+        $v_id = $insert_v_stmt->insert_id;
+        $insert_v_stmt->close();
+    }
+}
+
 $system_status = "ON";
 
 $file_document = '';
