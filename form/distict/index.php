@@ -7,8 +7,8 @@ $pro_id = trim($_POST['pro_id']);
 $dis_name = trim($_POST['dis_name']);
 $user_id = $_SESSION['user_id'];
 
-$check = $conn->prepare("SELECT dis_name FROM distict WHERE dis_name = ? AND user_id = ?");
-$check->bind_param("si", $dis_name, $user_id);
+$check = $conn->prepare("SELECT dis_name FROM distict WHERE dis_name = ? AND pro_id = ?");
+$check->bind_param("si", $dis_name, $pro_id);
 $check->execute();
 $check_result = $check->get_result();
 

@@ -24,8 +24,25 @@ if (!$data) {
 if (isset($_POST['submit'])) {
     $pro_name = trim($_POST['pro_name']);
 
-    $sql = $conn->prepare("UPDATE province SET pro_name = ? WHERE pro_id = ?");
-    $sql->bind_param("si", $pro_name, $pro_id);
+    // ตรวจสอบชื่อຊໍ້າ (ยกเว้นตัวเอง)
+    $check = $conn->prepare("SELECT pro_name FROM province WHERE pro_name = ? AND pro_id != ?");
+    $check->bind_param("si", $pro_name, $pro_id);
+    $check->execute();
+    $check_result = $check->get_result();
+
+    if ($check_result->num_rows > 0) {
+        echo "<script>
+        Swal.fire({
+        icon: 'warning',
+        title: 'ຊື່ນີ້ມີແລ້ວ',
+        text: 'ກະລຸນາໃສ່ຊື່ອື່ນ',
+        timer: 3000,
+        showConfirmButton: true
+        });
+        </script>";
+    } else {
+        $sql = $conn->prepare("UPDATE province SET pro_name = ? WHERE pro_id = ?");
+        $sql->bind_param("si", $pro_name, $pro_id);
 
     if ($sql->execute()) {
         echo "<script>
@@ -46,6 +63,7 @@ if (isset($_POST['submit'])) {
         });
         </script>";
     }
+}
 }
 ?>
 

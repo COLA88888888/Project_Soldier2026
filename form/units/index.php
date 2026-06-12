@@ -8,8 +8,8 @@ $d_id = $_POST['d_id'];
 $pk_id = $_POST['pk_id'];
 $u_name = trim($_POST['u_name']);
 $user_id = $_SESSION['user_id'];
-$check = $conn->prepare("SELECT pk_name FROM panak WHERE pk_name = ? AND user_id = ?");
-$check->bind_param("si", $pk_name, $user_id);
+$check = $conn->prepare("SELECT u_name FROM units WHERE u_name = ? AND pk_id = ?");
+$check->bind_param("si", $u_name, $pk_id);
 $check->execute();
 $check_result = $check->get_result();
 if ($check_result->num_rows > 0) {
@@ -167,7 +167,12 @@ type: "post",
 url: "ajax_sungkud.php",
 data:{d_id  :d_id  ,function:'d_id'},
 success: function(data){
-$('#o_id').html(data);
+  $('#o_id').html(data);
+  var options = $('#o_id option').filter(function() { return $(this).val() !== ''; });
+  if (options.length === 1) {
+    $('#o_id').val(options.first().val());
+  }
+  $('#o_id').trigger('change');
 }
 });
 });
@@ -178,7 +183,12 @@ type: "post",
 url: "ajax_sungkud.php",
 data:{o_id  :o_id  ,function:'o_id'},
 success: function(data){
-$('#pk_id').html(data);
+  $('#pk_id').html(data);
+  var options = $('#pk_id option').filter(function() { return $(this).val() !== ''; });
+  if (options.length === 1) {
+    $('#pk_id').val(options.first().val());
+  }
+  $('#pk_id').trigger('change');
 }
 });
 });
@@ -190,21 +200,12 @@ type: "post",
 url: "ajax_sungkud.php",
 data:{pk_id  :pk_id  ,function:'pk_id'},
 success: function(data){
-$('#u_id').html(data);
-}
-});
-});
-</script>
-
-<script>
-$('#d_id').change(function(){
-var d_id  = $(this).val();
-$.ajax({
-type: "post",
-url: "ajax_office.php",
-data:{d_id  :d_id  ,function:'d_id'},
-success: function(data){
-$('#o_id').html(data);
+  $('#u_id').html(data);
+  var options = $('#u_id option').filter(function() { return $(this).val() !== ''; });
+  if (options.length === 1) {
+    $('#u_id').val(options.first().val());
+  }
+  $('#u_id').trigger('change');
 }
 });
 });

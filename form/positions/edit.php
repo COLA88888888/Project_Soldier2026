@@ -24,8 +24,25 @@ if (!$data) {
 if (isset($_POST['submit'])) {
     $pt_name = trim($_POST['pt_name']);
 
-    $sql = $conn->prepare("UPDATE positions SET pt_name = ? WHERE pt_id = ?");
-    $sql->bind_param("si", $pt_name, $pt_id);
+    // ตรวจสอบชื่อຊໍ້າ (ยกเว้นตัวเอง)
+    $check = $conn->prepare("SELECT pt_name FROM positions WHERE pt_name = ? AND pt_id != ?");
+    $check->bind_param("si", $pt_name, $pt_id);
+    $check->execute();
+    $check_result = $check->get_result();
+
+    if ($check_result->num_rows > 0) {
+        echo "<script>
+        Swal.fire({
+        icon: 'warning',
+        title: 'ຊື່ນີ້ມີແລ້ວ',
+        text: 'ກະລຸນາໃສ່ຊື່ອື່ນ',
+        timer: 3000,
+        showConfirmButton: true
+        });
+        </script>";
+    } else {
+        $sql = $conn->prepare("UPDATE positions SET pt_name = ? WHERE pt_id = ?");
+        $sql->bind_param("si", $pt_name, $pt_id);
 
     if ($sql->execute()) {
         echo "<script>
@@ -46,6 +63,7 @@ if (isset($_POST['submit'])) {
         });
         </script>";
     }
+}
 }
 ?>
 

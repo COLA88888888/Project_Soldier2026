@@ -32,8 +32,8 @@ $d_id = intval($_POST['d_id']);
 $o_name = trim($_POST['o_name']);
 
 // ตรวจสอบชื่อซ้ำ (ยกเว้นตัวเอง)
-$check = $conn->prepare("SELECT o_name FROM office WHERE o_name = ? AND o_id != ?");
-$check->bind_param("si", $o_name, $o_id);
+$check = $conn->prepare("SELECT o_name FROM office WHERE o_name = ? AND d_id = ? AND o_id != ?");
+$check->bind_param("sii", $o_name, $d_id, $o_id);
 $check->execute();
 $check_result = $check->get_result();
 

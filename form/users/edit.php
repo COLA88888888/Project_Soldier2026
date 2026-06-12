@@ -9,7 +9,7 @@ exit;
 
 $user_id = intval($_GET['user_id']);
 
-$stmt = $conn->prepare("SELECT * FROM users WHERE user_id = ?");
+$stmt = $conn->prepare("SELECT u.*, v.v_name FROM users AS u LEFT JOIN village AS v ON u.v_id = v.v_id WHERE u.user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
@@ -29,7 +29,7 @@ $dob_date   = trim($_POST['dob_date']);
 $gender     = trim($_POST['gender']);
 $pro_id     = intval($_POST['pro_id']);
 $dis_id     = intval($_POST['dis_id']);
-$v_id       = intval($_POST['v_id']);
+$v_name     = trim($_POST['v_name']);
 $email      = trim($_POST['email']);
 $usphone    = trim($_POST['usphone']);
 $img        = $data['img'];
@@ -42,6 +42,44 @@ move_uploaded_file($_FILES['img']['tmp_name'], 'uploads/' . $img);
 
 $password_hash = !empty($password) ? hash('sha512', $password) : $data['password'];
 
+$current_user_id = $_SESSION['user_id'] ?? 1;
+$v_id = 0;
+if (!empty($v_name)) {
+    $v_stmt = $conn->prepare("SELECT v_id FROM village WHERE v_name = ? AND dis_id = ? LIMIT 1");
+    $v_stmt->bind_param("si", $v_name, $dis_id);
+    $v_stmt->execute();
+    $v_stmt->bind_result($existing_v_id);
+    if ($v_stmt->fetch()) {
+        $v_id = $existing_v_id;
+    }
+    $v_stmt->close();
+
+    if ($v_id === 0) {
+        $insert_v = $conn->prepare("INSERT INTO village (v_name, dis_id, pro_id, user_id) VALUES (?, ?, ?, ?)");
+        $insert_v->bind_param("siii", $v_name, $dis_id, $pro_id, $current_user_id);
+        $insert_v->execute();
+        $v_id = $insert_v->insert_id;
+        $insert_v->close();
+    }
+}
+
+// ✅ ตรวจสอบชื่อซ้ำ (ยกเว้นตัวเอง)
+$check = $conn->prepare("SELECT username FROM users WHERE username = ? AND user_id != ?");
+$check->bind_param("si", $username, $user_id);
+$check->execute();
+$check_result = $check->get_result();
+
+if ($check_result->num_rows > 0) {
+echo "<script>
+Swal.fire({
+icon: 'warning',
+title: 'ຊື່ນີ້ມີແລ້ວ',
+text: 'ກະລຸນາໃສ່ຊື່ອື່ນ',
+timer: 3000,
+showConfirmButton: true
+});
+</script>";
+} else {
 $sql = $conn->prepare("UPDATE users 
 SET username=?, password=?, role=?, name=?, dob_date=?, gender=?, 
 pro_id=?, dis_id=?, v_id=?, email=?, usphone=?, img=? 
@@ -70,6 +108,7 @@ icon: 'error',
 title: 'ຜິດພາດ: ".mysqli_error($conn)."'
 });
 </script>";
+}
 }
 }
 ?>
@@ -152,7 +191,7 @@ $stmt->close();
 </div>
 <div class="form-group">
 <label>ບ້ານ</label>
-<select name="v_id" id="v_id" class="form-control select2" required></select>
+<input type="text" class="form-control" name="v_name" id="v_name" value="<?= htmlspecialchars($data['v_name'] ?? '') ?>" placeholder="ກະລຸນາປ້ອນບ້ານເກີດ" required>
 </div>
 <div class="form-group">
 <label>ຮູບພາບ</label>
@@ -183,21 +222,12 @@ $('.select2').select2({ width: '100%', placeholder: "-- ເລືອກ --", all
 
 const proId = "<?= $data['pro_id'] ?>";
 const disId = "<?= $data['dis_id'] ?>";
-const vId   = "<?= $data['v_id'] ?>";
 
 // โหลดเมืองตามจังหวัด
 if (proId) {
 $.post("ajax_db.php", { dis_id: proId, function: 'provinces' }, function (data) {
 $('#dis_id').html(data);
 $('#dis_id').val(disId).trigger('change');
-
-// โหลดบ้านตามเมือง
-if (disId) {
-$.post("ajax_db.php", { dis_id: disId, function: 'districts' }, function (data) {
-$('#v_id').html(data);
-$('#v_id').val(vId).trigger('change');
-});
-}
 });
 }
 
@@ -205,18 +235,9 @@ $('#v_id').val(vId).trigger('change');
 $('#pro_id').change(function () {
 let dis_id = $(this).val();
 $('#dis_id').html('<option value="">-- ເລືອກເມືອງ --</option>');
-$('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>');
+$('#v_name').val('');
 $.post("ajax_db.php", { dis_id: dis_id, function: 'provinces' }, function (data) {
 $('#dis_id').html(data).trigger('change');
-});
-});
-
-// เปลี่ยนเมือง => โหลดบ้านใหม่
-$('#dis_id').change(function () {
-let dis_id = $(this).val();
-$('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>');
-$.post("ajax_db.php", { dis_id: dis_id, function: 'districts' }, function (data) {
-$('#v_id').html(data).trigger('change');
 });
 });
 

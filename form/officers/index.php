@@ -361,7 +361,12 @@ type: "post",
 url: "ajax_sungkud.php",
 data:{d_id  :d_id  ,function:'d_id'},
 success: function(data){
-$('#o_id').html(data);
+  $('#o_id').html(data);
+  var options = $('#o_id option').filter(function() { return $(this).val() !== ''; });
+  if (options.length === 1) {
+    $('#o_id').val(options.first().val());
+  }
+  $('#o_id').trigger('change');
 }
 });
 });
@@ -372,7 +377,12 @@ type: "post",
 url: "ajax_sungkud.php",
 data:{o_id  :o_id  ,function:'o_id'},
 success: function(data){
-$('#pk_id').html(data);
+  $('#pk_id').html(data);
+  var options = $('#pk_id option').filter(function() { return $(this).val() !== ''; });
+  if (options.length === 1) {
+    $('#pk_id').val(options.first().val());
+  }
+  $('#pk_id').trigger('change');
 }
 });
 });
@@ -384,7 +394,12 @@ type: "post",
 url: "ajax_sungkud.php",
 data:{pk_id  :pk_id  ,function:'pk_id'},
 success: function(data){
-$('#u_id').html(data);
+  $('#u_id').html(data);
+  var options = $('#u_id option').filter(function() { return $(this).val() !== ''; });
+  if (options.length === 1) {
+    $('#u_id').val(options.first().val());
+  }
+  $('#u_id').trigger('change');
 }
 });
 });

@@ -139,6 +139,11 @@ $(document).ready(function() {
       function: 'd_id'
     }, function(data) {
       $('#o_id').html(data);
+      var options = $('#o_id option').filter(function() { return $(this).val() !== ''; });
+      if (options.length === 1) {
+        $('#o_id').val(options.first().val());
+      }
+      $('#o_id').trigger('change');
     });
   });
 
@@ -148,6 +153,11 @@ $(document).ready(function() {
       function: 'o_id'
     }, function(data) {
       $('#pk_id').html(data);
+      var options = $('#pk_id option').filter(function() { return $(this).val() !== ''; });
+      if (options.length === 1) {
+        $('#pk_id').val(options.first().val());
+      }
+      $('#pk_id').trigger('change');
     });
   });
 
@@ -157,6 +167,11 @@ $(document).ready(function() {
       function: 'pk_id'
     }, function(data) {
       $('#u_id').html(data);
+      var options = $('#u_id option').filter(function() { return $(this).val() !== ''; });
+      if (options.length === 1) {
+        $('#u_id').val(options.first().val());
+      }
+      $('#u_id').trigger('change');
     });
   });
 });

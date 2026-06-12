@@ -26,8 +26,25 @@ if (isset($_POST['submit'])) {
     $r_years = trim($_POST['r_years']);
     $r_month = trim($_POST['r_month']);
 
-    $sql = $conn->prepare("UPDATE rank_position SET l_id = ?, r_years = ?, r_month = ? WHERE r_id = ?");
-    $sql->bind_param("iiii", $l_id, $r_years, $r_month, $r_id);
+    // ตรวจสอบຊໍ້າ (ยกเว้นตัวเอง)
+    $check = $conn->prepare("SELECT l_id FROM rank_position WHERE l_id = ? AND r_id != ?");
+    $check->bind_param("ii", $l_id, $r_id);
+    $check->execute();
+    $check_result = $check->get_result();
+
+    if ($check_result->num_rows > 0) {
+        echo "<script>
+        Swal.fire({
+        icon: 'warning',
+        title: 'ຊື່ນີ້ມີແລ້ວ',
+        text: 'ກະລຸນາໃສ່ຊື່ອື່ນ',
+        timer: 3000,
+        showConfirmButton: true
+        });
+        </script>";
+    } else {
+        $sql = $conn->prepare("UPDATE rank_position SET l_id = ?, r_years = ?, r_month = ? WHERE r_id = ?");
+        $sql->bind_param("iiii", $l_id, $r_years, $r_month, $r_id);
 
     if ($sql->execute()) {
         echo "<script>
@@ -48,6 +65,7 @@ if (isset($_POST['submit'])) {
         });
         </script>";
     }
+}
 }
 ?>
 

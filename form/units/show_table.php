@@ -6,7 +6,7 @@ if (isset($_GET['u_id'])) {
 $u_id = intval($_GET['u_id']);
 $user_id = $_SESSION['user_id'];
 
-$sql = mysqli_query($conn, "DELETE FROM units WHERE u_id = '$u_id' AND user_id = '$user_id' ");
+$sql = mysqli_query($conn, "DELETE FROM units WHERE u_id = '$u_id'" . ($_SESSION['role'] === 'admin' ? "" : " AND user_id = '$user_id'"));
 if ($sql) {
 echo "<script>
 Swal.fire({
@@ -60,10 +60,8 @@ location='show_table.php';
 </tr>
 </thead>
 <tbody>
-<?php 
+<?php
 $i = 1;
-$user_id = $_SESSION['user_id'];
-
 $sql = "
 SELECT 
 u.u_id, u.u_name,
@@ -74,12 +72,10 @@ FROM units u
 LEFT JOIN panak pk ON u.pk_id = pk.pk_id
 LEFT JOIN office o ON u.o_id = o.o_id
 LEFT JOIN department d ON u.d_id = d.d_id
-WHERE u.user_id = ?
 ORDER BY u.u_id DESC
 ";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 

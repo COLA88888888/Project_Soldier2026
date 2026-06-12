@@ -15,7 +15,7 @@ if(isset($_POST['function'])  && $_POST['function'] == 'o_id'){
 $o_id  = $_POST['o_id'];
 $sql = "SELECT * FROM panak where o_id='$o_id'";
 $query = mysqli_query($conn,$sql);
-echo '<option value="">-- ເລືອກບ້ານ --</option>';
+echo '<option value="">-- ເລືອກພະແນກ --</option>';
 foreach($query as $value){
 echo '<option value="'.$value['pk_id'].'">'.$value['pk_name'].'</option>';
 }
@@ -26,7 +26,7 @@ if(isset($_POST['function'])  && $_POST['function'] == 'pk_id'){
 $pk_id  = $_POST['pk_id'];
 $sql = "SELECT * FROM units where pk_id='$pk_id'";
 $query = mysqli_query($conn,$sql);
-echo '<option value="">-- ເລືອກບ້ານ --</option>';
+echo '<option value="">-- ເລືອກໜ່ວຍງານ --</option>';
 foreach($query as $value){
 echo '<option value="'.$value['u_id'].'">'.$value['u_name'].'</option>';
 }

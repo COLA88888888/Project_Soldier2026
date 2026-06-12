@@ -17,17 +17,27 @@ $sql = $conn->prepare("INSERT INTO `transfer_records`(`officer_id`, `transfer_ty
 $sql->bind_param("isssssssi", $officer_id, $transfer_tyep, $radson, $number, $transfer_date, $phone, $remark, $approved_by, $user_id);
 if ($sql->execute()) {
 if ($transfer_tyep === "OUT") {
-$updateStatus = $conn->prepare("UPDATE officers SET system_status = 'OUT' WHERE officer_id = ? and user_id = ?");
-$updateStatus->bind_param("ii", $officer_id, $user_id);
-if (!$updateStatus->execute()) {
-echo "Error UPDATE OUT: " . $updateStatus->error;
-}
+    if ($_SESSION['role'] === 'admin') {
+        $updateStatus = $conn->prepare("UPDATE officers SET system_status = 'OUT' WHERE officer_id = ?");
+        $updateStatus->bind_param("i", $officer_id);
+    } else {
+        $updateStatus = $conn->prepare("UPDATE officers SET system_status = 'OUT' WHERE officer_id = ? AND user_id = ?");
+        $updateStatus->bind_param("ii", $officer_id, $user_id);
+    }
+    if (!$updateStatus->execute()) {
+        echo "Error UPDATE OUT: " . $updateStatus->error;
+    }
 } elseif ($transfer_tyep === "IN") {
-$updateStatus = $conn->prepare("UPDATE officers SET system_status = 'IN' WHERE officer_id = ? and user_id = ?");
-$updateStatus->bind_param("ii", $officer_id, $user_id);
-if (!$updateStatus->execute()) {
-echo "Error UPDATE IN: " . $updateStatus->error;
-}
+    if ($_SESSION['role'] === 'admin') {
+        $updateStatus = $conn->prepare("UPDATE officers SET system_status = 'IN' WHERE officer_id = ?");
+        $updateStatus->bind_param("i", $officer_id);
+    } else {
+        $updateStatus = $conn->prepare("UPDATE officers SET system_status = 'IN' WHERE officer_id = ? AND user_id = ?");
+        $updateStatus->bind_param("ii", $officer_id, $user_id);
+    }
+    if (!$updateStatus->execute()) {
+        echo "Error UPDATE IN: " . $updateStatus->error;
+    }
 }
 
 echo "<script>

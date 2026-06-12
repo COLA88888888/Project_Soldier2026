@@ -11,8 +11,8 @@ $v_id = intval($_GET['v_id']);
 $user_id = $_SESSION['user_id'];
 
 // ดึงข้อมูลเดิม
-$stmt = $conn->prepare("SELECT * FROM village WHERE v_id = ? AND user_id = ?");
-$stmt->bind_param("ii", $v_id, $user_id);
+$stmt = $conn->prepare("SELECT * FROM village WHERE v_id = ?");
+$stmt->bind_param("i", $v_id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 $stmt->close();
@@ -28,8 +28,8 @@ $pro_id = trim($_POST['pro_id']);
 $dis_id = trim($_POST['dis_id']);
 $v_name = trim($_POST['v_name']);
 
-$check = $conn->prepare("SELECT v_name FROM village WHERE v_name = ? AND v_id != ? AND user_id = ?");
-$check->bind_param("sii", $v_name, $v_id, $user_id);
+$check = $conn->prepare("SELECT v_name FROM village WHERE v_name = ? AND dis_id = ? AND v_id != ?");
+$check->bind_param("sii", $v_name, $dis_id, $v_id);
 $check->execute();
 $check_result = $check->get_result();
 
@@ -44,8 +44,8 @@ showConfirmButton: true
 });
 </script>";
 } else {
-$sql = $conn->prepare("UPDATE village SET pro_id = ?, dis_id = ?, v_name = ? WHERE v_id = ? AND user_id = ?");
-$sql->bind_param("iisii", $pro_id, $dis_id, $v_name, $v_id, $user_id);
+$sql = $conn->prepare("UPDATE village SET pro_id = ?, dis_id = ?, v_name = ? WHERE v_id = ?");
+$sql->bind_param("iisi", $pro_id, $dis_id, $v_name, $v_id);
 
 if ($sql->execute()) {
 echo "<script>

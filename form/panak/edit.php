@@ -34,6 +34,23 @@ $d_id = intval($_POST['d_id']);
 $o_id = intval($_POST['o_id']);
 $pk_name = trim($_POST['pk_name']);
 
+// ตรวจสอบชื่อຊໍ້າ (ยกเว้นตัวเอง)
+$check = $conn->prepare("SELECT pk_name FROM panak WHERE pk_name = ? AND o_id = ? AND pk_id != ?");
+$check->bind_param("sii", $pk_name, $o_id, $pk_id);
+$check->execute();
+$check_result = $check->get_result();
+
+if ($check_result->num_rows > 0) {
+echo "<script>
+Swal.fire({
+icon: 'warning',
+title: 'ຊື່ນີ້ມີແລ້ວ',
+text: 'ກະລຸນາໃສ່ຊື່ອື່ນ',
+timer: 3000,
+showConfirmButton: true
+});
+</script>";
+} else {
 $stmt = $conn->prepare("UPDATE panak SET d_id = ?, o_id = ?, pk_name = ? WHERE pk_id = ?");
 $stmt->bind_param("iisi", $d_id, $o_id, $pk_name, $pk_id);
 
@@ -55,6 +72,7 @@ icon: 'error',
 title: 'ຜິດພາດ: ".mysqli_error($conn)."'
 });
 </script>";
+}
 }
 }
 ?>
@@ -125,16 +143,25 @@ echo "<option value='{$row['o_id']}' $selected>{$row['o_name']}</option>";
 <?php include('../../controllers/footer.php'); ?>
 
 <script>
-// ดึงห้องการอัตโนมัติตาม d_id
-$('#d_id').change(function(){
-var d_id = $(this).val();
-$.ajax({
-type: "POST",
-url: "ajax_office.php",
-data: { d_id: d_id },
-success: function(data){
-$('#o_id').html(data);
-}
-});
+$(document).ready(function() {
+  $('#d_id').select2({ width: '100%', placeholder: "-- ເລືອກ --", allowClear: true });
+  $('#o_id').select2({ width: '100%', placeholder: "-- ເລືອກ --", allowClear: true });
+
+  $('#d_id').change(function(){
+    var d_id = $(this).val();
+    $.ajax({
+      type: "POST",
+      url: "ajax_office.php",
+      data: { d_id: d_id, function: 'd_id' },
+      success: function(data){
+        $('#o_id').html(data);
+        var options = $('#o_id option').filter(function() { return $(this).val() !== ''; });
+        if (options.length === 1) {
+          $('#o_id').val(options.first().val());
+        }
+        $('#o_id').trigger('change');
+      }
+    });
+  });
 });
 </script>

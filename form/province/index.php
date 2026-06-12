@@ -6,8 +6,8 @@ if (isset($_POST['submit'])) {
 $pro_name = trim($_POST['pro_name']);
 $user_id = $_SESSION['user_id'];
 
-$check = $conn->prepare("SELECT pro_name FROM province WHERE pro_name = ? AND user_id = ?");
-$check->bind_param("si", $pro_name, $user_id);
+$check = $conn->prepare("SELECT pro_name FROM province WHERE pro_name = ?");
+$check->bind_param("s", $pro_name);
 $check->execute();
 $check_result = $check->get_result();
 

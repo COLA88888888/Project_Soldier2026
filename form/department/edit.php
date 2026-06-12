@@ -25,6 +25,23 @@ exit;
 if (isset($_POST['submit'])) {
 $d_name = trim($_POST['d_name']);
 
+// ตรวจสอบชื่อຊໍ້າ (ยกเว้นตัวเอง)
+$check = $conn->prepare("SELECT d_name FROM department WHERE d_name = ? AND d_id != ?");
+$check->bind_param("si", $d_name, $d_id);
+$check->execute();
+$check_result = $check->get_result();
+
+if ($check_result->num_rows > 0) {
+echo "<script>
+Swal.fire({
+icon: 'warning',
+title: 'ຊື່ນີ້ມີແລ້ວ',
+text: 'ກະລຸນາໃສ່ຊື່ອື່ນ',
+timer: 3000,
+showConfirmButton: true
+});
+</script>";
+} else {
 $update = $conn->prepare("UPDATE department SET d_name = ? WHERE d_id = ?");
 $update->bind_param("si", $d_name, $d_id);
 
@@ -46,6 +63,7 @@ icon: 'error',
 title: 'ຜິດພາດ: ".mysqli_error($conn)."'
 });
 </script>";
+}
 }
 }
 ?>

@@ -37,6 +37,23 @@ $pk_id = intval($_POST['pk_id']);
 $u_name = trim($_POST['u_name']);
 $u_id_post = intval($_POST['u_id']); // รับจาก hidden input
 
+// ตรวจสอบชื่อຊໍ້າ (ยกเว้นตัวเอง)
+$check = $conn->prepare("SELECT u_name FROM units WHERE u_name = ? AND pk_id = ? AND u_id != ?");
+$check->bind_param("sii", $u_name, $pk_id, $u_id_post);
+$check->execute();
+$check_result = $check->get_result();
+
+if ($check_result->num_rows > 0) {
+echo "<script>
+Swal.fire({
+icon: 'warning',
+title: 'ຊື່ນີ້ມີແລ້ວ',
+text: 'ກະລຸນາໃສ່ຊື່ອື່ນ',
+timer: 3000,
+showConfirmButton: true
+});
+</script>";
+} else {
 $stmt2 = $conn->prepare("UPDATE units SET d_id = ?, o_id = ?, pk_id = ?, u_name = ? WHERE u_id = ?");
 $stmt2->bind_param("iiisi", $d_id, $o_id, $pk_id, $u_name, $u_id_post);
 
@@ -60,6 +77,7 @@ title: 'ຜິດພາດ: " . $stmt2->error . "'
 </script>";
 }
 $stmt2->close();
+}
 }
 ?>
 
@@ -163,15 +181,25 @@ $('.select2').select2({ width: '100%', placeholder: "-- ເລືອກ --", all
 $('#d_id').change(function(){
 var d_id = $(this).val();
 $.post("ajax_sungkud.php", { d_id: d_id, function: 'd_id' }, function(data){
-$('#o_id').html(data).trigger('change');
-$('#pk_id').html('<option value="">-- ເລືອກ --</option>');
+  $('#o_id').html(data);
+  var options = $('#o_id option').filter(function() { return $(this).val() !== ''; });
+  if (options.length === 1) {
+    $('#o_id').val(options.first().val());
+  }
+  $('#o_id').trigger('change');
+  $('#pk_id').html('<option value="">-- ເລືອກ --</option>').trigger('change');
 });
 });
 
 $('#o_id').change(function(){
 var o_id = $(this).val();
 $.post("ajax_sungkud.php", { o_id: o_id, function: 'o_id' }, function(data){
-$('#pk_id').html(data);
+  $('#pk_id').html(data);
+  var options = $('#pk_id option').filter(function() { return $(this).val() !== ''; });
+  if (options.length === 1) {
+    $('#pk_id').val(options.first().val());
+  }
+  $('#pk_id').trigger('change');
 });
 });
 });

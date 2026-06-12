@@ -8,8 +8,8 @@ $d_id = $_POST['d_id'];
 $pk_name = trim($_POST['pk_name']);
 $user_id = $_SESSION['user_id'];
 
-$check = $conn->prepare("SELECT pk_name FROM panak WHERE pk_name = ? AND user_id = ?");
-$check->bind_param("si", $pk_name, $user_id);
+$check = $conn->prepare("SELECT pk_name FROM panak WHERE pk_name = ? AND o_id = ?");
+$check->bind_param("si", $pk_name, $o_id);
 $check->execute();
 $check_result = $check->get_result();
 
@@ -101,15 +101,25 @@ $stmt->close();
 </div>
 <?php include('../../controllers/footer.php'); ?>
 <script>
-$('#d_id').change(function(){
-var d_id  = $(this).val();
-$.ajax({
-type: "post",
-url: "ajax_office.php",
-data:{d_id  :d_id  ,function:'d_id'},
-success: function(data){
-$('#o_id').html(data);
-}
-});
+$(document).ready(function() {
+  $('#d_id').select2({ width: '100%', placeholder: "-- ເລືອກ --", allowClear: true });
+  $('#o_id').select2({ width: '100%', placeholder: "-- ເລືອກ --", allowClear: true });
+
+  $('#d_id').change(function(){
+    var d_id  = $(this).val();
+    $.ajax({
+      type: "post",
+      url: "ajax_office.php",
+      data:{d_id  :d_id  ,function:'d_id'},
+      success: function(data){
+        $('#o_id').html(data);
+        var options = $('#o_id option').filter(function() { return $(this).val() !== ''; });
+        if (options.length === 1) {
+          $('#o_id').val(options.first().val());
+        }
+        $('#o_id').trigger('change');
+      }
+    });
+  });
 });
 </script>

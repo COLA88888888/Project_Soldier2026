@@ -6,8 +6,8 @@ if (isset($_POST['submit'])) {
 $l_name = trim($_POST['l_name']);
 $user_id = $_SESSION['user_id'];
 
-$check = $conn->prepare("SELECT l_name FROM positions_level WHERE l_name = ? AND user_id = ?");
-$check->bind_param("si", $l_name, $user_id);
+$check = $conn->prepare("SELECT l_name FROM positions_level WHERE l_name = ?");
+$check->bind_param("s", $l_name);
 $check->execute();
 $check_result = $check->get_result();
 if ($check_result->num_rows > 0) {

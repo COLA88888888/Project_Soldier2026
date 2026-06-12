@@ -48,8 +48,25 @@ if (isset($_POST['submit'])) {
             }
         }
 
-        $sql = $conn->prepare("UPDATE positions_level SET l_name = ?, l_img = ? WHERE l_id = ?");
-        $sql->bind_param("ssi", $l_name, $img_path, $l_id);
+        // ตรวจสอบชื่อຊໍ້າ (ยกเว้นตัวเอง)
+        $check = $conn->prepare("SELECT l_name FROM positions_level WHERE l_name = ? AND l_id != ?");
+        $check->bind_param("si", $l_name, $l_id);
+        $check->execute();
+        $check_result = $check->get_result();
+
+        if ($check_result->num_rows > 0) {
+            echo "<script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'ຊື່ນີ້ມີແລ້ວ',
+                text: 'ກະລຸນາໃສ່ຊື່ອື່ນ',
+                timer: 3000,
+                showConfirmButton: true
+            });
+            </script>";
+        } else {
+            $sql = $conn->prepare("UPDATE positions_level SET l_name = ?, l_img = ? WHERE l_id = ?");
+            $sql->bind_param("ssi", $l_name, $img_path, $l_id);
         
         if ($sql->execute()) {
             echo "<script>
@@ -72,7 +89,7 @@ if (isset($_POST['submit'])) {
             </script>";
         }
     }
-
+}
 ?>
 
 <?php include('../../controllers/menu_left.php'); ?>

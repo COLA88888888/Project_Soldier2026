@@ -6,8 +6,8 @@ if (isset($_POST['submit'])) {
 $d_name = trim($_POST['d_name']);
 $user_id = $_SESSION['user_id'];
 
-$check = $conn->prepare("SELECT d_name FROM department WHERE d_name = ? AND user_id = ?");
-$check->bind_param("si", $d_name, $user_id);
+$check = $conn->prepare("SELECT d_name FROM department WHERE d_name = ?");
+$check->bind_param("s", $d_name);
 $check->execute();
 $check_result = $check->get_result();
 

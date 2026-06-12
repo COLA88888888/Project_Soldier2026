@@ -24,8 +24,26 @@ if (!$data) {
 if (isset($_POST['submit'])) {
     $pro_id = trim($_POST['pro_id']);
     $dis_name = trim($_POST['dis_name']);
-    $sql = $conn->prepare("UPDATE distict SET pro_id = ?, dis_name = ? WHERE dis_id = ?");
-    $sql->bind_param("isi", $pro_id, $dis_name, $dis_id);
+
+    // ตรวจสอบชื่อຊໍ້າ (ยกเว้นตัวเอง)
+    $check = $conn->prepare("SELECT dis_name FROM distict WHERE dis_name = ? AND pro_id = ? AND dis_id != ?");
+    $check->bind_param("sii", $dis_name, $pro_id, $dis_id);
+    $check->execute();
+    $check_result = $check->get_result();
+
+    if ($check_result->num_rows > 0) {
+        echo "<script>
+        Swal.fire({
+        icon: 'warning',
+        title: 'ຊື່ນີ້ມີແລ້ວ',
+        text: 'ກະລຸນາໃສ່ຊື່ອື່ນ',
+        timer: 3000,
+        showConfirmButton: true
+        });
+        </script>";
+    } else {
+        $sql = $conn->prepare("UPDATE distict SET pro_id = ?, dis_name = ? WHERE dis_id = ?");
+        $sql->bind_param("isi", $pro_id, $dis_name, $dis_id);
 
     if ($sql->execute()) {
         echo "<script>
@@ -46,6 +64,7 @@ if (isset($_POST['submit'])) {
         });
         </script>";
     }
+}
 }
 ?>
 <?php include('../../controllers/menu_left.php'); ?>

@@ -67,7 +67,7 @@ if (isset($_GET['user_id'])) {
 <?php
 $i = 1;
 include('../../condb.php');
-$stmt = $conn->prepare("SELECT a.*,b.*,c.*,d.* FROM  province  as a,distict as b,village as c,users as d where a.pro_id = b.pro_id AND b.dis_id = c.dis_id AND c.v_id = d.v_id ");
+$stmt = $conn->prepare("SELECT d.*, a.pro_name, b.dis_name, c.v_name FROM users as d LEFT JOIN village as c ON d.v_id = c.v_id LEFT JOIN distict as b ON d.dis_id = b.dis_id LEFT JOIN province as a ON d.pro_id = a.pro_id ORDER BY d.user_id DESC");
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -82,11 +82,11 @@ while ($row = $result->fetch_assoc()) { ?>
 <td><?= htmlspecialchars($row['username']) ?></td>
 <td><?php echo substr($row['password'],0,10); ?></td>
 <td><?= htmlspecialchars($row['role']) ?></td>
+<td><?= htmlspecialchars($row['email']) ?></td>
+<td><?= htmlspecialchars($row['usphone']) ?></td>
 <td><?= htmlspecialchars($row['pro_name']) ?></td>
 <td><?= htmlspecialchars($row['dis_name']) ?></td>
 <td><?= htmlspecialchars($row['v_name']) ?></td>
-<td><?= htmlspecialchars($row['email']) ?></td>
-<td><?= htmlspecialchars($row['usphone']) ?></td>
 <?php if ($_SESSION['role'] == "admin") { ?>
 <td>
 <a href="show_table.php?user_id=<?= $row['user_id'] ?>" class="btn btn-danger btn-sm delete">

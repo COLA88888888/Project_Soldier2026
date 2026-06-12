@@ -8,8 +8,8 @@ $r_years = trim($_POST['r_years']);
 $r_month = trim($_POST['r_month']);
 $user_id = $_SESSION['user_id'];
 
-$check = $conn->prepare("SELECT l_id FROM rank_position WHERE l_id = ? AND user_id = ?");
-$check->bind_param("ii", $l_id, $user_id);
+$check = $conn->prepare("SELECT l_id FROM rank_position WHERE l_id = ?");
+$check->bind_param("i", $l_id);
 $check->execute();
 $check_result = $check->get_result();
 if ($check_result->num_rows > 0) {

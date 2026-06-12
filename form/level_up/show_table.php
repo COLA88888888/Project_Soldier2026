@@ -50,13 +50,13 @@ location='show_table.php';
 <thead>
 <tr>
 <th>ລຳດັບ</th>
+<th>ຊື່ແລະນາມສະກຸນ</th>
+<th>ຊັ້ນ</th>
 <th>ຫ້ອງການ</th>
 <th>ພະແນກ</th>
 <th>ໜ່ວຍງານ</th>
 <th>ໜ້າທີ່ຮັບຜິດຊອບ</th>
 
-<th>ຊັ້ນ</th>
-<th>ຊື່ແລະນາມສະກຸນ</th>
 <th>ອາຍູ</th>
 <th>ວດປເລື່ອນຊັ້ນ</th>
 <th>ອາຍຸຊັ້ນ</th>
@@ -99,14 +99,13 @@ while ($row = $result->fetch_assoc()) { ?>
 <td><?= $i++ ?></td>
 
 
+<td><?= htmlspecialchars($row['full_name']) ?></td>
+<td><?= htmlspecialchars($row['l_name']) ?></td>
 <td><?= htmlspecialchars($row['o_name']) ?></td>
 
 <td><?= htmlspecialchars($row['pk_name']) ?></td>
 <td><?= htmlspecialchars($row['u_name']) ?></td>
 <td><?= htmlspecialchars($row['pt_name']) ?></td>
-
-<td><?= htmlspecialchars($row['l_name']) ?></td>
-<td><?= htmlspecialchars($row['full_name']) ?></td>
 
 <td>
 <?php

@@ -12,10 +12,31 @@ $dob_date = trim($_POST['dob_date']);
 $gender = trim($_POST['gender']);
 $pro_id = trim($_POST['pro_id']);
 $dis_id = trim($_POST['dis_id']);
-$v_id = trim($_POST['v_id']);
+$v_name = trim($_POST['v_name']);
 $email = trim($_POST['email']);
 $usphone = trim($_POST['usphone']);
 $created_at = date('Y-m-d H:i:s');
+$user_id = $_SESSION['user_id'] ?? 1;
+
+$v_id = 0;
+if (!empty($v_name)) {
+    $v_stmt = $conn->prepare("SELECT v_id FROM village WHERE v_name = ? AND dis_id = ? LIMIT 1");
+    $v_stmt->bind_param("si", $v_name, $dis_id);
+    $v_stmt->execute();
+    $v_stmt->bind_result($existing_v_id);
+    if ($v_stmt->fetch()) {
+        $v_id = $existing_v_id;
+    }
+    $v_stmt->close();
+
+    if ($v_id === 0) {
+        $insert_v = $conn->prepare("INSERT INTO village (v_name, dis_id, pro_id, user_id) VALUES (?, ?, ?, ?)");
+        $insert_v->bind_param("siii", $v_name, $dis_id, $pro_id, $user_id);
+        $insert_v->execute();
+        $v_id = $insert_v->insert_id;
+        $insert_v->close();
+    }
+}
 $img = '';
 
 // ✅ จัดการรูปภาพ
@@ -26,8 +47,8 @@ move_uploaded_file($_FILES['img']['tmp_name'], 'uploads/' . $img);
 }
 
 // ✅ ตรวจสอบชื่อซ้ำ
-$check = $conn->prepare("SELECT username FROM users WHERE username = ? AND user_id = ?");
-$check->bind_param("si", $username, $user_id);
+$check = $conn->prepare("SELECT username FROM users WHERE username = ?");
+$check->bind_param("s", $username);
 $check->execute();
 $check_result = $check->get_result();
 
@@ -150,7 +171,7 @@ $stmt->close();
 </div> 
 <div class="form-group">
 <label for="d_name">ບ້ານເກີດ</label>
-<select name="v_id" class="form-control select2" id="v_id" ></select>
+<input type="text" class="form-control" name="v_name" id="v_name" placeholder="ກະລຸນາປ້ອນບ້ານເກີດ" required>
 </div> 
 <div class="form-group">
 <label for="d_name">ຮູບພາບ</label>
@@ -203,12 +224,6 @@ width: '100%', // หรือ '100%'
 placeholder: "-- ເລືອກ --",
 allowClear: true
 });
-$('#v_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
 });
 </script>
 
@@ -217,7 +232,7 @@ $('#pro_id').change(function(){
   var pro_id = $(this).val();
   // รีเซ็ตตัวเลือกเมืองและบ้านเป็นค่าเริ่มต้นก่อน
   $('#dis_id').html('<option value="">-- ເລືອກເມືອງ --</option>').trigger('change');
-  $('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>').trigger('change');
+  $('#v_name').val('');
   
   if (pro_id) {
     $.ajax({
@@ -232,21 +247,4 @@ $('#pro_id').change(function(){
 });
 </script>
 
-<script>
-$('#dis_id').change(function(){
-  var dis_id = $(this).val();
-  // รีเซ็ตตัวเลือกบ้านก่อน
-  $('#v_id').html('<option value="">-- ເລືອກບ້ານ --</option>').trigger('change');
-  
-  if (dis_id) {
-    $.ajax({
-      type: "post",
-      url: "ajax_db.php",
-      data: {dis_id: dis_id, function: 'districts'},
-      success: function(data){
-        $('#v_id').html(data).trigger('change');
-      }
-    });
-  }
-});
-</script>
+

@@ -9,8 +9,8 @@ $o_name = trim($_POST['o_name']); // ✅ แก้ตรงนี้
 $user_id = $_SESSION['user_id'];
 
 // ตรวจสอบชื่อซ้ำ
-$check = $conn->prepare("SELECT o_name FROM office WHERE o_name = ? AND user_id = ?");
-$check->bind_param("si", $o_name, $user_id);
+$check = $conn->prepare("SELECT o_name FROM office WHERE o_name = ? AND d_id = ?");
+$check->bind_param("si", $o_name, $d_id);
 $check->execute();
 $check_result = $check->get_result();
 
