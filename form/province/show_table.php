@@ -4,7 +4,7 @@ if(isset($_GET['pro_id'])){
 $pro_id = $_GET['pro_id'];
 $user_id = $_SESSION['user_id'];
 include('../../condb.php');
-$sql = mysqli_query($conn,"DELETE FROM province WHERE pro_id ='$pro_id' AND user_id='$user_id' ");
+$sql = mysqli_query($conn,"DELETE FROM province WHERE pro_id ='$pro_id'" . ($_SESSION['role'] === 'admin' ? "" : " AND user_id='$user_id'"));
 if($sql){
 echo "<script>
 Swal.fire({

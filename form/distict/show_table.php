@@ -4,7 +4,7 @@ if(isset($_GET['dis_id'])){
 $dis_id = $_GET['dis_id'];
 $user_id = $_SESSION['user_id'];
 include('../../condb.php');
-$sql = mysqli_query($conn,"DELETE FROM distict WHERE dis_id ='$dis_id' AND user_id='$user_id' ");
+$sql = mysqli_query($conn,"DELETE FROM distict WHERE dis_id ='$dis_id'" . ($_SESSION['role'] === 'admin' ? "" : " AND user_id='$user_id'"));
 if($sql){
 echo "<script>
 Swal.fire({

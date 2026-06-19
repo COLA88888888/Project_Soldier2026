@@ -4,7 +4,7 @@ if(isset($_GET['d_id'])){
     $d_id = $_GET['d_id'];
     $user_id = $_SESSION['user_id'];
     include('../../condb.php');
-    $sql = mysqli_query($conn,"DELETE FROM department WHERE d_id ='$d_id' AND user_id='$user_id' ");
+    $sql = mysqli_query($conn,"DELETE FROM department WHERE d_id ='$d_id'" . ($_SESSION['role'] === 'admin' ? "" : " AND user_id='$user_id'"));
     if($sql){
         echo "<script>
         Swal.fire({

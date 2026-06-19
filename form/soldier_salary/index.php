@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
         echo "<script>
         Swal.fire({
             icon: 'warning',
-            title: 'ກະລຸນາເລືອກພົນທະຫານ',
+            title: 'ກະລຸນາປ້ອນລະຫັດພົນທະຫານໃຫ້ຖືກຕ້ອງ',
             confirmButtonText: 'ຕົກລົງ'
         });
         </script>";
@@ -207,27 +207,15 @@ if (isset($_POST['submit'])) {
                         <div class="row">
                             <div class="col-md-4 col-sm-12">
                                 <div class="form-group">
-                                    <label for="officer_select">ຄົ້ນຫາ/ເລືອກພົນທະຫານ <span class="text-danger">*</span></label>
-                                    <select class="form-control select2" id="officer_select" name="officer_id" required>
-                                        <option value="">-- ເລືອກພົນທະຫານ --</option>
-                                        <?php
-                                        $officers_query = $conn->query("SELECT o.officer_id, o.full_name, o.full_lastname, o.national_id, l.l_name 
-                                                                        FROM officers o 
-                                                                        LEFT JOIN positions_level l ON o.l_id = l.l_id 
-                                                                        WHERE o.system_status = 'ON' 
-                                                                        ORDER BY o.full_name ASC");
-                                        while ($o_row = $officers_query->fetch_assoc()) {
-                                            $lbl = ($o_row['l_name'] ? $o_row['l_name'] . ' - ' : '') . $o_row['full_name'] . ' ' . $o_row['full_lastname'] . ' (' . $o_row['national_id'] . ')';
-                                            echo '<option value="' . $o_row['officer_id'] . '">' . htmlspecialchars($lbl) . '</option>';
-                                        }
-                                        ?>
-                                    </select>
+                                    <label for="national_id">ເລກບັດປະຈຳຕົວ/ລະຫັດພົນທະຫານ <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control font-weight-bold" id="national_id" placeholder="ປ້ອນເລກບັດເພື່ອຄົ້ນຫາ" autocomplete="off" required>
+                                    <input type="hidden" name="officer_id" id="officer_id" required>
                                 </div>
                             </div>
                             <div class="col-md-2 col-sm-6">
                                 <div class="form-group">
-                                    <label for="national_id">ເລກບັດປະຈຳຕົວ</label>
-                                    <input type="text" class="form-control font-weight-bold" id="national_id" placeholder="ປ້ອນເພື່ອຄົ້ນຫາ" autocomplete="off">
+                                    <label for="gender">ເພດ</label>
+                                    <input type="text" class="form-control bg-light" id="gender" readonly placeholder="-">
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
@@ -242,19 +230,13 @@ if (isset($_POST['submit'])) {
                                     <input type="text" class="form-control bg-light font-weight-bold" id="full_lastname" readonly placeholder="ນາມສະກຸນ">
                                 </div>
                             </div>
-                            <div class="col-md-2 col-sm-6">
-                                <div class="form-group">
-                                    <label for="gender">ເພດ</label>
-                                    <input type="text" class="form-control bg-light" id="gender" readonly placeholder="-">
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
+                            <div class="col-md-4 col-sm-6">
                                 <div class="form-group">
                                     <label for="l_name">ຊັ້ນ</label>
                                     <input type="text" class="form-control bg-light" id="l_name" readonly placeholder="-">
                                 </div>
                             </div>
-                            <div class="col-md-3 col-sm-6">
+                            <div class="col-md-4 col-sm-6">
                                 <div class="form-group">
                                     <label for="pt_name">ໜ້າທີ່/ຕຳແໜ່ງ</label>
                                     <input type="text" class="form-control bg-light" id="pt_name" readonly placeholder="-">
@@ -412,42 +394,13 @@ if (isset($_POST['submit'])) {
 
 <script>
 $(document).ready(function() {
-    // Initialize Select2
-    $('#officer_select').select2({
-        width: '100%',
-        placeholder: "-- ເລືອກພົນທະຫານ --",
-        allowClear: true
-    });
-
-    // Select dropdown changes
-    $('#officer_select').on('change', function() {
-        var officer_id = $(this).val();
-        if (officer_id) {
-            $.post('get_officer_details.php', { officer_id: officer_id }, function(data) {
-                if (data.status === 'success') {
-                    $('#national_id').val(data.national_id);
-                    $('#full_name').val(data.full_name);
-                    $('#full_lastname').val(data.full_lastname);
-                    $('#gender').val(data.gender);
-                    $('#l_name').val(data.l_name);
-                    $('#pt_name').val(data.pt_name);
-                    $('#age').val(data.age);
-                    $('#years_of_service').val(data.years_of_service);
-                    $('#national_id').removeClass('is-invalid').addClass('is-valid');
-                }
-            }, 'json');
-        } else {
-            clearFields();
-        }
-    });
-
     // Lookup by typing national_id
     $('#national_id').on('input', function() {
         var national_id = $(this).val().trim();
         if (national_id.length > 0) {
             $.post('get_officer_details.php', { national_id: national_id }, function(data) {
                 if (data.status === 'success') {
-                    $('#officer_select').val(data.officer_id).trigger('change.select2');
+                    $('#officer_id').val(data.officer_id);
                     $('#full_name').val(data.full_name);
                     $('#full_lastname').val(data.full_lastname);
                     $('#gender').val(data.gender);
@@ -457,19 +410,31 @@ $(document).ready(function() {
                     $('#years_of_service').val(data.years_of_service);
                     $('#national_id').removeClass('is-invalid').addClass('is-valid');
                 } else {
-                    $('#officer_select').val('').trigger('change.select2');
-                    clearFields();
+                    $('#officer_id').val('');
+                    clearFieldsExceptSearch();
                     $('#national_id').removeClass('is-valid').addClass('is-invalid');
                 }
             }, 'json');
         } else {
-            $('#officer_select').val('').trigger('change.select2');
-            clearFields();
+            $('#officer_id').val('');
+            clearFieldsExceptSearch();
         }
     });
 
-    function clearFields() {
+    // Make clearFields globally accessible so inline onclick on the reset button still works
+    window.clearFields = function() {
+        $('#officer_id').val('');
         $('#national_id').val('').removeClass('is-valid is-invalid');
+        $('#full_name').val('');
+        $('#full_lastname').val('');
+        $('#gender').val('');
+        $('#l_name').val('');
+        $('#pt_name').val('');
+        $('#age').val('');
+        $('#years_of_service').val('');
+    }
+
+    function clearFieldsExceptSearch() {
         $('#full_name').val('');
         $('#full_lastname').val('');
         $('#gender').val('');

@@ -101,69 +101,24 @@ $stmt->close();
 </div>  
 <div class="col-sm-6">  
 <div class="form-group">
-<label for="o_id">ຫ້ອງການ</label>
-<select name="o_id" class="form-control select2" id="o_id" >
-<option value="">-- ເລືອກຫ້ອງການ --</option>
-<?php 
-include('../../condb.php');
-$stmt = $conn->prepare("SELECT *FROM office ORDER BY o_name ASC");
-$stmt->execute();
-$result = $stmt->get_result();
-while ($row = $result->fetch_assoc()) {
-echo '<option value="' . htmlspecialchars($row['o_id']) . '">' . htmlspecialchars($row['o_name']) . '</option>';
-}
-$stmt->close();
-?>
-</select>
+<label>ຫ້ອງການ</label>
+<input type="text" class="form-control bg-light" id="o_name" readonly placeholder="ສະແດງຂໍ້ມູນແບບAuto">
+<input type="hidden" name="o_id" id="o_id" required>
 </div>
 <div class="form-group">
-<label for="pk_id">ພະແນກ</label>
-<select name="pk_id" class="form-control select2" id="pk_id" >
-<option value="">-- ເລືອກພະແນກ --</option>
-<?php 
-include('../../condb.php');
-$stmt = $conn->prepare("SELECT * FROM panak ORDER BY pk_name ASC");
-$stmt->execute();
-$result = $stmt->get_result();
-while ($row = $result->fetch_assoc()) {
-echo '<option value="' . htmlspecialchars($row['pk_id']) . '">' . htmlspecialchars($row['pk_name']) . '</option>';
-}
-$stmt->close();
-?>
-</select>
+<label>ພະແນກ</label>
+<input type="text" class="form-control bg-light" id="pk_name" readonly placeholder="ສະແດງຂໍ້ມູນແບບAuto">
+<input type="hidden" name="pk_id" id="pk_id" required>
 </div>
-
 <div class="form-group">
-<label for="u_id">ໜ່ວຍງານ</label>
-<select name="u_id" class="form-control select2" id="u_id" >
-<option value="">-- ເລືອກໜ່ວຍງານ --</option>
-<?php 
-include('../../condb.php');
-$stmt = $conn->prepare("SELECT *FROM units ORDER BY u_name ASC");
-$stmt->execute();
-$result = $stmt->get_result();
-while ($row = $result->fetch_assoc()) {
-echo '<option value="' . htmlspecialchars($row['u_id']) . '">' . htmlspecialchars($row['u_name']) . '</option>';
-}
-$stmt->close();
-?>
-</select>
-</div>  
+<label>ໜ່ວຍງານ</label>
+<input type="text" class="form-control bg-light" id="u_name" readonly placeholder="ສະແດງຂໍ້ມູນແບບAuto">
+<input type="hidden" name="u_id" id="u_id" required>
+</div>
 <div class="form-group">
-<label for="pt_id">ໜ້າທີ່ຮັບຜິດຊອບ</label>
-<select name="pt_id" class="form-control" id="pt_id" >
-<option value="">-- ເລືອກໜ້າທີ່ຮັບຜິດຊອບ --</option>
-<?php 
-include('../../condb.php');
-$stmt = $conn->prepare("SELECT *FROM positions ORDER BY pt_name ASC");
-$stmt->execute();
-$result = $stmt->get_result();
-while ($row = $result->fetch_assoc()) {
-echo '<option value="' . htmlspecialchars($row['pt_id']) . '">' . htmlspecialchars($row['pt_name']) . '</option>';
-}
-$stmt->close();
-?>
-</select>
+<label>ໜ້າທີ່ຮັບຜິດຊອບ</label>
+<input type="text" class="form-control bg-light" id="pt_name" readonly placeholder="ສະແດງຂໍ້ມູນແບບAuto">
+<input type="hidden" name="pt_id" id="pt_id" required>
 </div> 
 <div class="form-group">
 <label for="">ວັນເດືອນປີເລື່ອນຊັ້ນ</label>
@@ -203,6 +158,16 @@ $(function(){
                     $('#gender').val(data.gender);
                     $('#l_nameold').val(data.l_name);
                     $('#national_id').removeClass('is-invalid').addClass('is-valid');
+                    
+                    // Populate read-only text fields and hidden input values
+                    $('#o_name').val(data.o_name);
+                    $('#o_id').val(data.o_id);
+                    $('#pk_name').val(data.pk_name);
+                    $('#pk_id').val(data.pk_id);
+                    $('#u_name').val(data.u_name);
+                    $('#u_id').val(data.u_id);
+                    $('#pt_name').val(data.pt_name);
+                    $('#pt_id').val(data.pt_id);
                 } else {
                     $('#officer_id').val('');
                     clearFieldsExceptSearch();
@@ -220,115 +185,25 @@ $(function(){
         $('#full_lastname').val('');
         $('#gender').val('');
         $('#l_nameold').val('');
+        
+        $('#o_name').val('');
+        $('#o_id').val('');
+        $('#pk_name').val('');
+        $('#pk_id').val('');
+        $('#u_name').val('');
+        $('#u_id').val('');
+        $('#pt_name').val('');
+        $('#pt_id').val('');
     }
 });
 </script>
 
-
 <script>
 $(document).ready(function() {
-
-
-$('#o_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-$('#d_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-$('#u_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-$('#pk_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-
-
-$('#dis_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-$('#v_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-$('#pt_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-$('#l_id').select2({
-width: '100%', // หรือ '100%'
-placeholder: "-- ເລືອກ --",
-allowClear: true
-});
-
-
-});
-</script>
-
-<script>
-$('#d_id').change(function(){
-var d_id  = $(this).val();
-$.ajax({
-type: "post",
-url: "ajax_sungkud.php",
-data:{d_id  :d_id  ,function:'d_id'},
-success: function(data){
-  $('#o_id').html(data);
-  var options = $('#o_id option').filter(function() { return $(this).val() !== ''; });
-  if (options.length === 1) {
-    $('#o_id').val(options.first().val());
-  }
-  $('#o_id').trigger('change');
-}
-});
-});
-$('#o_id').change(function(){
-var o_id  = $(this).val();
-$.ajax({
-type: "post",
-url: "ajax_sungkud.php",
-data:{o_id  :o_id  ,function:'o_id'},
-success: function(data){
-  $('#pk_id').html(data);
-  var options = $('#pk_id option').filter(function() { return $(this).val() !== ''; });
-  if (options.length === 1) {
-    $('#pk_id').val(options.first().val());
-  }
-  $('#pk_id').trigger('change');
-}
-});
-});
-
-$('#pk_id').change(function(){
-var pk_id  = $(this).val();
-$.ajax({
-type: "post",
-url: "ajax_sungkud.php",
-data:{pk_id  :pk_id  ,function:'pk_id'},
-success: function(data){
-  $('#u_id').html(data);
-  var options = $('#u_id option').filter(function() { return $(this).val() !== ''; });
-  if (options.length === 1) {
-    $('#u_id').val(options.first().val());
-  }
-  $('#u_id').trigger('change');
-}
-});
+    $('#l_id').select2({
+        width: '100%',
+        placeholder: "-- ເລືອກ --",
+        allowClear: true
+    });
 });
 </script>

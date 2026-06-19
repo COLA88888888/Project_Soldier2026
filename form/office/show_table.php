@@ -4,7 +4,7 @@ if(isset($_GET['o_id'])){
 $o_id  = $_GET['o_id'];
 $user_id = $_SESSION['user_id'];
 include('../../condb.php');
-$sql = mysqli_query($conn,"DELETE FROM office WHERE o_id  ='$o_id' AND user_id='$user_id' ");
+$sql = mysqli_query($conn,"DELETE FROM office WHERE o_id ='$o_id'" . ($_SESSION['role'] === 'admin' ? "" : " AND user_id='$user_id'"));
 if($sql){
 echo "<script>
 Swal.fire({
