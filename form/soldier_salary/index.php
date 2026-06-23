@@ -47,21 +47,22 @@ if (isset($_POST['submit'])) {
             });
             </script>";
         } else {
+            $payment_status = trim($_POST['payment_status'] ?? 'unpaid');
             $sql = $conn->prepare("INSERT INTO `salaries` (
                 `officer_id`, `salary_type`, `salary_month`, `account_number`, 
                 `base_salary`, `salary_increase_15`, `allowance`, `other_allowance`, 
                 `deduct_tax`, `deduct_other`, `deduct_phone`, 
                 `policy_sick`, `policy_discharge`, `policy_other`, `policy_bonus`, 
-                `user_id`
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                `user_id`, `payment_status`, `payment_updated_at`
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
             
             $sql->bind_param(
-                "isssdddddddddddi", 
+                "isssdddddddddddis", 
                 $officer_id, $salary_type, $salary_month, $account_number,
                 $base_salary, $salary_increase_15, $allowance, $other_allowance,
                 $deduct_tax, $deduct_other, $deduct_phone,
                 $policy_sick, $policy_discharge, $policy_other, $policy_bonus,
-                $user_id
+                $user_id, $payment_status
             );
             
             if ($sql->execute()) {
@@ -259,16 +260,25 @@ if (isset($_POST['submit'])) {
                         <!-- Section 2: Salary Month & Account Number -->
                         <h5 class="border-custom-teal pb-2 mb-3 mt-4"><i class="fas fa-credit-card mr-2"></i> II. ຂໍ້ມູນບັນຊີ ແລະ ປະຈຳເດືອນ</h5>
                         <div class="row">
-                            <div class="col-md-6 col-sm-6">
+                            <div class="col-md-4 col-sm-6">
                                 <div class="form-group">
                                     <label for="salary_month">ປະຈຳເດືອນ/ປີ <span class="text-danger">*</span></label>
                                     <input type="month" class="form-control font-weight-bold" name="salary_month" id="salary_month" value="<?= date('Y-m') ?>" required>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-6">
+                            <div class="col-md-4 col-sm-6">
                                 <div class="form-group">
                                     <label for="account_number">ເລກບັນຊີທະນາຄານ</label>
                                     <input type="text" class="form-control font-weight-bold" name="account_number" id="account_number" placeholder="ກະລຸນາປ້ອນເລກບັນຊີ">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label for="payment_status">ສະຖານະການຈ່າຍເງິນ <span class="text-danger">*</span></label>
+                                    <select class="form-control font-weight-bold" name="payment_status" id="payment_status" required>
+                                        <option value="unpaid">ຍັງບໍ່ທັນຈ່າຍ</option>
+                                        <option value="paid">ຈ່າຍແລ້ວ</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

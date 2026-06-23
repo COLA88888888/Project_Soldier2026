@@ -143,10 +143,11 @@ $selected_month = $_GET['month'] ?? date('Y-m');
                                     <th rowspan="2" class="align-middle sticky-col sticky-col-3" style="min-width: 160px;">ຊື່ ແລະ ນາມສະກຸນ</th>
                                     <th rowspan="2" class="align-middle">ໜ້າທີ່</th>
                                     <th rowspan="2" class="align-middle" style="min-width: 100px;">ເລກບັນຊີ</th>
+                                    <th rowspan="2" class="align-middle" style="min-width: 110px;">ສະຖານະ</th>
                                     <th rowspan="2" class="align-middle" style="min-width: 80px;">ວດປ ເກີດ</th>
                                     <th rowspan="2" class="align-middle">ປີ</th>
                                     <th colspan="5" style="background-color: #059669 !important; border-color: #047857 !important;">ລາຍຮັບ (LAK)</th>
-                                    <th colspan="5" style="background-color: #e11d48 !important; border-color: #be123c !important;">...ລາຍຫັກ (LAK)</th>
+                                    <th colspan="5" style="background-color: #e11d48 !important; border-color: #be123c !important;">ລາຍຫັກ (LAK)</th>
                                     <th rowspan="2" class="align-middle" style="background-color: #f59e0b !important; border-color: #d97706 !important; color: #fff !important;">ຍອດຮັບຕົວຈິງ</th>
                                     <th colspan="5" style="background-color: #0284c7 !important; border-color: #0369a1 !important;">ເງິນນະໂຍບາຍອຸດໜູນ (LAK)</th>
                                     <th rowspan="2" class="align-middle" style="background-color: #2563eb !important; border-color: #1e40af !important;">ລວມຮັບທັງໝົດ</th>
@@ -244,6 +245,18 @@ $selected_month = $_GET['month'] ?? date('Y-m');
                                             <td class="text-left font-weight-bold sticky-col sticky-col-3"><?= htmlspecialchars($row['full_name']) ?> <?= htmlspecialchars($row['full_lastname']) ?></td>
                                             <td><?= htmlspecialchars($row['pt_name']) ?></td>
                                             <td><?= htmlspecialchars($row['account_number'] ?? '-') ?></td>
+                                            <td>
+                                                <?php if ($row['payment_status'] === 'paid') { ?>
+                                                    <span class="badge badge-success px-2 py-1" style="font-size: 12px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-check-circle"></i> ຈ່າຍແລ້ວ</span>
+                                                <?php } else { ?>
+                                                    <span class="badge badge-danger px-2 py-1" style="font-size: 12px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-times-circle"></i> ຍັງບໍ່ທັນຈ່າຍ</span>
+                                                <?php } ?>
+                                                <?php if (!empty($row['payment_updated_at']) && $row['payment_updated_at'] !== '0000-00-00 00:00:00') { ?>
+                                                    <div style="font-size: 10px; color: #64748b; margin-top: 4px; font-weight: 600;">
+                                                        <i class="far fa-clock mr-1"></i><?= date('d/m/Y H:i', strtotime($row['payment_updated_at'])) ?>
+                                                    </div>
+                                                <?php } ?>
+                                            </td>
                                             <td><?= !empty($birth_date) && $birth_date !== '0000-00-00' ? date('d/m/y', strtotime($birth_date)) : '-' ?></td>
                                             <td><?= $age > 0 ? $age : '-' ?></td>
                                             
@@ -280,9 +293,15 @@ $selected_month = $_GET['month'] ?? date('Y-m');
                                                         <i class="fas fa-cog mr-1"></i> ຈັດການ
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit.php?salary_id=<?= $row['salary_id'] ?>"><i class="fas fa-edit text-primary"></i> ແກ້ໄຂ</a>
+                                                        <?php if ($row['payment_status'] === 'paid') { ?>
+                                                            <a class="dropdown-item btn-toggle-payment" href="#" data-id="<?= $row['salary_id'] ?>" data-status="unpaid"><i class="fas fa-times-circle text-danger mr-1"></i> ຍົກເລີກການຈ່າຍ</a>
+                                                        <?php } else { ?>
+                                                            <a class="dropdown-item btn-toggle-payment" href="#" data-id="<?= $row['salary_id'] ?>" data-status="paid"><i class="fas fa-check-circle text-success mr-1"></i> ອະນຸມັດຈ່າຍເງິນ</a>
+                                                        <?php } ?>
                                                         <div class="dropdown-divider"></div>
-                                                        <a class="dropdown-item" href="#" onclick="confirmDelete(<?= $row['salary_id'] ?>)"><i class="fas fa-trash text-danger"></i> ລົບ</a>
+                                                        <a class="dropdown-item" href="edit.php?salary_id=<?= $row['salary_id'] ?>"><i class="fas fa-edit text-primary mr-1"></i> ແກ້ໄຂ</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#" onclick="confirmDelete(<?= $row['salary_id'] ?>)"><i class="fas fa-trash text-danger mr-1"></i> ລົບ</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -290,7 +309,7 @@ $selected_month = $_GET['month'] ?? date('Y-m');
                                 <?php
                                     }
                                 } else {
-                                    echo "<tr><td colspan='24' class='text-center py-5 text-muted'><i class='fas fa-info-circle mr-1'></i> ບໍ່ມີຂໍ້ມູນເງິນເດືອນໃນເດືອນນີ້</td></tr>";
+                                    echo "<tr><td colspan='25' class='text-center py-5 text-muted'><i class='fas fa-info-circle mr-1'></i> ບໍ່ມີຂໍ້ມູນເງິນເດືອນໃນເດືອນນີ້</td></tr>";
                                 }
                                 $stmt->close();
                                 ?>
@@ -345,20 +364,77 @@ $selected_month = $_GET['month'] ?? date('Y-m');
 <?php include('../../controllers/footer.php'); ?>
 
 <script>
-function confirmDelete(id) {
-    Swal.fire({
-        title: 'ທ່ານຕ້ອງການລົບຂໍ້ມູນນີ້ແທ້ບໍ?',
-        text: "ການລົບນີ້ຈະບໍ່ສາມາດກູ້ຄືນຂໍ້ມູນໄດ້!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'ຕົກລົງ, ລົບຂໍ້ມູນ!',
-        cancelButtonText: 'ຍົກເລີກ'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = 'show_table.php?delete_id=' + id;
-        }
-    })
-}
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'ຢືນຢັນການລົບ',
+            text: "ທ່ານຕ້ອງການລົບຂໍ້ມູນເງິນເດືອນນີ້ແທ້ຫຼືບໍ່?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0d9488',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ຢືນຢັນ',
+            cancelButtonText: 'ຍົກເລີກ'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'show_table.php?delete_id=' + id;
+            }
+        });
+    }
+
+    $(function() {
+        $('.btn-toggle-payment').on('click', function(e) {
+            e.preventDefault();
+            var salaryId = $(this).data('id');
+            var nextStatus = $(this).data('status');
+            var statusText = nextStatus === 'paid' ? 'ຈ່າຍແລ້ວ' : 'ຍັງບໍ່ທັນຈ່າຍ';
+            
+            Swal.fire({
+                title: 'ຢືນຢັນການປ່ຽນສະຖານະ',
+                text: "ທ່ານຕ້ອງການປ່ຽນສະຖານະການຈ່າຍເງິນເປັນ '" + statusText + "' ແທ້ຫຼືບໍ່?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#0d9488',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ຕົກລົງ',
+                cancelButtonText: 'ຍົກເລີກ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'update_payment_status.php',
+                        type: 'POST',
+                        data: {
+                            salary_id: salaryId,
+                            status: nextStatus
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'ປ່ຽນສະຖານະສຳເລັດ',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'ຜິດພາດ',
+                                    text: 'ບໍ່ສາມາດປ່ຽນສະຖານະໄດ້'
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'ຜິດພາດ',
+                                text: 'ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບເຊີເວີໄດ້'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
 </script>

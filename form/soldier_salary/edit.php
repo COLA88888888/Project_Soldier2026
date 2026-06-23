@@ -73,21 +73,23 @@ if (isset($_POST['submit'])) {
     
     $user_id = $_SESSION['user_id'];
 
+    $payment_status = trim($_POST['payment_status'] ?? 'unpaid');
+
     $update = $conn->prepare("UPDATE `salaries` SET
         `salary_month` = ?, `account_number` = ?, 
         `base_salary` = ?, `salary_increase_15` = ?, `allowance` = ?, `other_allowance` = ?, 
         `deduct_tax` = ?, `deduct_other` = ?, `deduct_phone` = ?, 
         `policy_sick` = ?, `policy_discharge` = ?, `policy_other` = ?, `policy_bonus` = ?, 
-        `user_id` = ?
+        `user_id` = ?, `payment_status` = ?, `payment_updated_at` = NOW()
         WHERE `salary_id` = ?");
         
     $update->bind_param(
-        "ssdddddddddddii",
+        "ssdddddddddddisi",
         $salary_month, $account_number,
         $base_salary, $salary_increase_15, $allowance, $other_allowance,
         $deduct_tax, $deduct_other, $deduct_phone,
         $policy_sick, $policy_discharge, $policy_other, $policy_bonus,
-        $user_id, $salary_id
+        $user_id, $payment_status, $salary_id
     );
     
     if ($update->execute()) {
@@ -269,16 +271,25 @@ if (isset($_POST['submit'])) {
                         <!-- Section 2: Salary Month & Account Number -->
                         <h5 class="border-custom-teal pb-2 mb-3 mt-4"><i class="fas fa-credit-card mr-2"></i> II. ຂໍ້ມູນບັນຊີ ແລະ ປະຈຳເດືອນ</h5>
                         <div class="row">
-                            <div class="col-md-6 col-sm-6">
+                            <div class="col-md-4 col-sm-6">
                                 <div class="form-group">
-                                    <label for="salary_month">...ປະຈຳເດືອນ/ປີ <span class="text-danger">*</span></label>
+                                    <label for="salary_month">ປະຈຳເດືອນ/ປີ <span class="text-danger">*</span></label>
                                     <input type="month" class="form-control font-weight-bold" name="salary_month" id="salary_month" value="<?= htmlspecialchars($row['salary_month']) ?>" required>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-6">
+                            <div class="col-md-4 col-sm-6">
                                 <div class="form-group">
                                     <label for="account_number">ເລກບັນຊີທະນາຄານ</label>
                                     <input type="text" class="form-control font-weight-bold" name="account_number" id="account_number" value="<?= htmlspecialchars($row['account_number'] ?? '') ?>" placeholder="ກະລຸນາປ້ອນເລກບັນຊີ">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label for="payment_status">ສະຖານະການຈ່າຍເງິນ <span class="text-danger">*</span></label>
+                                    <select class="form-control font-weight-bold" name="payment_status" id="payment_status" required>
+                                        <option value="unpaid" <?= $row['payment_status'] === 'unpaid' ? 'selected' : '' ?>>ຍັງບໍ່ທັນຈ່າຍ</option>
+                                        <option value="paid" <?= $row['payment_status'] === 'paid' ? 'selected' : '' ?>>ຈ່າຍແລ້ວ</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
