@@ -36,6 +36,11 @@
 <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- Select2 -->
 <script src="../../select2/select2.min.js"></script>
+<style>
+  .table-responsive {
+    min-height: 300px !important;
+  }
+</style>
 </body>
 </html>
 <script>
@@ -72,6 +77,85 @@
       }
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
+    // Fix dropdown cut off in responsive tables by detaching and appending to body
+    $(document).on('show.bs.dropdown', '.table-responsive .btn-group, .table-responsive .dropdown', function (e) {
+      var $btnGroup = $(this);
+      var $menu = $btnGroup.find('.dropdown-menu');
+      
+      // Store original parent
+      $menu.data('original-parent', $btnGroup);
+      
+      var buttonHeight = $btnGroup.outerHeight();
+      var menuHeight = $menu.outerHeight();
+      if (menuHeight === 0) {
+        $menu.css({
+          position: 'absolute',
+          visibility: 'hidden',
+          display: 'block'
+        });
+        menuHeight = $menu.outerHeight();
+        $menu.css({
+          position: '',
+          visibility: '',
+          display: ''
+        });
+      }
+      
+      var offset = $btnGroup.offset();
+      var windowHeight = $(window).height();
+      var scrollTop = $(window).scrollTop();
+      
+      // Calculate space below button relative to window viewport
+      var spaceBelow = windowHeight - (offset.top - scrollTop + buttonHeight);
+      
+      var top;
+      var left = offset.left;
+      
+      // Check if it's right-aligned
+      if ($menu.hasClass('dropdown-menu-right')) {
+        left = left + $btnGroup.outerWidth() - $menu.outerWidth();
+      }
+      
+      // Determine placement: up or down
+      if (spaceBelow < menuHeight + 10 && (offset.top - scrollTop) > menuHeight + 10) {
+        // Open upwards (dropup)
+        top = offset.top - menuHeight;
+        $btnGroup.addClass('dropup');
+      } else {
+        // Open downwards (dropdown)
+        top = offset.top + buttonHeight;
+        $btnGroup.removeClass('dropup');
+      }
+      
+      // Detach and append to body
+      $menu.detach().appendTo('body').css({
+        position: 'absolute',
+        top: top + 'px',
+        left: left + 'px',
+        right: 'auto',
+        bottom: 'auto',
+        display: 'block'
+      });
+    });
+
+    $(document).on('hidden.bs.dropdown', '.table-responsive .btn-group, .table-responsive .dropdown', function () {
+      var $btnGroup = $(this);
+      var $menu = $('body').children('.dropdown-menu').filter(function() {
+        return $(this).data('original-parent') && $(this).data('original-parent')[0] === $btnGroup[0];
+      });
+      
+      if ($menu.length > 0) {
+        $menu.detach().appendTo($btnGroup).css({
+          position: '',
+          top: '',
+          left: '',
+          right: '',
+          bottom: '',
+          display: ''
+        });
+      }
+      $btnGroup.removeClass('dropup');
+    });
   });
 </script>
 
