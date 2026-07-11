@@ -83,6 +83,14 @@ if (!empty($data['v_id'])) {
 </select>
 </div> 
 <div class="form-group">
+<label for="">ສະຖານະພາບ</label>
+<select name="status_persions" id="status_persions" class="form-control">
+<option value="">-- ເລືອກສະຖານະພາບ --</option>
+<option value="ໂສດ" <?= $data['status_persions'] == 'ໂສດ' ? 'selected' : '' ?>>ໂສດ</option>
+<option value="ຄອບຄົວ" <?= $data['status_persions'] == 'ຄອບຄົວ' ? 'selected' : '' ?>>ຄອບຄົວ</option>
+</select>
+</div> 
+<div class="form-group">
 <label for="d_name">ວັນເດືອນປີເກີດ</label>
 <input type="date" class="form-control" name="birth_date" id="birth_date" value="<?= htmlspecialchars($data['birth_date']) ?>" placeholder="ກະລຸນາປ້ອນ">
 </div> 
