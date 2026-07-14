@@ -125,15 +125,15 @@ p.*,
 di.*,
 v.*
 FROM officers AS a
-INNER JOIN department AS b ON a.d_id = b.d_id
-INNER JOIN units AS c ON a.u_id = c.u_id
-INNER JOIN panak AS d ON a.pk_id = d.pk_id
-INNER JOIN office AS g ON a.o_id = g.o_id
-INNER JOIN positions_level AS e ON a.l_id = e.l_id
-INNER JOIN positions AS f ON a.pt_id = f.pt_id
-INNER JOIN province AS p ON a.pro_id = p.pro_id
-INNER JOIN distict AS di ON a.dis_id = di.dis_id
-INNER JOIN village AS v ON a.v_id = v.v_id
+LEFT JOIN department AS b ON a.d_id = b.d_id
+LEFT JOIN units AS c ON a.u_id = c.u_id
+LEFT JOIN panak AS d ON a.pk_id = d.pk_id
+LEFT JOIN office AS g ON a.o_id = g.o_id
+LEFT JOIN positions_level AS e ON a.l_id = e.l_id
+LEFT JOIN positions AS f ON a.pt_id = f.pt_id
+LEFT JOIN province AS p ON a.pro_id = p.pro_id
+LEFT JOIN distict AS di ON a.dis_id = di.dis_id
+LEFT JOIN village AS v ON a.v_id = v.v_id
 WHERE a.status_persions='ໂສດ'");
 $stmt->execute();
 $result = $stmt->get_result();
