@@ -382,7 +382,7 @@ $selected_month = $_GET['month'] ?? date('Y-m');
     }
 
     $(function() {
-        $('.btn-toggle-payment').on('click', function(e) {
+        $(document).on('click', '.btn-toggle-payment', function(e) {
             e.preventDefault();
             var salaryId = $(this).data('id');
             var nextStatus = $(this).data('status');

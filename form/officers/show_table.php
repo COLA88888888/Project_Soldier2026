@@ -1,4 +1,4 @@
-﻿<?php include('../../controllers/head.php'); ?>
+<?php include('../../controllers/head.php'); ?>
 <?php
 if(isset($_GET['officer_id'])){
 $officer_id = $_GET['officer_id'];
@@ -576,7 +576,7 @@ $fileLink = "<a href='documents/{$file}' class='btn btn-success btn-xs' target='
 
 <script>
 $(document).ready(function() {
-  $('.view-details').on('click', function(e) {
+  $(document).on('click', '.view-details', function(e) {
     e.preventDefault();
     var officerId = $(this).data('id');
     
