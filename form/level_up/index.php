@@ -17,16 +17,11 @@ $sql = $conn->prepare("INSERT INTO `level_up`( `officer_id`, `l_id`, `o_id`, `pk
 $sql->bind_param("iiiiiissi", $officer_id, $l_id, $o_id, $pk_id, $u_id, $pt_id, $level_date, $date_office, $user_id);
 
 if ($sql->execute()) {
-if ($_SESSION['role'] === 'admin') {
     $updateStatus = $conn->prepare("UPDATE officers SET l_id = ?, o_id = ?, pk_id = ?, u_id = ?, pt_id = ? WHERE officer_id = ?");
     $updateStatus->bind_param("iiiiii", $l_id, $o_id, $pk_id, $u_id, $pt_id, $officer_id);
-} else {
-    $updateStatus = $conn->prepare("UPDATE officers SET l_id = ?, o_id = ?, pk_id = ?, u_id = ?, pt_id = ? WHERE officer_id = ? AND user_id = ?");
-    $updateStatus->bind_param("iiiiiis", $l_id, $o_id, $pk_id, $u_id, $pt_id, $officer_id, $user_id);
-}
-if (!$updateStatus->execute()) {
-    echo "Error UPDATE: " . $updateStatus->error;
-}
+    if (!$updateStatus->execute()) {
+        echo "Error UPDATE: " . $updateStatus->error;
+    }
 echo "<script>
 Swal.fire({
 icon: 'success',

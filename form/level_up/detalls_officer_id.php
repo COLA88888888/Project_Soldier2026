@@ -72,8 +72,36 @@ location='show_table.php';
 <?php 
 $i = 1;
 include('../../condb.php');
-$officer_id = $_GET['officer_id'];
-$stmt = $conn->prepare("SELECT a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.* FROM positions_level AS a JOIN rank_position AS b ON a.l_id = b.l_id JOIN level_up AS d ON a.l_id = d.l_id JOIN officers AS c ON c.officer_id = d.officer_id JOIN office AS e ON e.o_id = c.o_id JOIN panak AS f ON f.pk_id = c.pk_id JOIN positions AS g ON g.pt_id = c.pt_id JOIN units AS h ON h.u_id = c.u_id where d.officer_id='$officer_id' order by d.level_id  desc ");
+$officer_id = isset($_GET['officer_id']) ? intval($_GET['officer_id']) : 0;
+$stmt = $conn->prepare("
+    SELECT 
+        d.level_id,
+        d.officer_id,
+        d.level_date,
+        d.date_office,
+        c.full_name,
+        c.full_lastname,
+        c.birth_date,
+        c.gender,
+        COALESCE(a.l_name, 'ບໍ່ມີຊັ້ນ') AS l_name,
+        COALESCE(b.r_years, 0) AS r_years,
+        COALESCE(b.r_month, 0) AS r_month,
+        COALESCE(e.o_name, 'ບໍ່ມີ') AS o_name,
+        COALESCE(f.pk_name, 'ບໍ່ມີ') AS pk_name,
+        COALESCE(g.pt_name, 'ບໍ່ມີ') AS pt_name,
+        COALESCE(h.u_name, 'ບໍ່ມີ') AS u_name
+    FROM level_up AS d
+    INNER JOIN officers AS c ON c.officer_id = d.officer_id
+    LEFT JOIN positions_level AS a ON d.l_id = a.l_id
+    LEFT JOIN rank_position AS b ON d.l_id = b.l_id
+    LEFT JOIN office AS e ON COALESCE(d.o_id, c.o_id) = e.o_id
+    LEFT JOIN panak AS f ON COALESCE(d.pk_id, c.pk_id) = f.pk_id
+    LEFT JOIN positions AS g ON COALESCE(d.pt_id, c.pt_id) = g.pt_id
+    LEFT JOIN units AS h ON COALESCE(d.u_id, c.u_id) = h.u_id
+    WHERE d.officer_id = ?
+    ORDER BY d.level_id DESC
+");
+$stmt->bind_param("i", $officer_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -81,8 +109,7 @@ while ($row = $result->fetch_assoc()) { ?>
 <tr>
 <td><?= $i++ ?></td>
 
-
-<td><?= htmlspecialchars($row['full_name']) ?></td>
+<td><?= htmlspecialchars($row['full_name'] . ' ' . $row['full_lastname']) ?></td>
 <td><?= htmlspecialchars($row['l_name']) ?></td>
 <td><?= htmlspecialchars($row['o_name']) ?></td>
 
@@ -92,26 +119,29 @@ while ($row = $result->fetch_assoc()) { ?>
 
 <td>
 <?php
-$birth_date =  $row['birth_date']; 
-$today = new DateTime(); 
-$birth = new DateTime($birth_date);
-
-$interval = $birth->diff($today);
-
-echo "{$interval->y} ປີ {$interval->m} ເດືອນ {$interval->d} ວັນ";
+if (!empty($row['birth_date']) && strtotime($row['birth_date']) && $row['birth_date'] !== '0000-00-00') {
+    $birth = new DateTime($row['birth_date']);
+    $today = new DateTime(); 
+    $interval = $birth->diff($today);
+    echo "{$interval->y} ປີ {$interval->m} ເດືອນ {$interval->d} ວັນ";
+} else {
+    echo "-";
+}
 ?>
 </td>
 
-<td><?= date('d/m/Y', strtotime($row['level_date'])) ?></td>
+<td><?= !empty($row['level_date']) ? date('d/m/Y', strtotime($row['level_date'])) : '-' ?></td>
 <td>
 
 <?php
-$last_promotion_date= $row['level_date'];
-$today = new DateTime(); 
-$promotion_date = new DateTime($last_promotion_date);
-$interval = $promotion_date->diff($today);
-
-echo "{$interval->y} ປີີ {$interval->m} ເດືອນ {$interval->d} ວັນ";
+if (!empty($row['level_date']) && strtotime($row['level_date']) && $row['level_date'] !== '0000-00-00') {
+    $promotion_date = new DateTime($row['level_date']);
+    $today = new DateTime(); 
+    $interval = $promotion_date->diff($today);
+    echo "{$interval->y} ປີ {$interval->m} ເດືອນ {$interval->d} ວັນ";
+} else {
+    echo "-";
+}
 ?>
 </td>
 
@@ -119,21 +149,25 @@ echo "{$interval->y} ປີີ {$interval->m} ເດືອນ {$interval->d} ວ
 
 <td>   
 <?php
-if (!empty($row['level_date'])) {
-    $last_date = new DateTime($row['level_date']);
+if (!empty($row['level_date']) && strtotime($row['level_date']) && $row['level_date'] !== '0000-00-00') {
     $wait_y = (int)$row['r_years'];
     $wait_m = (int)$row['r_month'];
 
-    $next_date = clone $last_date;
-    $next_date->add(new DateInterval("P{$wait_y}Y{$wait_m}M"));
-
-    $today = new DateTime();
-    $diff = $today->diff($next_date);
-
-    if ($today < $next_date) {
-        echo "<button class='btn btn-warning btn-sm'> {$diff->y} ປີ {$diff->m} ເດືອນ {$diff->d} ວັນ</button>";
+    if ($wait_y == 0 && $wait_m == 0) {
+        echo "<span class='badge badge-secondary'>ບໍ່ໄດ້ກຳນົດເກນ</span>";
     } else {
-        echo "<button class='btn btn-danger btn-sm text-white'>ຄົບກຳນົດແລ້ວ</button>";
+        $last_date = new DateTime($row['level_date']);
+        $next_date = clone $last_date;
+        $next_date->add(new DateInterval("P{$wait_y}Y{$wait_m}M"));
+
+        $today = new DateTime();
+        $diff = $today->diff($next_date);
+
+        if ($today < $next_date) {
+            echo "<button class='btn btn-warning btn-sm'> {$diff->y} ປີ {$diff->m} ເດືອນ {$diff->d} ວັນ</button>";
+        } else {
+            echo "<button class='btn btn-danger btn-sm text-white'>ຄົບກຳນົດແລ້ວ</button>";
+        }
     }
 } else {
     echo "<span class='text-danger'>ລະບູວັນທີກ່ອນ</span>";
@@ -141,7 +175,7 @@ if (!empty($row['level_date'])) {
 ?>
 
 </td>
-<td><?= date('d/m/Y', strtotime($row['date_office'])) ?></td>
+<td><?= (!empty($row['date_office']) && strtotime($row['date_office']) && $row['date_office'] !== '0000-00-00') ? date('d/m/Y', strtotime($row['date_office'])) : '-' ?></td>
 <!-- <?php if ($_SESSION['role'] == "admin") { ?>
 <td>
 <a href="show_table.php?level_id=<?= $row['level_id'] ?>" class="btn btn-danger btn-sm delete">
