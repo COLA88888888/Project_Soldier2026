@@ -54,6 +54,7 @@ location='show_table.php';
 <th>ຫ້ອງການ</th>
 <th>ພະແນກ</th>
 <th>ໜ່ວຍງານ</th>
+<th>ລາຍຊື່ພະນັກງານ</th>
 <?php if ($_SESSION['role'] == "admin") { ?>
 <th>ຄຳສັ່ງ</th>
 <?php } ?>
@@ -87,6 +88,11 @@ while ($row = $result->fetch_assoc()) {
 <td><?= htmlspecialchars($row['o_name']) ?></td>
 <td><?= htmlspecialchars($row['pk_name']) ?></td>
 <td><?= htmlspecialchars($row['u_name']) ?></td>
+<td>
+<a href="../officers/show_table.php?u_id=<?= $row['u_id'] ?>" class="btn btn-info btn-sm">
+<i class="fas fa-users"></i> ເບິ່ງພະນັກງານ
+</a>
+</td>
 
 <?php if ($_SESSION['role'] == "admin") { ?>
 <td>

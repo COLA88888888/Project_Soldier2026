@@ -1,4 +1,4 @@
-﻿<?php include('../../controllers/head.php'); ?>
+<?php include('../../controllers/head.php'); ?>
 <?php
 if(isset($_GET['officer_id'])){
 $officer_id = $_GET['officer_id'];
@@ -114,18 +114,32 @@ location='show_table.php';
 $i = 1;
 $l_id = isset($_GET['l_id']) ? intval($_GET['l_id']) : 0;
 $pk_id = isset($_GET['pk_id']) ? intval($_GET['pk_id']) : 0;
+$o_id = isset($_GET['o_id']) ? intval($_GET['o_id']) : 0;
+$u_id = isset($_GET['u_id']) ? intval($_GET['u_id']) : 0;
+$d_id = isset($_GET['d_id']) ? intval($_GET['d_id']) : 0;
+
 include('../../condb.php');
-$stmt = $conn->prepare("SELECT 
+
+$where_clauses = ["a.l_id = ?"];
+$types = "i";
+$params = [$l_id];
+
+if ($pk_id > 0) { $where_clauses[] = "a.pk_id = ?"; $types .= "i"; $params[] = $pk_id; }
+if ($o_id > 0) { $where_clauses[] = "a.o_id = ?"; $types .= "i"; $params[] = $o_id; }
+if ($u_id > 0) { $where_clauses[] = "a.u_id = ?"; $types .= "i"; $params[] = $u_id; }
+if ($d_id > 0) { $where_clauses[] = "a.d_id = ?"; $types .= "i"; $params[] = $d_id; }
+
+$sql_query = "SELECT 
 a.*, 
-b.*, 
-c.*, 
-d.*, 
-e.*, 
-f.*, 
-g.*,
-p.*,
-di.*,
-v.*
+b.d_name, 
+c.u_name, 
+d.pk_name, 
+g.o_name, 
+e.l_name, 
+f.pt_name,
+p.pro_name,
+di.dis_name,
+v.v_name
 FROM officers AS a
 LEFT JOIN department AS b ON a.d_id = b.d_id
 LEFT JOIN units AS c ON a.u_id = c.u_id
@@ -136,8 +150,10 @@ LEFT JOIN positions AS f ON a.pt_id = f.pt_id
 LEFT JOIN province AS p ON a.pro_id = p.pro_id
 LEFT JOIN distict AS di ON a.dis_id = di.dis_id
 LEFT JOIN village AS v ON a.v_id = v.v_id
-WHERE a.l_id = ? and a.pk_id = ?");
-$stmt->bind_param("ii", $l_id, $pk_id);
+WHERE " . implode(" AND ", $where_clauses);
+
+$stmt = $conn->prepare($sql_query);
+$stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
 

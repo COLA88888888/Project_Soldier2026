@@ -66,40 +66,51 @@ h5{
 <div class="row">
 <?php 
 include('../../condb.php');
-$pk_id = $_GET['pk_id'];
-$stmt = $conn->prepare("SELECT *FROM positions_level ");
+$pk_id = isset($_GET['pk_id']) ? intval($_GET['pk_id']) : 0;
+$o_id = isset($_GET['o_id']) ? intval($_GET['o_id']) : 0;
+$u_id = isset($_GET['u_id']) ? intval($_GET['u_id']) : 0;
+$d_id = isset($_GET['d_id']) ? intval($_GET['d_id']) : 0;
+
+$where_extra = "";
+if ($pk_id > 0) { $where_extra .= " AND pk_id = $pk_id"; }
+if ($o_id > 0) { $where_extra .= " AND o_id = $o_id"; }
+if ($u_id > 0) { $where_extra .= " AND u_id = $u_id"; }
+if ($d_id > 0) { $where_extra .= " AND d_id = $d_id"; }
+
+$stmt = $conn->prepare("SELECT * FROM positions_level ORDER BY l_id ASC");
 $stmt->execute();
 $result = $stmt->get_result();
 while ($rowbox = $result->fetch_assoc()) {
 $l_id  = $rowbox['l_id'];
 
-$sql = "SELECT COUNT(*) as totalalls FROM officers where l_id=$l_id and pk_id=$pk_id"; // Assuming o_id = 1 is the main office
+$sql = "SELECT COUNT(*) as totalalls FROM officers where l_id=$l_id $where_extra";
 $result1 = mysqli_query($conn, $sql);
 $rowalls = mysqli_fetch_assoc($result1);
 $totalalls = $rowalls['totalalls'];
-$sql = "SELECT COUNT(*) as mans FROM officers where gender='ຊາຍ' and l_id=$l_id and pk_id=$pk_id"; // Assuming o_id = 1 is the main office
+
+$sql = "SELECT COUNT(*) as mans FROM officers where gender='ຊາຍ' and l_id=$l_id $where_extra";
 $result2 = mysqli_query($conn, $sql);
 $rowmarried = mysqli_fetch_assoc($result2);
 $totalman = $rowmarried['mans'];
 
-$sql = "SELECT COUNT(*) as women FROM officers where gender='ຍິງ' and l_id=$l_id and pk_id=$pk_id"; // Assuming o_id = 1 is the main office
+$sql = "SELECT COUNT(*) as women FROM officers where gender='ຍິງ' and l_id=$l_id $where_extra";
 $result3 = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result3);
 $totalwomen = $row['women'];
 
-$sql = "SELECT COUNT(*) as married FROM officers where status_persions='ຄອບຄົວ' and l_id=$l_id and pk_id=$pk_id"; // Assuming o_id = 1 is the main office
+$sql = "SELECT COUNT(*) as married FROM officers where status_persions='ຄອບຄົວ' and l_id=$l_id $where_extra";
 $result4 = mysqli_query($conn, $sql);
 $married = mysqli_fetch_assoc($result4);
 $totalmarried = $married['married'];
 
-$sql = "SELECT COUNT(*) as single FROM officers where status_persions='ໂສດ' and l_id=$l_id and pk_id=$pk_id"; // Assuming o_id = 1 is the main office
+$sql = "SELECT COUNT(*) as single FROM officers where status_persions='ໂສດ' and l_id=$l_id $where_extra";
 $result5 = mysqli_query($conn, $sql);
 $single = mysqli_fetch_assoc($result5);
 $totalsingle = $single['single'];
 
 ?>
 <div class="col-lg-4 col-6">
-<a href="../../form/officers/show_position_level_id.php?l_id=<?php echo $rowbox['l_id']; ?>&pk_id=<?php echo $pk_id; ?>" class="text-decoration-none">
+<a href="../../form/officers/show_position_level_id.php?l_id=<?= $rowbox['l_id'] ?>&pk_id=<?= $pk_id ?>&o_id=<?= $o_id ?>&u_id=<?= $u_id ?>&d_id=<?= $d_id ?>" class="text-decoration-none">
     <div class="card card-modern text-center p-3">
   <h5 class="card-title-top-right"><?php echo $rowbox['l_name']; ?></h5>
   <img src="uploads/<?php echo $rowbox['l_img']; ?>" alt="" width="100%" height="100px" class="img-fluid mb-2" style="object-fit: cover; border-radius: 12px;">

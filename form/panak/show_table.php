@@ -50,6 +50,7 @@ if(isset($_GET['pk_id'])){
 <th>ຊື່ກົມກອງ</th>
 <th>ຫ້ອງການ</th>
 <th>ພະແນກ</th>
+<th>ລາຍຊື່ພະນັກງານ</th>
 <?php if($_SESSION['role']=="admin"){ ?>
 <th>ຄຳສັ່ງ</th>
 <?php } ?>
@@ -69,6 +70,11 @@ while ($row = $result->fetch_assoc()) { ?>
 <td><?= htmlspecialchars($row['d_name']) ?></td>
 <td><?= htmlspecialchars($row['o_name']) ?></td>
 <td><?= htmlspecialchars($row['pk_name']) ?></td>
+<td>
+<a href="../officers/show_table.php?pk_id=<?= $row['pk_id'] ?>" class="btn btn-info btn-sm">
+<i class="fas fa-users"></i> ເບິ່ງພະນັກງານ
+</a>
+</td>
 <?php if ($_SESSION['role'] == "admin") { ?>
 <td>
 <a href="show_table.php?pk_id=<?= $row['pk_id'] ?>" class="btn btn-danger btn-sm delete">

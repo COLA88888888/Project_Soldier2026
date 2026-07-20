@@ -37,11 +37,47 @@ location='show_table.php';
 <div class="row">
 <div class="col-sm-12">
 
+<?php
+include('../../condb.php');
+$o_id = isset($_GET['o_id']) ? intval($_GET['o_id']) : 0;
+$pk_id = isset($_GET['pk_id']) ? intval($_GET['pk_id']) : 0;
+$u_id = isset($_GET['u_id']) ? intval($_GET['u_id']) : 0;
+$d_id = isset($_GET['d_id']) ? intval($_GET['d_id']) : 0;
+
+$filter_title = "";
+if ($o_id > 0) {
+    $r_filter = mysqli_query($conn, "SELECT o_name FROM office WHERE o_id = '$o_id'");
+    if ($row_f = mysqli_fetch_assoc($r_filter)) {
+        $filter_title = " (ຫ້ອງການ: " . htmlspecialchars($row_f['o_name']) . ")";
+    }
+} elseif ($pk_id > 0) {
+    $r_filter = mysqli_query($conn, "SELECT pk_name FROM panak WHERE pk_id = '$pk_id'");
+    if ($row_f = mysqli_fetch_assoc($r_filter)) {
+        $filter_title = " (ພະແນກ: " . htmlspecialchars($row_f['pk_name']) . ")";
+    }
+} elseif ($u_id > 0) {
+    $r_filter = mysqli_query($conn, "SELECT u_name FROM units WHERE u_id = '$u_id'");
+    if ($row_f = mysqli_fetch_assoc($r_filter)) {
+        $filter_title = " (ໜ່ວຍງານ: " . htmlspecialchars($row_f['u_name']) . ")";
+    }
+} elseif ($d_id > 0) {
+    $r_filter = mysqli_query($conn, "SELECT d_name FROM department WHERE d_id = '$d_id'");
+    if ($row_f = mysqli_fetch_assoc($r_filter)) {
+        $filter_title = " (ກົມກອງ: " . htmlspecialchars($row_f['d_name']) . ")";
+    }
+}
+?>
+
 <div class="card mt-2">
 
-<div class="card-header bg-primary">
-<h3 class="card-title">ລາຍງານຂໍ້ມູນ ປະຫວັດພະນັກງານ</h3>
-<a href="index.php" class="btn btn-success float-right"><i class="icon fas fa-plus"></i> ເພີ່ມຂໍ້ມູນ</a>
+<div class="card-header bg-primary d-flex align-items-center justify-content-between">
+<h3 class="card-title m-0">ລາຍງານຂໍ້ມູນ ປະຫວັດພະນັກງານ<?= $filter_title ?></h3>
+<div>
+<?php if ($o_id > 0 || $pk_id > 0 || $u_id > 0 || $d_id > 0) { ?>
+<a href="show_table.php" class="btn btn-warning btn-sm mr-2"><i class="fas fa-undo"></i> ສະແດງທັງໝົດ</a>
+<?php } ?>
+<a href="index.php" class="btn btn-success btn-sm"><i class="icon fas fa-plus"></i> ເພີ່ມຂໍ້ມູນ</a>
+</div>
 </div>
 <!-- /.card-header -->
 <div class="card-body">
@@ -184,18 +220,43 @@ location='show_table.php';
 <tbody>
 <?php 
 $i = 1;
-include('../../condb.php');
-$stmt = $conn->prepare("SELECT 
+
+$where_clauses = [];
+$types = "";
+$params = [];
+
+if ($o_id > 0) {
+    $where_clauses[] = "a.o_id = ?";
+    $types .= "i";
+    $params[] = $o_id;
+}
+if ($pk_id > 0) {
+    $where_clauses[] = "a.pk_id = ?";
+    $types .= "i";
+    $params[] = $pk_id;
+}
+if ($u_id > 0) {
+    $where_clauses[] = "a.u_id = ?";
+    $types .= "i";
+    $params[] = $u_id;
+}
+if ($d_id > 0) {
+    $where_clauses[] = "a.d_id = ?";
+    $types .= "i";
+    $params[] = $d_id;
+}
+
+$sql_query = "SELECT 
 a.*, 
-b.*, 
-c.*, 
-d.*, 
-e.*, 
-f.*, 
-g.*,
-p.*,
-di.*,
-v.*
+b.d_name, 
+c.u_name, 
+d.pk_name, 
+g.o_name, 
+e.l_name, 
+f.pt_name,
+p.pro_name,
+di.dis_name,
+v.v_name
 FROM officers AS a
 LEFT JOIN department AS b ON a.d_id = b.d_id
 LEFT JOIN units AS c ON a.u_id = c.u_id
@@ -205,9 +266,18 @@ LEFT JOIN positions_level AS e ON a.l_id = e.l_id
 LEFT JOIN positions AS f ON a.pt_id = f.pt_id
 LEFT JOIN province AS p ON a.pro_id = p.pro_id
 LEFT JOIN distict AS di ON a.dis_id = di.dis_id
-LEFT JOIN village AS v ON a.v_id = v.v_id
+LEFT JOIN village AS v ON a.v_id = v.v_id";
 
-");
+if (count($where_clauses) > 0) {
+    $sql_query .= " WHERE " . implode(" AND ", $where_clauses);
+}
+
+$sql_query .= " ORDER BY a.officer_id DESC";
+
+$stmt = $conn->prepare($sql_query);
+if (count($params) > 0) {
+    $stmt->bind_param($types, ...$params);
+}
 $stmt->execute();
 $result = $stmt->get_result();
 

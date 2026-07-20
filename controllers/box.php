@@ -140,6 +140,70 @@
 </style>
 
 <div class="dashboard-header">
+    <h4>ລາຍງານຈຳນວນພະນັກງານ ຕາມແຕ່ລະຫ້ອງການ (Officers per Office)</h4>
+    <p>ສະແດງຈຳນວນລວມ, ຍິງ, ແລະ ຊາຍ ຂອງພະນັກງານແຕ່ລະຫ້ອງການ</p>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <?php 
+            include('../../condb.php');
+            $stmt_off = $conn->prepare("SELECT * FROM office ORDER BY o_id ASC");
+            $stmt_off->execute();
+            $result_off = $stmt_off->get_result();
+            $idx_off = 0;
+            $gradients = ['grad-teal', 'grad-cyan', 'grad-emerald', 'grad-blue', 'grad-indigo', 'grad-violet'];
+            
+            while ($rowbox = $result_off->fetch_assoc()) {
+                $o_id = $rowbox['o_id'];
+                $grad = $gradients[$idx_off % count($gradients)];
+                $idx_off++;
+                
+                $sql1 = "SELECT COUNT(*) as totaltwo FROM officers WHERE o_id = '$o_id'";
+                $result1 = mysqli_query($conn, $sql1);
+                $row1 = mysqli_fetch_assoc($result1);
+                $totaltwo = $row1['totaltwo'] ?? 0;
+                
+                $sql2 = "SELECT COUNT(*) as mans FROM officers WHERE gender='ຊາຍ' AND o_id = '$o_id'";
+                $result2 = mysqli_query($conn, $sql2);
+                $row2 = mysqli_fetch_assoc($result2);
+                $totalman3 = $row2['mans'] ?? 0;
+                
+                $sql3 = "SELECT COUNT(*) as women FROM officers WHERE gender='ຍິງ' AND o_id = '$o_id'";
+                $result3 = mysqli_query($conn, $sql3);
+                $row3 = mysqli_fetch_assoc($result3);
+                $totalwomen = $row3['women'] ?? 0;
+            ?>
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                <div class="stat-card-custom <?= $grad ?>">
+                    <div class="card-body-custom">
+                        <h6><?= htmlspecialchars($rowbox['o_name']); ?></h6>
+                        <h3><?= $totaltwo; ?> <span style="font-size: 13px; font-weight: normal; opacity: 0.95;">ສະຫາຍ</span></h3>
+                        <p>[ ຍິງ: <?= $totalwomen; ?> || ຊາຍ: <?= $totalman3; ?> ]</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="ion-ios-home"></i>
+                    </div>
+                    <div class="d-flex justify-content-between pt-2 mt-2 border-top border-light">
+                        <a href="../../form/officers/show_table.php?o_id=<?= $o_id ?>" class="text-white small font-weight-bold">
+                            <i class="fas fa-users mr-1"></i> ເບິ່ງພະນັກງານ
+                        </a>
+                        <a href="../../form/positions_level/position_level.php?o_id=<?= $o_id ?>" class="text-white small font-weight-bold">
+                            ລາຍລະອຽດຊັ້ນ <i class="fas fa-arrow-circle-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <?php 
+            } 
+            $stmt_off->close(); 
+            ?>
+        </div>
+    </div>
+</section>
+
+<div class="dashboard-header mt-2">
     <h4>ລາຍງານຈຳນວນພະນັກງານ ຕາມແຕ່ລະພະແນກ (Officers per Section)</h4>
     <p>ສະແດງຈຳນວນລວມ, ຍິງ, ແລະ ຊາຍ ຂອງພະນັກງານແຕ່ລະພະແນກ</p>
 </div>
@@ -148,34 +212,30 @@
     <div class="container-fluid">
         <div class="row">
             <?php 
-            include('../../condb.php');
-            $stmt = $conn->prepare("SELECT * FROM panak");
+            $stmt = $conn->prepare("SELECT * FROM panak ORDER BY pk_id ASC");
             $stmt->execute();
             $result = $stmt->get_result();
             $idx = 0;
-            // List of gradients to cycle through for visual variety
-            $gradients = ['grad-teal', 'grad-cyan', 'grad-emerald', 'grad-blue'];
             
             while ($rowbox = $result->fetch_assoc()) {
                 $pk_id = $rowbox['pk_id'];
                 $grad = $gradients[$idx % count($gradients)];
                 $idx++;
                 
-                // Get counts
                 $sql1 = "SELECT COUNT(*) as totaltwo FROM officers WHERE pk_id = '$pk_id'";
                 $result1 = mysqli_query($conn, $sql1);
                 $row1 = mysqli_fetch_assoc($result1);
-                $totaltwo = $row1['totaltwo'];
+                $totaltwo = $row1['totaltwo'] ?? 0;
                 
                 $sql2 = "SELECT COUNT(*) as mans FROM officers WHERE gender='ຊາຍ' AND pk_id = '$pk_id'";
                 $result2 = mysqli_query($conn, $sql2);
                 $row2 = mysqli_fetch_assoc($result2);
-                $totalman3 = $row2['mans'];
+                $totalman3 = $row2['mans'] ?? 0;
                 
                 $sql3 = "SELECT COUNT(*) as women FROM officers WHERE gender='ຍິງ' AND pk_id = '$pk_id'";
                 $result3 = mysqli_query($conn, $sql3);
                 $row3 = mysqli_fetch_assoc($result3);
-                $totalwomen = $row3['women'];
+                $totalwomen = $row3['women'] ?? 0;
             ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                 <div class="stat-card-custom <?= $grad ?>">
@@ -187,15 +247,81 @@
                     <div class="card-icon">
                         <i class="ion-android-contacts"></i>
                     </div>
-                    <a href="../../form/positions_level/position_level.php?pk_id=<?= $pk_id ?>" class="card-footer-custom">
-                        <span>ເບິ່ງລາຍລະອຽດຊັ້ນ</span>
-                        <i class="fas fa-arrow-circle-right"></i>
-                    </a>
+                    <div class="d-flex justify-content-between pt-2 mt-2 border-top border-light">
+                        <a href="../../form/officers/show_table.php?pk_id=<?= $pk_id ?>" class="text-white small font-weight-bold">
+                            <i class="fas fa-users mr-1"></i> ເບິ່ງພະນັກງານ
+                        </a>
+                        <a href="../../form/positions_level/position_level.php?pk_id=<?= $pk_id ?>" class="text-white small font-weight-bold">
+                            ລາຍລະອຽດຊັ້ນ <i class="fas fa-arrow-circle-right ml-1"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             <?php 
             } 
             $stmt->close(); 
+            ?>
+        </div>
+    </div>
+</section>
+
+<div class="dashboard-header mt-2">
+    <h4>ລາຍງານຈຳນວນພະນັກງານ ຕາມແຕ່ລະໜ່ວຍງານ (Officers per Unit)</h4>
+    <p>ສະແດງຈຳນວນລວມ, ຍິງ, ແລະ ຊາຍ ຂອງພະນັກງານແຕ່ລະໜ່ວຍງານ</p>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <?php 
+            $stmt_u = $conn->prepare("SELECT * FROM units ORDER BY u_id ASC");
+            $stmt_u->execute();
+            $result_u = $stmt_u->get_result();
+            $idx_u = 0;
+            
+            while ($rowbox = $result_u->fetch_assoc()) {
+                $u_id = $rowbox['u_id'];
+                $grad = $gradients[$idx_u % count($gradients)];
+                $idx_u++;
+                
+                $sql1 = "SELECT COUNT(*) as totaltwo FROM officers WHERE u_id = '$u_id'";
+                $result1 = mysqli_query($conn, $sql1);
+                $row1 = mysqli_fetch_assoc($result1);
+                $totaltwo = $row1['totaltwo'] ?? 0;
+                
+                $sql2 = "SELECT COUNT(*) as mans FROM officers WHERE gender='ຊາຍ' AND u_id = '$u_id'";
+                $result2 = mysqli_query($conn, $sql2);
+                $row2 = mysqli_fetch_assoc($result2);
+                $totalman3 = $row2['mans'] ?? 0;
+                
+                $sql3 = "SELECT COUNT(*) as women FROM officers WHERE gender='ຍິງ' AND u_id = '$u_id'";
+                $result3 = mysqli_query($conn, $sql3);
+                $row3 = mysqli_fetch_assoc($result3);
+                $totalwomen = $row3['women'] ?? 0;
+            ?>
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                <div class="stat-card-custom <?= $grad ?>">
+                    <div class="card-body-custom">
+                        <h6><?= htmlspecialchars($rowbox['u_name']); ?></h6>
+                        <h3><?= $totaltwo; ?> <span style="font-size: 13px; font-weight: normal; opacity: 0.95;">ສະຫາຍ</span></h3>
+                        <p>[ ຍິງ: <?= $totalwomen; ?> || ຊາຍ: <?= $totalman3; ?> ]</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="ion-grid"></i>
+                    </div>
+                    <div class="d-flex justify-content-between pt-2 mt-2 border-top border-light">
+                        <a href="../../form/officers/show_table.php?u_id=<?= $u_id ?>" class="text-white small font-weight-bold">
+                            <i class="fas fa-users mr-1"></i> ເບິ່ງພະນັກງານ
+                        </a>
+                        <a href="../../form/positions_level/position_level.php?u_id=<?= $u_id ?>" class="text-white small font-weight-bold">
+                            ລາຍລະອຽດຊັ້ນ <i class="fas fa-arrow-circle-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <?php 
+            } 
+            $stmt_u->close(); 
             ?>
         </div>
     </div>
