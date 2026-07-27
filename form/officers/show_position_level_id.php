@@ -125,6 +125,13 @@ if (!empty($pk_ids_str)) {
     $pk_ids_arr = array_filter($pk_ids_arr, function($id) { return $id > 0; });
 }
 
+$o_ids_str = isset($_GET['o_ids']) ? $_GET['o_ids'] : '';
+$o_ids_arr = [];
+if (!empty($o_ids_str)) {
+    $o_ids_arr = array_map('intval', explode(',', $o_ids_str));
+    $o_ids_arr = array_filter($o_ids_arr, function($id) { return $id > 0; });
+}
+
 include('../../condb.php');
 
 $where_clauses = ["a.l_id = ?"];
@@ -143,7 +150,18 @@ if ($pk_id > 0) {
         $params[] = $id;
     }
 }
-if ($o_id > 0) { $where_clauses[] = "a.o_id = ?"; $types .= "i"; $params[] = $o_id; }
+if ($o_id > 0) { 
+    $where_clauses[] = "a.o_id = ?"; 
+    $types .= "i"; 
+    $params[] = $o_id; 
+} elseif (!empty($o_ids_arr)) {
+    $placeholders = implode(',', array_fill(0, count($o_ids_arr), '?'));
+    $where_clauses[] = "a.o_id IN ($placeholders)";
+    $types .= str_repeat('i', count($o_ids_arr));
+    foreach ($o_ids_arr as $id) {
+        $params[] = $id;
+    }
+}
 if ($u_id > 0) { $where_clauses[] = "a.u_id = ?"; $types .= "i"; $params[] = $u_id; }
 if ($d_id > 0) { $where_clauses[] = "a.d_id = ?"; $types .= "i"; $params[] = $d_id; }
 
