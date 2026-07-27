@@ -71,8 +71,20 @@ $o_id = isset($_GET['o_id']) ? intval($_GET['o_id']) : 0;
 $u_id = isset($_GET['u_id']) ? intval($_GET['u_id']) : 0;
 $d_id = isset($_GET['d_id']) ? intval($_GET['d_id']) : 0;
 
+$pk_ids_str = isset($_GET['pk_ids']) ? $_GET['pk_ids'] : '';
+$pk_ids_arr = [];
+if (!empty($pk_ids_str)) {
+    $pk_ids_arr = array_map('intval', explode(',', $pk_ids_str));
+    $pk_ids_arr = array_filter($pk_ids_arr, function($id) { return $id > 0; });
+}
+
 $where_extra = "";
-if ($pk_id > 0) { $where_extra .= " AND pk_id = $pk_id"; }
+if ($pk_id > 0) { 
+    $where_extra .= " AND pk_id = $pk_id"; 
+} elseif (!empty($pk_ids_arr)) {
+    $clean_ids = implode(',', $pk_ids_arr);
+    $where_extra .= " AND pk_id IN ($clean_ids)";
+}
 if ($o_id > 0) { $where_extra .= " AND o_id = $o_id"; }
 if ($u_id > 0) { $where_extra .= " AND u_id = $u_id"; }
 if ($d_id > 0) { $where_extra .= " AND d_id = $d_id"; }
@@ -110,7 +122,7 @@ $totalsingle = $single['single'];
 
 ?>
 <div class="col-lg-4 col-6">
-<a href="../../form/officers/show_position_level_id.php?l_id=<?= $rowbox['l_id'] ?>&pk_id=<?= $pk_id ?>&o_id=<?= $o_id ?>&u_id=<?= $u_id ?>&d_id=<?= $d_id ?>" class="text-decoration-none">
+<a href="../../form/officers/show_position_level_id.php?l_id=<?= $rowbox['l_id'] ?>&pk_id=<?= $pk_id ?>&pk_ids=<?= urlencode($pk_ids_str) ?>&o_id=<?= $o_id ?>&u_id=<?= $u_id ?>&d_id=<?= $d_id ?>" class="text-decoration-none">
     <div class="card card-modern text-center p-3">
   <h5 class="card-title-top-right"><?php echo $rowbox['l_name']; ?></h5>
   <img src="uploads/<?php echo $rowbox['l_img']; ?>" alt="" width="100%" height="100px" class="img-fluid mb-2" style="object-fit: cover; border-radius: 12px;">

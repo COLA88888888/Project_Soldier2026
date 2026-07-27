@@ -118,13 +118,31 @@ $o_id = isset($_GET['o_id']) ? intval($_GET['o_id']) : 0;
 $u_id = isset($_GET['u_id']) ? intval($_GET['u_id']) : 0;
 $d_id = isset($_GET['d_id']) ? intval($_GET['d_id']) : 0;
 
+$pk_ids_str = isset($_GET['pk_ids']) ? $_GET['pk_ids'] : '';
+$pk_ids_arr = [];
+if (!empty($pk_ids_str)) {
+    $pk_ids_arr = array_map('intval', explode(',', $pk_ids_str));
+    $pk_ids_arr = array_filter($pk_ids_arr, function($id) { return $id > 0; });
+}
+
 include('../../condb.php');
 
 $where_clauses = ["a.l_id = ?"];
 $types = "i";
 $params = [$l_id];
 
-if ($pk_id > 0) { $where_clauses[] = "a.pk_id = ?"; $types .= "i"; $params[] = $pk_id; }
+if ($pk_id > 0) { 
+    $where_clauses[] = "a.pk_id = ?"; 
+    $types .= "i"; 
+    $params[] = $pk_id; 
+} elseif (!empty($pk_ids_arr)) {
+    $placeholders = implode(',', array_fill(0, count($pk_ids_arr), '?'));
+    $where_clauses[] = "a.pk_id IN ($placeholders)";
+    $types .= str_repeat('i', count($pk_ids_arr));
+    foreach ($pk_ids_arr as $id) {
+        $params[] = $id;
+    }
+}
 if ($o_id > 0) { $where_clauses[] = "a.o_id = ?"; $types .= "i"; $params[] = $o_id; }
 if ($u_id > 0) { $where_clauses[] = "a.u_id = ?"; $types .= "i"; $params[] = $u_id; }
 if ($d_id > 0) { $where_clauses[] = "a.d_id = ?"; $types .= "i"; $params[] = $d_id; }

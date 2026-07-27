@@ -44,8 +44,18 @@ $pk_id = isset($_GET['pk_id']) ? intval($_GET['pk_id']) : 0;
 $u_id = isset($_GET['u_id']) ? intval($_GET['u_id']) : 0;
 $d_id = isset($_GET['d_id']) ? intval($_GET['d_id']) : 0;
 
+$pk_ids_str = isset($_GET['pk_ids']) ? $_GET['pk_ids'] : '';
+$pk_ids_arr = [];
+if (!empty($pk_ids_str)) {
+    $pk_ids_arr = array_map('intval', explode(',', $pk_ids_str));
+    $pk_ids_arr = array_filter($pk_ids_arr, function($id) { return $id > 0; });
+}
+$title = isset($_GET['title']) ? $_GET['title'] : '';
+
 $filter_title = "";
-if ($o_id > 0) {
+if (!empty($title)) {
+    $filter_title = " (ພະແນກ: " . htmlspecialchars($title) . ")";
+} elseif ($o_id > 0) {
     $r_filter = mysqli_query($conn, "SELECT o_name FROM office WHERE o_id = '$o_id'");
     if ($row_f = mysqli_fetch_assoc($r_filter)) {
         $filter_title = " (ຫ້ອງການ: " . htmlspecialchars($row_f['o_name']) . ")";
@@ -55,6 +65,14 @@ if ($o_id > 0) {
     if ($row_f = mysqli_fetch_assoc($r_filter)) {
         $filter_title = " (ພະແນກ: " . htmlspecialchars($row_f['pk_name']) . ")";
     }
+} elseif (!empty($pk_ids_arr)) {
+    $names = [];
+    $ids_imploded = implode(',', $pk_ids_arr);
+    $r_filter = mysqli_query($conn, "SELECT pk_name FROM panak WHERE pk_id IN ($ids_imploded)");
+    while ($row_f = mysqli_fetch_assoc($r_filter)) {
+        $names[] = $row_f['pk_name'];
+    }
+    $filter_title = " (ພະແນກ: " . htmlspecialchars(implode(', ', $names)) . ")";
 } elseif ($u_id > 0) {
     $r_filter = mysqli_query($conn, "SELECT u_name FROM units WHERE u_id = '$u_id'");
     if ($row_f = mysqli_fetch_assoc($r_filter)) {
@@ -73,7 +91,7 @@ if ($o_id > 0) {
 <div class="card-header bg-primary d-flex align-items-center justify-content-between">
 <h3 class="card-title m-0">ລາຍງານຂໍ້ມູນ ປະຫວັດພະນັກງານ<?= $filter_title ?></h3>
 <div>
-<?php if ($o_id > 0 || $pk_id > 0 || $u_id > 0 || $d_id > 0) { ?>
+<?php if ($o_id > 0 || $pk_id > 0 || !empty($pk_ids_arr) || $u_id > 0 || $d_id > 0) { ?>
 <a href="show_table.php" class="btn btn-warning btn-sm mr-2"><i class="fas fa-undo"></i> ສະແດງທັງໝົດ</a>
 <?php } ?>
 <a href="index.php" class="btn btn-success btn-sm"><i class="icon fas fa-plus"></i> ເພີ່ມຂໍ້ມູນ</a>
@@ -234,6 +252,13 @@ if ($pk_id > 0) {
     $where_clauses[] = "a.pk_id = ?";
     $types .= "i";
     $params[] = $pk_id;
+} elseif (!empty($pk_ids_arr)) {
+    $placeholders = implode(',', array_fill(0, count($pk_ids_arr), '?'));
+    $where_clauses[] = "a.pk_id IN ($placeholders)";
+    $types .= str_repeat('i', count($pk_ids_arr));
+    foreach ($pk_ids_arr as $id) {
+        $params[] = $id;
+    }
 }
 if ($u_id > 0) {
     $where_clauses[] = "a.u_id = ?";

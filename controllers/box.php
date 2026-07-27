@@ -212,46 +212,134 @@
     <div class="container-fluid">
         <div class="row">
             <?php 
-            $stmt = $conn->prepare("SELECT * FROM panak ORDER BY pk_id ASC");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $idx = 0;
-            
-            while ($rowbox = $result->fetch_assoc()) {
-                $pk_id = $rowbox['pk_id'];
-                $grad = $gradients[$idx % count($gradients)];
-                $idx++;
+            // 1. Fetch all sections
+            $sections = [];
+            $stmt_sec = $conn->prepare("SELECT * FROM panak ORDER BY pk_id ASC");
+            $stmt_sec->execute();
+            $result_sec = $stmt_sec->get_result();
+            while ($row = $result_sec->fetch_assoc()) {
+                $sections[] = $row;
+            }
+            $stmt_sec->close();
+
+            // 2. Define the 8 target categories with their match logic (case insensitive)
+            $categories_definition = [
+                [
+                    'name' => 'ຄະນະຫ້ອງການ',
+                    'icon' => 'ion-ios-home',
+                    'grad' => 'grad-teal',
+                    'matches' => function($name) {
+                        return mb_strpos($name, 'ຄະນະຫ້ອງການ') !== false;
+                    }
+                ],
+                [
+                    'name' => 'ຄົ້ນຄວ້າສັງລວມ',
+                    'icon' => 'ion-ios-search',
+                    'grad' => 'grad-cyan',
+                    'matches' => function($name) {
+                        return mb_strpos($name, 'ຄົ້ນຄວ້າ') !== false || mb_strpos($name, 'ສັງລວມ') !== false || mb_strpos($name, 'ພົວພັນຕ່າງປະເທດ') !== false;
+                    }
+                ],
+                [
+                    'name' => 'ຄຸ້ມຄອງເອກະສານ',
+                    'icon' => 'ion-ios-paper',
+                    'grad' => 'grad-emerald',
+                    'matches' => function($name) {
+                        return mb_strpos($name, 'ຄຸ້ມຄອງເອກະສານ') !== false || ($name === 'ຄຸ້ມຄອງເອກະສານແລະຂາເຂົ້າ-ຂາອອກ');
+                    }
+                ],
+                [
+                    'name' => 'ຄຸ້ມຄອງຊັບສິນແລະສ້ອມແປງ',
+                    'icon' => 'ion-settings',
+                    'grad' => 'grad-blue',
+                    'matches' => function($name) {
+                        return mb_strpos($name, 'ຄຸ້ມຄອງຊັບສິນ') !== false || mb_strpos($name, 'ຊັບສິນ') !== false || mb_strpos($name, 'ສ້ອມແປງ') !== false || mb_strpos($name, 'ກໍ່ສ້າງ') !== false || mb_strpos($name, 'ເຕັກນິກ') !== false;
+                    }
+                ],
+                [
+                    'name' => 'ຂາເຂົ້າ-ຂາອອກ',
+                    'icon' => 'ion-shuffle',
+                    'grad' => 'grad-indigo',
+                    'matches' => function($name) {
+                        return mb_strpos($name, 'ຂາເຂົ້າ') !== false || mb_strpos($name, 'ຂາອອກ') !== false || ($name === 'ຄຸ້ມຄອງເອກະສານແລະຂາເຂົ້າ-ຂາອອກ');
+                    }
+                ],
+                [
+                    'name' => 'ບໍລິຫານຈັດຕັ້ງ',
+                    'icon' => 'ion-ios-people',
+                    'grad' => 'grad-violet',
+                    'matches' => function($name) {
+                        return mb_strpos($name, 'ບໍລິຫານ') !== false || mb_strpos($name, 'ຈັດຕັ້ງ') !== false;
+                    }
+                ],
+                [
+                    'name' => 'ບັນຊີການເງິນ',
+                    'icon' => 'ion-cash',
+                    'grad' => 'grad-rose',
+                    'matches' => function($name) {
+                        return mb_strpos($name, 'ການເງິນ') !== false || mb_strpos($name, 'ບັນຊີ') !== false || mb_strpos($name, 'ການບັນຊີ') !== false;
+                    }
+                ],
+                [
+                    'name' => 'ການພະລິດ',
+                    'icon' => 'ion-hammer',
+                    'grad' => 'grad-orange',
+                    'matches' => function($name) {
+                        return mb_strpos($name, 'ການຜະລິດ') !== false || mb_strpos($name, 'ການພະລິດ') !== false || mb_strpos($name, 'ຜະລິດ') !== false || mb_strpos($name, 'ພະລິດ') !== false;
+                    }
+                ]
+            ];
+
+            // 3. Map each category to its matching pk_ids from the database and output card
+            foreach ($categories_definition as $cat) {
+                $matched_ids = [];
+                foreach ($sections as $sec) {
+                    if ($cat['matches']($sec['pk_name'])) {
+                        $matched_ids[] = $sec['pk_id'];
+                    }
+                }
                 
-                $sql1 = "SELECT COUNT(*) as totaltwo FROM officers WHERE pk_id = '$pk_id'";
-                $result1 = mysqli_query($conn, $sql1);
-                $row1 = mysqli_fetch_assoc($result1);
-                $totaltwo = $row1['totaltwo'] ?? 0;
+                // If there are matched sections, count officers
+                $totaltwo = 0;
+                $totalman3 = 0;
+                $totalwomen = 0;
                 
-                $sql2 = "SELECT COUNT(*) as mans FROM officers WHERE gender='ຊາຍ' AND pk_id = '$pk_id'";
-                $result2 = mysqli_query($conn, $sql2);
-                $row2 = mysqli_fetch_assoc($result2);
-                $totalman3 = $row2['mans'] ?? 0;
-                
-                $sql3 = "SELECT COUNT(*) as women FROM officers WHERE gender='ຍິງ' AND pk_id = '$pk_id'";
-                $result3 = mysqli_query($conn, $sql3);
-                $row3 = mysqli_fetch_assoc($result3);
-                $totalwomen = $row3['women'] ?? 0;
+                if (!empty($matched_ids)) {
+                    $ids_str = implode(',', $matched_ids);
+                    
+                    $sql1 = "SELECT COUNT(*) as totaltwo FROM officers WHERE pk_id IN ($ids_str)";
+                    $result1 = mysqli_query($conn, $sql1);
+                    $row1 = mysqli_fetch_assoc($result1);
+                    $totaltwo = $row1['totaltwo'] ?? 0;
+                    
+                    $sql2 = "SELECT COUNT(*) as mans FROM officers WHERE gender='ຊາຍ' AND pk_id IN ($ids_str)";
+                    $result2 = mysqli_query($conn, $sql2);
+                    $row2 = mysqli_fetch_assoc($result2);
+                    $totalman3 = $row2['mans'] ?? 0;
+                    
+                    $sql3 = "SELECT COUNT(*) as women FROM officers WHERE gender='ຍິງ' AND pk_id IN ($ids_str)";
+                    $result3 = mysqli_query($conn, $sql3);
+                    $row3 = mysqli_fetch_assoc($result3);
+                    $totalwomen = $row3['women'] ?? 0;
+                }
+                $pk_ids_param = implode(',', $matched_ids);
+                $first_pk_id = !empty($matched_ids) ? $matched_ids[0] : 0;
             ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
-                <div class="stat-card-custom <?= $grad ?>">
+                <div class="stat-card-custom <?= $cat['grad'] ?>">
                     <div class="card-body-custom">
-                        <h6><?= htmlspecialchars($rowbox['pk_name']); ?></h6>
+                        <h6><?= htmlspecialchars($cat['name']); ?></h6>
                         <h3><?= $totaltwo; ?> <span style="font-size: 13px; font-weight: normal; opacity: 0.95;">ສະຫາຍ</span></h3>
                         <p>[ ຍິງ: <?= $totalwomen; ?> || ຊາຍ: <?= $totalman3; ?> ]</p>
                     </div>
                     <div class="card-icon">
-                        <i class="ion-android-contacts"></i>
+                        <i class="<?= $cat['icon'] ?>"></i>
                     </div>
                     <div class="d-flex justify-content-between pt-2 mt-2 border-top border-light">
-                        <a href="../../form/officers/show_table.php?pk_id=<?= $pk_id ?>" class="text-white small font-weight-bold">
+                        <a href="../../form/officers/show_table.php?pk_id=<?= $first_pk_id ?>&pk_ids=<?= $pk_ids_param ?>&title=<?= urlencode($cat['name']) ?>" class="text-white small font-weight-bold">
                             <i class="fas fa-users mr-1"></i> ເບິ່ງພະນັກງານ
                         </a>
-                        <a href="../../form/positions_level/position_level.php?pk_id=<?= $pk_id ?>" class="text-white small font-weight-bold">
+                        <a href="../../form/positions_level/position_level.php?pk_id=<?= $first_pk_id ?>&pk_ids=<?= $pk_ids_param ?>" class="text-white small font-weight-bold">
                             ລາຍລະອຽດຊັ້ນ <i class="fas fa-arrow-circle-right ml-1"></i>
                         </a>
                     </div>
@@ -259,7 +347,6 @@
             </div>
             <?php 
             } 
-            $stmt->close(); 
             ?>
         </div>
     </div>
